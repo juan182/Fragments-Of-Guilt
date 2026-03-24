@@ -1,0 +1,6 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/MenuStyle.uss?fileID=7433441132597879392&amp;guid=e5c1657ab539e88408b6949108ae20f3&amp;type=3#MenuStyle"/>
+    <ui:VisualElement name="Contenedor" style="flex-grow: 1;">
+        <ui:VisualElement name="Element" class="miclase" style="flex-grow: 1;"/>
+    </ui:VisualElement>
+</ui:UXML>
