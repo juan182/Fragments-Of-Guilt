@@ -31,7 +31,7 @@ public class EnemyPatrol : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        // Se calcula la distancia entre el punto objetivo inicializado en Start y el enemigo
         float distancia = Vector3.Distance(transform.position, puntoObjetivo.position);
 
         if (distancia < 0.1f)
