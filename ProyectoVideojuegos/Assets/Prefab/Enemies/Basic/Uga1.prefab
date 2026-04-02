@@ -107,9 +107,16 @@ GameObject:
   - component: {fileID: 1994331528419829297}
   - component: {fileID: 6834787385111473157}
   - component: {fileID: 5421897331000350768}
+  - component: {fileID: 3626193946436327063}
+  - component: {fileID: 5657423691533124178}
+  - component: {fileID: 5955348462479831499}
+  - component: {fileID: 1385267153269761687}
+  - component: {fileID: 3538522897228780135}
+  - component: {fileID: 5367511342165347589}
+  - component: {fileID: 6551597088414086080}
   m_Layer: 0
   m_Name: Uga1
-  m_TagString: Untagged
+  m_TagString: Uga
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -196,6 +203,127 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!50 &3626193946436327063
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821150612939357778}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 2
+--- !u!114 &5657423691533124178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821150612939357778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd0711cf297d4c34581683f63166b8ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  vidaMaxima: 100
+--- !u!114 &5955348462479831499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821150612939357778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed1ac0c0fdd00f640921d3460204b989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+  estadoActual: 0
+  patrulla: {fileID: 5367511342165347589}
+  persecusion: {fileID: 3538522897228780135}
+  deteccionJugador: {fileID: 6551597088414086080}
+  ataque: {fileID: 1385267153269761687}
+  puedeAtacarADistancia: 0
+  rangoAtaque: 2
+  "da\xF1oFisico": 10
+  "da\xF1oDistancia": 20
+  tiempoEntreAtaques: 0.8
+  animator: {fileID: 5421897331000350768}
+--- !u!114 &1385267153269761687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821150612939357778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e6b1a0279fed346a10a4297f10d85f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackManager
+--- !u!114 &3538522897228780135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821150612939357778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e041c04740d4778409ed4a67f3156b94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FollowPlayer
+  velocidadPersecusion: 3
+  distanciaAtaque: 1
+--- !u!114 &5367511342165347589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821150612939357778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35fe231382ac0d44892dc7b46b6f32d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyPatrol
+  puntoA: {fileID: 0}
+  puntoB: {fileID: 0}
+  velocidad: 2
+--- !u!114 &6551597088414086080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821150612939357778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ec1b7ddcc01474d9b0170e858b3333, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeteccionJugador
+  distanciaRayCast: 2
+  capaDeteccion:
+    serializedVersion: 2
+    m_Bits: 1
+  veAlJugador: 0
 --- !u!1 &1275131947493953964
 GameObject:
   m_ObjectHideFlags: 0
