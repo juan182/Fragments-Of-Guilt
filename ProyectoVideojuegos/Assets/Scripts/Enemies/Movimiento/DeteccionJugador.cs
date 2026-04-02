@@ -11,7 +11,9 @@ public class DeteccionJugador : MonoBehaviour
 
     private Vector2 direccionRayCast= Vector2.left; //Direccion a la izquierda por default
 
-    
+    [SerializeField] private bool veAlJugador=false;
+
+    public bool VeAlJugador { get => veAlJugador; set => veAlJugador = value; }
 
     // Update is called once per frame
     void Update()
@@ -28,8 +30,15 @@ public class DeteccionJugador : MonoBehaviour
         {
             if (hit.collider.CompareTag("Player"))
             {
+                veAlJugador=true;
                 //Logica de activar persecusion
+            }
+            else
+            {
+                veAlJugador=false;
             }
         }
     }
+
+    
 }
