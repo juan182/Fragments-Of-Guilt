@@ -16,14 +16,16 @@ public class AtaqueFisico : IAttack
         Debug.Log($"Ataque cuerpo a cuerpo con daño: {daño}");
         //Logica daño 
 
-        Health salud=objetivo.GetComponent<Health>();
-        if (salud != null) 
+        PlayerStats playerStats = objetivo.GetComponent<PlayerStats>();
+        if (playerStats != null)
         {
-            salud.Daño(daño);
+            int dañoInt = Mathf.RoundToInt(daño); //Convertimos la vidaMaxima del jugador (float) a enteros
+            playerStats.TakeDamage(dañoInt);
+            return;
         }
         else
         {
-            Debug.LogWarning($"El objetivo {objetivo.name} no tiene componente Health");
+            Debug.Log($"El objetivo {objetivo.name} no encuentra o tiene PlayerStats");
         }
     }
 }
