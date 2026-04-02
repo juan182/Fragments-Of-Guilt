@@ -44,11 +44,6 @@ public class Health : MonoBehaviour
         {
             anim.SetTrigger("muerte"); //Funciona para enemigos y jugador
         }
-
-        if (CompareTag("Player"))
-        {
-            GameManager.Instance.GameOver();
-        }
-        Destroy(gameObject);
+        Destroy(gameObject, 1f); //1f es retraso para la ejecucion de la animacion antes de destruirse
     }
 }

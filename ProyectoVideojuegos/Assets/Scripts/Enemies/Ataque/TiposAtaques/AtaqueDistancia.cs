@@ -19,14 +19,18 @@ public class AtaqueDistancia : IAttack
         // GameObject.Instantiate(orbePrefab, controller.position, Quaternion.identity)
         
         
-        Health salud = objetivo.GetComponent<Health>();
-        if (salud != null)
+        PlayerStats playerStats=objetivo.GetComponent<PlayerStats>();
+        if (playerStats != null) 
         {
-            salud.Daño(daño);
+            int dañoInt = Mathf.RoundToInt(daño); //Convertimos la vidaMaxima del jugador (float) a enteros
+            playerStats.TakeDamage(dañoInt);
+            return;
         }
         else
         {
-            Debug.LogWarning($"El objetivo {objetivo.name} no tiene componente Health");
+            Debug.Log($"El objetivo {objetivo.name} no encuentra o tiene PlayerStats");
         }
+
+
     }
 }

@@ -37,10 +37,28 @@ public class EnemyPatrol : MonoBehaviour
         if (distancia < 0.1f)
         {
             puntoObjetivo = (puntoObjetivo == puntoA) ? puntoB : puntoA;
+            OrientarSprite();
         }
 
         Moverse();
 
+    }
+
+    private void OrientarSprite()
+    {
+        float direccionX = puntoObjetivo.position.x-transform.position.x;
+
+        Vector3 escala = transform.localScale;
+        if (direccionX < 0)
+        {
+            escala.x = Mathf.Abs(escala.x); //izq
+        }
+        else if (direccionX > 0)
+        {
+            escala.x = -Mathf.Abs(escala.x); //der
+
+        }
+        transform.localScale = escala;
     }
 
     /// <summary>
