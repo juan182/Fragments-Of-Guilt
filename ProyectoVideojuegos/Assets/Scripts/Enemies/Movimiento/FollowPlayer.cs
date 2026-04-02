@@ -8,6 +8,8 @@ public class FollowPlayer : MonoBehaviour
     [SerializeField] private float velocidadPersecusion=3f;
     [SerializeField] private float distanciaAtaque = 1f; //Distancia para dejar de caminar y atacar al jugador
 
+    
+
     private Transform jugador;
 
     /// <summary>
@@ -44,20 +46,24 @@ public class FollowPlayer : MonoBehaviour
     {
         // 1 es hacia la derecha, -1 hacia la izquierda
         float sentido=Mathf.Sign(direccionX);
-        transform.Translate(new Vector3(sentido * velocidadPersecusion * Time.deltaTime, 0, 0));
-
+        Vector3 nuevaPosicion = transform.position;
+        nuevaPosicion.x += sentido * velocidadPersecusion * Time.deltaTime;
+        transform.position = nuevaPosicion;
     }
 
     private void OrientacionSprite(float direccionX)
     {
+        Vector3 escala=transform.localScale; //Escala actual del sprite en caso que su escala sea distinta a 1
         if (direccionX < 0)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            escala.x=Mathf.Abs(escala.x); //izq
         }
-        else
+        else if(direccionX > 0)
         {
-            transform.localScale = new Vector3(1, 1, 1);
+            escala.x=-Mathf.Abs(escala.x); //der
+            
         }
-
+        transform.localScale = escala;
+        Debug.Log($"Dirección: {direccionX}, Nueva escala X: {escala.x}");
     }
 }

@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Uga2
       objectReference: {fileID: 0}
+    - target: {fileID: -8653719598885068355, guid: 5c25c3786ca0c6347a75522250ec49da, type: 3}
+      propertyPath: m_TagString
+      value: Uga
+      objectReference: {fileID: 0}
     - target: {fileID: -8363884809526677999, guid: 5c25c3786ca0c6347a75522250ec49da, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -99,5 +103,120 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 5c25c3786ca0c6347a75522250ec49da, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5227798507783578754}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 5c25c3786ca0c6347a75522250ec49da, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5865200066484035594}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 5c25c3786ca0c6347a75522250ec49da, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2775211558005802761}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 5c25c3786ca0c6347a75522250ec49da, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6365801104633987553}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 5c25c3786ca0c6347a75522250ec49da, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5608588512667636017}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 5c25c3786ca0c6347a75522250ec49da, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1680131132265430028}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 5c25c3786ca0c6347a75522250ec49da, type: 3}
+--- !u!1 &2507609677502167564 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8653719598885068355, guid: 5c25c3786ca0c6347a75522250ec49da, type: 3}
+  m_PrefabInstance: {fileID: 2678267839525657521}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5227798507783578754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2507609677502167564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed1ac0c0fdd00f640921d3460204b989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+  estadoActual: 0
+  patrulla: {fileID: 6365801104633987553}
+  persecusion: {fileID: 2775211558005802761}
+  deteccionJugador: {fileID: 5608588512667636017}
+  ataque: {fileID: 5865200066484035594}
+  puedeAtacarADistancia: 0
+  rangoAtaque: 2
+  "da\xF1oFisico": 15
+  "da\xF1oDistancia": 0
+--- !u!114 &5865200066484035594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2507609677502167564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e6b1a0279fed346a10a4297f10d85f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackManager
+--- !u!114 &2775211558005802761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2507609677502167564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e041c04740d4778409ed4a67f3156b94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FollowPlayer
+  velocidadPersecusion: 3
+  distanciaAtaque: 1
+--- !u!114 &6365801104633987553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2507609677502167564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35fe231382ac0d44892dc7b46b6f32d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyPatrol
+  puntoA: {fileID: 0}
+  puntoB: {fileID: 0}
+  velocidad: 3
+--- !u!114 &5608588512667636017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2507609677502167564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ec1b7ddcc01474d9b0170e858b3333, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeteccionJugador
+  distanciaRayCast: 2
+  capaDeteccion:
+    serializedVersion: 2
+    m_Bits: 1
+  veAlJugador: 0
+--- !u!114 &1680131132265430028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2507609677502167564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd0711cf297d4c34581683f63166b8ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  vidaMaxima: 100
