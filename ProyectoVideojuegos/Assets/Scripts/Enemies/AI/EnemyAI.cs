@@ -36,14 +36,22 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-        //Si el jugador muere todo se detiene
-        if(jugador == null)
+        //Si el jugador muere el enemigo solo patrulla
+        if (GameController.Instance != null&&GameController.Instance.playerDied) 
         {
-            patrulla.enabled= false;
-            persecusion.enabled= false;
+            if (estadoActual != Estado.Patrullando) 
+            {
+                estadoActual=Estado.Patrullando;
+                //Activamos scripts
+                patrulla.enabled = true;
+                persecusion.enabled = false;
+            }
+            //Ejecutamos el movimiento
+            Comportamiento();
             return;
         }
 
+        if (jugador == null) return;
         if (estadoActual == Estado.Muerto) return;
 
         DeterminarEstado();
