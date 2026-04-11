@@ -3,6 +3,7 @@ using UnityEngine;
 public enum GameState { Gameplay, Paused, GameOver, Dialogue }
 public class GameManager : MonoBehaviour
 {
+    
     private void OnEnable()
     {
         PlayerStats.OnPlayerDeath += GameOver;
@@ -13,7 +14,8 @@ public class GameManager : MonoBehaviour
         PlayerStats.OnPlayerDeath -= GameOver;
     }
 
-    private void GameOver()
+    //Cambié a public para poder acceder
+    public void GameOver()
     {
         Debug.Log("Perdiste :,c");
     }
