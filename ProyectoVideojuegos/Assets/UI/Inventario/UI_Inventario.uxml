@@ -1,0 +1,42 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Inventario/uSS_Inventario.uss?fileID=7433441132597879392&amp;guid=49006e1c328090b43937fccad9ebd5f7&amp;type=3#uSS_Inventario"/>
+    <ui:VisualElement name="contenedor" class="contenedor" style="flex-grow: 1; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+        <ui:VisualElement name="menu" class="menu" style="flex-grow: 1;">
+            <ui:VisualElement name="fragmentosContainer" class="fragmentosContainer" style="flex-direction: column; justify-content: flex-start;">
+                <ui:VisualElement name="statsContainer" class="statsContainer" style="flex-grow: 1;">
+                    <ui:VisualElement name="healt" class="health" style="flex-grow: 1;">
+                        <ui:ProgressBar value="100" title="" name="ProgressBar" enabled="true" high-value="100" class="bar-ubication"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="contenedorInventario" class="contenedorInventario" style="align-items: center; justify-content: flex-start; align-self: auto; align-content: auto; height: auto; max-height: 50%; flex-direction: column; flex-grow: 1; padding-top: 0%; padding-right: 0%; padding-bottom: 0%; padding-left: 0%;">
+                <ui:VisualElement name="Container" class="container" style="flex-grow: 1; width: 100%;">
+                    <ui:VisualElement name="sl1" class="botones">
+                        <ui:Image name="img" picking-mode="Ignore" style="position: absolute; top: auto; left: auto; right: auto; bottom: auto; width: 50%; height: 50%; aspect-ratio: 1;"/>
+                        <ui:Label text="0" name="numeroContador" picking-mode="Ignore" class="numeroContador"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="sl2" class="botones">
+                        <ui:Image name="img" picking-mode="Ignore" style="position: absolute; top: auto; left: auto; right: auto; bottom: auto; width: 50%; height: 50%; aspect-ratio: 1;"/>
+                        <ui:Label text="0" name="numeroContador" picking-mode="Ignore" class="numeroContador"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="sl3" class="botones">
+                        <ui:Image name="img" picking-mode="Ignore" style="position: absolute; top: auto; left: auto; right: auto; bottom: auto; width: 50%; height: 50%; aspect-ratio: 1;"/>
+                        <ui:Label text="0" name="numeroContador" picking-mode="Ignore" class="numeroContador"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="sl4" class="botones">
+                        <ui:Image name="img" picking-mode="Ignore" style="position: absolute; top: auto; left: auto; right: auto; bottom: auto; width: 50%; height: 50%; aspect-ratio: 1;"/>
+                        <ui:Label text="0" name="numeroContador" picking-mode="Ignore" class="numeroContador"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="sl5" class="botones">
+                        <ui:Image name="img" picking-mode="Ignore" style="position: absolute; top: auto; left: auto; right: auto; bottom: auto; width: 50%; height: 50%; aspect-ratio: 1;"/>
+                        <ui:Label text="0" name="numeroContador" picking-mode="Ignore" class="numeroContador"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="sl6" class="botones">
+                        <ui:Image name="img" picking-mode="Ignore" style="position: absolute; top: auto; left: auto; right: auto; bottom: auto; width: 50%; height: 50%; aspect-ratio: 1;"/>
+                        <ui:Label text="0" name="numeroContador" picking-mode="Ignore" class="numeroContador"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
