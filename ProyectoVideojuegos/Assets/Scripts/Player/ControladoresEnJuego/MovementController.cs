@@ -90,7 +90,7 @@ public class MovementController : MonoBehaviour
     {
         Vector2 posicionn = (Vector2) transform.position + new Vector2(0f, 0.5f); 
         //Logica del salto
-        RaycastHit2D hit = Physics2D.Raycast(posicionn, Vector2.down, 0.3f, capaSuelo);
+        RaycastHit2D hit = Physics2D.Raycast(posicionn, Vector2.down, 0.5f, capaSuelo);
         if (hit.collider != null)
         {
             isOnGround = true;

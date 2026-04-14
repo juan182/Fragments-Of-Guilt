@@ -11,6 +11,10 @@ public class GameManager : MonoBehaviour
     public SceneManager_P sceneManager;
     public UI_Manager UI_Manager;
 
+    public GameController1 gc1;
+
+    public bool tieneArma { get; private set; } = false;
+
     //
     [SerializeField]private GameState currentState;
     //
@@ -127,4 +131,10 @@ public class GameManager : MonoBehaviour
     {
         get {return currentState;}
     }
+
+    public void RegistrarArmaObtenida()
+    {
+        tieneArma = true;
+    }
+
 }

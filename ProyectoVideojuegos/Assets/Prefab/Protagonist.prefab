@@ -1374,7 +1374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 020ba944afd5e8a4ebfa8bdc179b99b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  sessionSO: {fileID: 0}
+  sessionSO: {fileID: 11400000, guid: fa6684d78c55c0d4bba3a81e052dc17b, type: 2}
   vidaActual: 0
   staminaActual: 0
   staminaRegenRate: 5
