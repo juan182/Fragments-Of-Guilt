@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:ProyectoVideojuegos/Assets/Scenes/FASE1.unity.meta
 guid: 2ef28734bcb366a48a6d450742016150
+========
+guid: 7cbabbfbd64579c47be31390cf18a365
+>>>>>>>> Luis-Miguel:ProyectoVideojuegos/Assets/Scenes/Mapa.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

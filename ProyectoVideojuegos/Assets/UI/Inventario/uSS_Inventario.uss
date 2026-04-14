@@ -1,0 +1,215 @@
+.contenedor {
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    translate: -100% 0;
+    transition-duration: 0.5s;
+    transition-property: translate;
+    transition-timing-function: ease-in-circ;
+    transition-delay: 0.1s;
+}
+
+.menu {
+    width: 0%;
+    height: 100%;
+    min-width: auto;
+    max-width: 20%;
+    background-color: rgba(0, 0, 0, 0.73);
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.fragmentosContainer {
+    flex-grow: 0;
+    width: 100%;
+    height: 50%;
+    flex-shrink: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    align-content: auto;
+}
+
+.statsContainer {
+    width: 100%;
+    height: auto;
+}
+
+.containersunlock {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    height: 25%;
+}
+
+.botones2 {
+    background-image: url("project://database/Assets/Sprites/UI_Sprites/Menu/Group%202.png?fileID=2800000&guid=f69aab2844a97a24dbe18a4302fb767e&type=3#Group 2");
+    -unity-background-scale-mode: stretch-to-fill;
+    width: 35px;
+    height: 35px;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.93);
+    background-color: rgba(0, 0, 0, 0);
+    margin-top: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.contenedorInventario {
+    width: 100%;
+    height: 50%;
+    align-items: center;
+    align-self: auto;
+    align-content: auto;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+    width: auto;
+    align-content: auto;
+    max-width: 60%;
+    padding-top: 90%;
+    padding-right: 0%;
+    padding-bottom: 0%;
+    padding-left: 0%;
+}
+
+.botones {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+    height: 30%;
+    background-image: url("project://database/Assets/Sprites/UI_Sprites/Menu/Group%202.png?fileID=2800000&guid=f69aab2844a97a24dbe18a4302fb767e&type=3#Group 2");
+    -unity-background-scale-mode: stretch-to-fill;
+    background-position-y: center;
+    background-position-x: center;
+    margin-left: 0%;
+    margin-top: 0%;
+    margin-right: 0%;
+    margin-bottom: 0%;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    -unity-slice-scale: 1px;
+    top: auto;
+    left: auto;
+    align-self: center;
+    align-content: center;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in-cubic;
+    max-width: none;
+    max-height: none;
+    min-width: auto;
+    min-height: auto;
+    aspect-ratio: 1;
+}
+
+.numerito {
+}
+
+.contenedor-activo {
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    translate: 0% 0;
+    transition-duration: 0.5s;
+    transition-property: translate;
+    transition-timing-function: ease-out-circ;
+}
+
+.img {
+}
+
+.botones:hover {
+    -unity-background-image-tint-color: rgb(250, 226, 122);
+    -unity-background-scale-mode: stretch-to-fill;
+    transition-timing-function: ease-out-sine;
+    transition-duration: 0.2s;
+}
+
+.numeroContador {
+    -unity-font-definition: url("project://database/Assets/Fonts/Cinzel-Bold.otf?fileID=12800000&guid=9501ad4309737e74c84a4a8666bb8375&type=3#Cinzel-Bold");
+    font-size: 10px;
+    position: absolute;
+    top: auto;
+    left: auto;
+    right: 1%;
+    bottom: -3%;
+    -unity-font-style: bold;
+}
+
+.health {
+    max-width: 100%;
+    max-height: 20%;
+    background-image: url("project://database/Assets/Sprites/UI_Sprites/barra3.png?fileID=2800000&guid=626a28a04aca717429857b05aad8905c&type=3#barra3");
+    background-size: 76% 97%;
+    background-position-x: left 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 20px;
+}
+
+.unity-progress-bar__container {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    width: 100%;
+    height: auto;
+}
+
+.bar-ubication {
+    position: absolute;
+    top: 22%;
+    left: 20%;
+}
+
+.unity-progress-bar {
+    width: 50%;
+    height: auto;
+    aspect-ratio: auto;
+    max-height: none;
+}
+
+.unity-progress-bar__progress {
+    background-color: rgb(108, 5, 5);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 0;
+}
+
+.unity-progress-bar__background {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background-color: rgba(255, 255, 255, 0);
+}

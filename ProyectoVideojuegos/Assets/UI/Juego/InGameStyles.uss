@@ -1,0 +1,172 @@
+.main-contenedor {
+    width: 100%;
+    height: 100%;
+}
+
+.Estadisticas {
+    width: 100%;
+    height: 30%;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.vida_stamina {
+    width: 25%;
+    height: 100%;
+    max-width: 25%;
+    align-items: stretch;
+    justify-content: flex-start;
+    align-self: auto;
+    align-content: auto;
+    flex-direction: column;
+    aspect-ratio: auto;
+}
+
+.spriteVida_bar {
+    width: 100%;
+    height: 15%;
+    max-height: none;
+    background-image: url("project://database/Assets/Sprites/UI_Sprites/barra3.png?fileID=-1270324501764710468&guid=626a28a04aca717429857b05aad8905c&type=3#barra3_0");
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    bottom: 0%;
+    background-size: 90% 100%;
+    aspect-ratio: auto;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.vida_bar {
+    top: 0%;
+    position: absolute;
+    left: 26%;
+    bottom: 0;
+    align-items: stretch;
+    justify-content: center;
+    width: 64%;
+    height: 10%;
+    align-content: auto;
+}
+
+.vida_bar .unity-progress-bar__container {
+    background-size: 100% 100%;
+    background-color: rgba(217, 199, 28, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    width: 100%;
+    height: 39%;
+    max-height: none;
+    max-width: initial;
+    align-items: stretch;
+    justify-content: center;
+    align-content: auto;
+}
+
+.vida_bar .unity-progress-bar__background {
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    width: 100%;
+    height: 100%;
+    align-content: auto;
+    justify-content: flex-start;
+}
+
+.vida_bar .unity-progress-bar__progress {
+    background-color: rgb(135, 0, 0);
+    width: 100%;
+    height: 100%;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    align-content: auto;
+}
+
+.stamina_bar {
+    width: 50%;
+    height: 2%;
+    justify-content: center;
+    top: 7.5%;
+    left: 26%;
+    bottom: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.stamina_bar .unity-progress-bar__container {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.stamina_bar .unity-progress-bar__background {
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.stamina_bar .unity-progress-bar__progress {
+    background-color: rgb(57, 1, 123);
+    width: 100%;
+    height: 40%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
