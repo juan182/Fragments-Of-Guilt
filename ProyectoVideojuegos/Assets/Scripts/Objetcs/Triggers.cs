@@ -19,6 +19,6 @@ public class Triggers : MonoBehaviour
     private void ChangeScene(string SceneName)
     {
         Debug.Log("Hola :p");
-        PersistentRoot.Instance.sceneManager.CargarNivel(SceneName);
+        GameManager.Instance.sceneManager.CargarNivelesDeJuego(SceneName);
     }
 }

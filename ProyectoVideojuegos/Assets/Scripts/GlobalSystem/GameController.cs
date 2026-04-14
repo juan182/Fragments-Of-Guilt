@@ -32,7 +32,7 @@ public class GameController : MonoBehaviour
         //Busca al jugador y se suscribe al evento de muerte
         
         
-            PlayerStats.OnPlayerDeath += PlayerDied;
+            //PlayerStats.OnPlayerDeath += PlayerDied;
         
     }
 
@@ -46,6 +46,6 @@ public class GameController : MonoBehaviour
     //Desuscripcion del evento por si reinicia o el jugador se destruye al morir
     private void OnDestroy()
     {
-        PlayerStats.OnPlayerDeath -= PlayerDied;
+        //PlayerStats.OnPlayerDeath -= PlayerDied;
     }
 }

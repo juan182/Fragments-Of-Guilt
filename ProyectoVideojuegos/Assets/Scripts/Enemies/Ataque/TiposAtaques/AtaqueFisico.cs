@@ -16,11 +16,11 @@ public class AtaqueFisico : IAttack
         Debug.Log($"Ataque cuerpo a cuerpo con daño: {daño}");
         //Logica daño 
 
-        PlayerStats playerStats = objetivo.GetComponent<PlayerStats>();
+        MovementController playerStats = objetivo.GetComponent<MovementController>();
         if (playerStats != null)
         {
             int dañoInt = Mathf.RoundToInt(daño); //Convertimos la vidaMaxima del jugador (float) a enteros
-            playerStats.TakeDamage(dañoInt);
+            //playerStats.TakeDamage(dañoInt);
             return;
         }
         else
