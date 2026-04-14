@@ -1,0 +1,12 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Juego/InGameStyles.uss?fileID=7433441132597879392&amp;guid=e130fd6011d4c234989a51b133ae4c0f&amp;type=3#InGameStyles"/>
+    <ui:VisualElement name="main-contenedor" class="main-contenedor" style="flex-grow: 1;">
+        <ui:VisualElement name="Estadisticas" class="Estadisticas" style="flex-grow: 1;">
+            <ui:VisualElement name="Vida_Stamina" class="vida_stamina" style="flex-grow: 1;">
+                <ui:ProgressBar value="0" title="" name="Vida_bar" class="unity-progress-bar vida_bar"/>
+                <ui:ProgressBar value="0" title="" name="Stamina_bar" high-value="100" class="stamina_bar"/>
+                <ui:VisualElement name="SpriteVida_bar" class="spriteVida_bar" style="flex-grow: 1;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
