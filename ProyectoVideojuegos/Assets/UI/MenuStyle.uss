@@ -1,5 +1,60 @@
-VisualElement {
+
+
+
+
+.contenedor {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
 }
 
-.miclase {
+.tFragments {
+    width: 100%;
+    height: 50%;
+    margin-top: 0;
+    align-items: center;
+}
+
+.containerbuttons {
+    width: 100%;
+    height: 50%;
+    align-items: center;
+    justify-content: flex-start;
+    align-self: auto;
+    align-content: auto;
+}
+
+.textmain {
+    align-items: center;
+    justify-content: center;
+}
+
+.button-p {
+    width: 548px;
+    -unity-font-definition: url("project://database/Assets/Fonts/CinzelDecorative-Bold.otf?fileID=12800000&guid=7d4cfba4f27ffa146b0815f408c8393e&type=3#CinzelDecorative-Bold");
+    font-size: 27px;
+    background-image: url("project://database/Assets/Sprites/UI_Sprites/bar-HighResolution.png?fileID=2800000&guid=0b6bab2ed5ad6384aa7eba0098991728&type=3#bar-HighResolution");
+    background-size: 101% 111%;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    background-color: rgba(53, 3, 48, 0.65);
+    color: rgb(255, 255, 255);
+    margin-bottom: 27px;
+    height: 69px;
+    transition-property: font-size, ignored;
+    transition-duration: 0.1s, 0s;
+    transition-timing-function: ease-out-cubic, ease;
+}
+
+.button-p:hover {
+    font-size: 30px;
+    color: rgb(0, 0, 0);
+    background-color: rgba(57, 20, 59, 0.78);
 }

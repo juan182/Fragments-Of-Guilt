@@ -19,11 +19,11 @@ public class AtaqueDistancia : IAttack
         // GameObject.Instantiate(orbePrefab, controller.position, Quaternion.identity)
         
         
-        PlayerStats playerStats=objetivo.GetComponent<PlayerStats>();
+        MovementController playerStats=objetivo.GetComponent<MovementController>();
         if (playerStats != null) 
         {
             int dañoInt = Mathf.RoundToInt(daño); //Convertimos la vidaMaxima del jugador (float) a enteros
-            playerStats.TakeDamage(dañoInt);
+            //playerStats.TakeDamage(dañoInt);
             return;
         }
         else
