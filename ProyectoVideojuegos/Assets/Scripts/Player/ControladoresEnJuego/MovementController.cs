@@ -16,8 +16,8 @@ public class MovementController : MonoBehaviour
     [Header("Salto")]
     public float jumpForce;
     public LayerMask capaSuelo;
-    private bool isOnGround = false; //Esta en el suelo?
-    private bool shouldJump = false; //Puede saltar?
+    private bool estaEnElSuelo = false; //Esta en el suelo?
+    private bool puedeSaltar = false; //Puede saltar?
     
     [Header("Estado de Combate")]
     public bool isBlocking = false;
@@ -35,10 +35,11 @@ public class MovementController : MonoBehaviour
     private void Update()
     {
        //Validaciones
-        ValidateMovement();
-        ValidateJump();
+        ValidarMovimiento();
+        ValidarSalto();
         ValidateAtack();
         ValidateMagicAtack();
+        DetectarCaidayAscenso();
 
     }
 
@@ -46,25 +47,22 @@ public class MovementController : MonoBehaviour
     private void FixedUpdate()
     {
         Movement();
-        Jump();
+        Saltar();
+        
     }
 
     #region Movimiento
     //_______
-    void ValidateMovement()
+    void ValidarMovimiento()
     {
 
         //Horizontal registrar valores entre -1 0 1
         //Si el valor de horizontal cambia de 0 a valores entre -1 o 1 pues se ejecuta animacion de moverse.
         horizontalInput = Input.GetAxisRaw("Horizontal");
-        if (horizontalInput != 0)
-        {
-            animator.SetBool("IsRunning", true);
-        }
-        else
-        {
-            animator.SetBool("IsRunning", false);
-        }
+        animator.SetBool("IsRunning",horizontalInput!=0);
+
+        if (horizontalInput > 0) transform.localScale = new Vector3(0.18f, 0.18f, 0.18f);
+        else if (horizontalInput < 0) transform.localScale = new Vector3(-0.18f, 0.18f, 0.18f);
    
     }
     
@@ -77,35 +75,37 @@ public class MovementController : MonoBehaviour
 
     #region Salto
     //Este registra la tecla
-    void ValidateJump()
+    void ValidarSalto()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
+        if (Input.GetKeyDown(KeyCode.Space) && estaEnElSuelo)
         {
-            shouldJump = true;
-            //animator.SetBool("isJumping", true); Si se implementa la logica para apagarlo esta medio complicada i Think.
+            puedeSaltar = true;
         }
+        
     }
 
-    void Jump()
+    void Saltar()
     {
-        Vector2 posicionn = (Vector2) transform.position + new Vector2(0f, 0.5f); 
+        //Ajuste de posicion de donde sale el raycast de Debug
+        Vector2 posicionn = (Vector2) transform.position + new Vector2(0.1f, 0.5f); 
         //Logica del salto
-        RaycastHit2D hit = Physics2D.Raycast(posicionn, Vector2.down, 0.3f, capaSuelo);
+        RaycastHit2D hit = Physics2D.Raycast(posicionn, Vector2.down, 0.5f, capaSuelo);
         if (hit.collider != null)
         {
-            isOnGround = true;
+            estaEnElSuelo = true;
+            
             Debug.DrawRay(posicionn, Vector2.down * 0.3f, Color.green);
         }
         else
         {
-            isOnGround = false;
+            estaEnElSuelo = false;
             Debug.DrawRay(posicionn, Vector2.down * 0.3f, Color.red);
         }
 
-        if (shouldJump)
+        if (puedeSaltar)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            shouldJump = false;
+            puedeSaltar = false;
         } //Fin logica del salto 
     }
     #endregion
@@ -148,5 +148,20 @@ public class MovementController : MonoBehaviour
     }
     #endregion
 
-    
+    #region Caida
+    void DetectarCaidayAscenso()
+    {
+        if (!estaEnElSuelo)
+        {
+            animator.SetBool("IsJumping", rb.linearVelocityY > 0.05f);
+            animator.SetBool("IsFalling", rb.linearVelocityY < -0.1f);
+        }
+        else
+        {
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsFalling", false);
+        }
+        
+    }
+    #endregion
 }
