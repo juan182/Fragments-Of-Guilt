@@ -149,7 +149,7 @@ public class PlayerController : MonoBehaviour
         tieneLibro = sessionSO.playerDATOS.IsUnlocked(TipoHabilidadEnum.libroEGVA);
     }
 
-    private void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         vidaActual -= damage;
         GuardarVidaEnScriptableObject();
@@ -163,6 +163,7 @@ public class PlayerController : MonoBehaviour
 
     private void Die()
     {
+        HabilitarControles(false);
         OnPlayerDeath?.Invoke(); 
     }
 

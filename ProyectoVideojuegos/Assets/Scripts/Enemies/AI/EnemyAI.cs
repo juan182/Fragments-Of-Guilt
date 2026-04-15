@@ -11,7 +11,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] protected AttackManager ataque;
     [SerializeField] private bool puedeAtacarADistancia = false; //Activar o desactivar en el inspector
 
-    [SerializeField] private float rangoAtaque=2f;
+    [SerializeField] private float rangoAtaque=1.2f;
 
     [SerializeField] protected float dañoFisico = 10f;
     [SerializeField] protected float dañoDistancia = 20f;
@@ -20,6 +20,9 @@ public class EnemyAI : MonoBehaviour
 
     //Variable para anexar animacion
     [SerializeField] private Animator animator;
+
+    [SerializeField] private GameObject hitbox;
+
 
     private float tiempoUltimoAtaque;
 
@@ -37,26 +40,26 @@ public class EnemyAI : MonoBehaviour
     private void Update()
     {
         //Si el jugador muere el enemigo solo patrulla
-        if (GameController.Instance != null&&GameController.Instance.playerDied) 
+        if (GameManager.Instance != null&&GameManager.Instance.IsPlayerDead) 
         {
-            if (estadoActual != Estado.Patrullando) 
+            if (estadoActual != Estado.Muerto) // Solo una vez
             {
-                estadoActual=Estado.Patrullando;
-                //Activamos scripts
-                patrulla.enabled = true;
+                estadoActual = Estado.Muerto;
+                patrulla.enabled = false;
                 persecusion.enabled = false;
+                if (ataque != null) ataque.enabled = false;
+                if (animator != null) animator.SetBool("seMueve", false);
             }
-            //Ejecutamos el movimiento
-            Comportamiento();
-            return;
+            return; // No ejecutar más lógica
         }
 
+        // Si el jugador está vivo, comportamiento normal
         if (jugador == null) return;
         if (estadoActual == Estado.Muerto) return;
 
         DeterminarEstado();
         Comportamiento();
-        Animaciones(); //Metodo de las animaciones
+        Animaciones();
     }
 
     private void ConfigurarEnemigo()
@@ -72,20 +75,18 @@ public class EnemyAI : MonoBehaviour
         if (deteccionJugador.VeAlJugador)
         {
             float distancia = Vector3.Distance(transform.position, jugador.position);
+            Debug.Log($"Distancia al jugador: {distancia}, rangoAtaque: {rangoAtaque}");
+
 
             if (distancia < rangoAtaque)
             {
                 estadoActual = Estado.Atacando;
+                Collider2D hitboxCollider = hitbox.GetComponent<Collider2D>(); // hitbox es el GameObject hijo
 
-                // Elegir el tipo de ataque segun la distancia y si puede atacar a distancia
                 if (puedeAtacarADistancia && distancia > 2f)
-                {
-                    ataque.SetAtaqueDistancia(dañoDistancia);
-                }
+                    ataque.SetAtaqueDistancia(dañoDistancia, hitboxCollider);
                 else
-                {
-                    ataque.SetAtaqueFisico(dañoFisico);
-                }
+                    ataque.SetAtaqueFisico(dañoFisico, hitboxCollider);
             }
             else
             {
@@ -117,6 +118,18 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    // Métodos para Animation Events
+    public void ActivarHitbox()
+    {
+        if (hitbox != null) hitbox.SetActive(true);
+    }
+
+    public void DesactivarHitbox()
+    {
+        if (hitbox != null) hitbox.SetActive(false);
+    }
+
+
     //Método para control de animaciones
     private void Animaciones()
     {
@@ -125,7 +138,7 @@ public class EnemyAI : MonoBehaviour
         //bool de movimiento de patrulla o persecusion llamado "seMueve"
         bool estadoMovimiento = (estadoActual == Estado.Persiguiendo ||
             estadoActual == Estado.Patrullando);
-        animator.SetBool("seMueve", estadoMovimiento);
+      //  animator.SetBool("seMueve", estadoMovimiento);
 
         //trigger para activar cuando inicia el ataque
         if (estadoActual == Estado.Atacando && Time.time >= tiempoUltimoAtaque + tiempoEntreAtaques)
@@ -137,7 +150,7 @@ public class EnemyAI : MonoBehaviour
         if (ataque != null&&ataque.ataqueActual!=null)
         {
             int tipoAtaque = (ataque.ataqueActual is AtaqueDistancia) ? 1 : 0;
-            animator.SetInteger("tipoAtaque",tipoAtaque);
+           // animator.SetInteger("tipoAtaque",tipoAtaque);
 
         }
     }
