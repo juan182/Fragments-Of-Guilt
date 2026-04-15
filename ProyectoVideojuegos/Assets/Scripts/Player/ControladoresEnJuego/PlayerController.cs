@@ -40,6 +40,10 @@ public class PlayerController : MonoBehaviour
     public LayerMask capaItems;
     public LayerMask capaFragmentos;
 
+    //Pongo esta variable para poder deshabilitar el movimiento por un momento al capturar la lanza
+    private bool controlesHabilitados = true;
+    private MovementController movementController; //Referencia al script de movimiento
+
     private void Awake()
     {
         // Con esto hacemos que el GameManager pueda tomar la referencia del PlayerController
@@ -52,6 +56,9 @@ public class PlayerController : MonoBehaviour
                 GameManager.Instance.ChangeState(GameState.Gameplay);   
             }
         }
+
+        movementController = GetComponent<MovementController>();
+
     }
     private void Start()
     {
@@ -82,6 +89,13 @@ public class PlayerController : MonoBehaviour
         Debug.Log("PlayerController inicializado correctamente");
         Debug.Log($"Slots de inventario disponibles: {sessionSO.playerDATOS.Inventario.ListaItemsIn_ReadOnly.Count}");
         Debug.Log($"Slots vacíos: {sessionSO.playerDATOS.Inventario.ObtenerSlotsVacios()}");
+
+        //Las siguientes escenas valida si el usuario agarro la lanza
+        if (GameManager.Instance.tieneArma==true)
+        {
+            sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.Lanza);
+            ActualizarHabilidades();
+        }
     }
 
     private void Update()
@@ -135,7 +149,7 @@ public class PlayerController : MonoBehaviour
         tieneLibro = sessionSO.playerDATOS.IsUnlocked(TipoHabilidadEnum.libroEGVA);
     }
 
-    private void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         vidaActual -= damage;
         GuardarVidaEnScriptableObject();
@@ -149,6 +163,7 @@ public class PlayerController : MonoBehaviour
 
     private void Die()
     {
+        HabilitarControles(false);
         OnPlayerDeath?.Invoke(); 
     }
 
@@ -216,6 +231,35 @@ public class PlayerController : MonoBehaviour
         }
 
         return itemMasCercano;
+    }
+
+    //Metodo publico para habilitar o deshabilitar controles
+    public void HabilitarControles(bool enabled)
+    {
+        controlesHabilitados = enabled;
+
+        Debug.Log($"SetControlEnabled({enabled}), movementController = {movementController}");
+        if (movementController != null)
+        {
+            movementController.enabled = enabled;
+            Debug.Log($"MovementController.enabled ahora es {movementController.enabled}");
+        }
+        else
+        {
+            Debug.LogError("MovementController NO encontrado en el mismo GameObject que PlayerController");
+        }
+
+        if (!enabled)
+        {
+            // frena la velocidad
+            Rigidbody2D rb= GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity=Vector2.zero;
+
+                
+            }
+        }
     }
 
     private void RecolectarFragmentos()

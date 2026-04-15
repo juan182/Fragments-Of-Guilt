@@ -11,10 +11,16 @@ public class GameManager : MonoBehaviour
     public SceneManager_P sceneManager;
     public UI_Manager UI_Manager;
 
+    public GameController1 gc1;
+
+    public bool tieneArma { get; private set; } = false;
+
     //
     [SerializeField]private GameState currentState;
     //
-    
+
+    public bool IsPlayerDead { get; private set; } = false; //Para saber si el jugador ha muerto
+
     private void Awake()
     {
         if (Instance == null)
@@ -61,11 +67,44 @@ public class GameManager : MonoBehaviour
     #region COMPONENTES DE ESTADO DE JUEGO
     private void GameOver()
     {
+        IsPlayerDead = true;
         ActivarUIGameOver();
         ChangeState(GameState.GameOver);
         Debug.Log("Perdiste :,c");
+
+        // Inicia la corrutina para reiniciar la escena después de 10 segundos
+        //Esto es provicional, la logica cambia segun como quieras
+        StartCoroutine(ReiniciarEscenaConDelay(10f));
+
     }
-    
+
+    //Logica de reincio solo para pruebas
+    private System.Collections.IEnumerator ReiniciarEscenaConDelay(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay); // Usa tiempo real porque Time.timeScale podría ser 0
+        ReiniciarEscenaActual();
+    }
+
+    private void ReiniciarEscenaActual()
+    {
+        // Resetea el estado antes de recargar para que la nueva escena comience limpia
+        IsPlayerDead = false;
+        tieneArma = false;
+
+        // Recarga la escena activa
+        string escenaActual = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(escenaActual);
+    }
+
+    //Termina logica de reinicio solo para pruebas
+
+    // Opcional método público para reiniciar manualmente (por si un botón)
+    public void ReiniciarNivel()
+    {
+        ReiniciarEscenaActual();
+    }
+
+
     private void ActivarUIGameOver()
     {
         //Aqui logica para activar UI
@@ -127,4 +166,10 @@ public class GameManager : MonoBehaviour
     {
         get {return currentState;}
     }
+
+    public void RegistrarArmaObtenida()
+    {
+        tieneArma = true;
+    }
+
 }

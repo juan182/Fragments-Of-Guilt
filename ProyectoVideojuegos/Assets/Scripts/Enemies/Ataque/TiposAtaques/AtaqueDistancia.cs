@@ -5,32 +5,44 @@ using UnityEngine;
 /// </summary>
 public class AtaqueDistancia : IAttack
 {
-    private float daño;
+    private float daÃ±o;
+    private Collider2D hitboxCollider; // Referencia al PolygonCollider2D (hitbox)
 
-    public AtaqueDistancia(float daño)
+    // Constructor ahora recibe tambiï¿½n el hitbox
+    public AtaqueDistancia(float daÃ±o, Collider2D hitbox)
     {
-        this.daño = daño;
+        this.daÃ±o = daÃ±o;
+        this.hitboxCollider = hitbox;
     }
 
     public void EjecutarAtaque(Transform controller, Transform objetivo)
     {
-        Debug.Log($"Ataque mágico con daño {daño}");
-        // Instance al prefab orbe de magia
-        // GameObject.Instantiate(orbePrefab, controller.position, Quaternion.identity)
-        
-        
-        MovementController playerStats=objetivo.GetComponent<MovementController>();
-        if (playerStats != null) 
-        {
-            int dañoInt = Mathf.RoundToInt(daño); //Convertimos la vidaMaxima del jugador (float) a enteros
-            //playerStats.TakeDamage(dañoInt);
-            return;
-        }
-        else
-        {
-            Debug.Log($"El objetivo {objetivo.name} no encuentra o tiene PlayerStats");
-        }
+        Debug.Log($"Ataque magico con daÃ±o {daÃ±o}");
 
+        // Opcional: instanciar un proyectil visual (no necesario para la detecciï¿½n)
+        // GameObject.Instantiate(orbePrefab, controller.position, Quaternion.identity);
 
+        // Verifica si el hitbox estï¿½ activo y toca al jugador
+        if (hitboxCollider == null || !hitboxCollider.gameObject.activeInHierarchy) return;
+
+        // Detecta todos los colliders que solapan con el hitbox
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.NoFilter();
+        Collider2D[] results = new Collider2D[5];
+        int count = hitboxCollider.Overlap(filter, results);
+
+        for (int i = 0; i < count; i++)
+        {
+            if (results[i].CompareTag("Player"))
+            {
+                PlayerController player = results[i].GetComponent<PlayerController>();
+                if (player != null)
+                {
+                    player.TakeDamage(Mathf.RoundToInt(daÃ±o));
+                    Debug.Log($"Hitbox de ataque distancia aplicï¿½ {daÃ±o} de daÃ±o");
+                    break;
+                }
+            }
+        }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class FollowPlayer : MonoBehaviour
 {
     [SerializeField] private float velocidadPersecusion=3f;
-    [SerializeField] private float distanciaAtaque = 1f; //Distancia para dejar de caminar y atacar al jugador
+    [SerializeField] private float distanciaAtaque = 1.8f; //Distancia para dejar de caminar y atacar al jugador
 
     
 

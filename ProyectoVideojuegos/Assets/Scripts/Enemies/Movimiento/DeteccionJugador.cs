@@ -6,39 +6,31 @@ using UnityEngine;
 /// </summary>
 public class DeteccionJugador : MonoBehaviour
 {
-    [SerializeField] private float distanciaRayCast = 2f;
-    [SerializeField] private LayerMask capaDeteccion; //Seleccionar al jugador
+    [SerializeField] private float radioDeteccion = 3f;
+    [SerializeField] private LayerMask capaJugador; // Asigna la capa donde está el jugador (ej: "Player" o "Default")
 
-    private Vector2 direccionRayCast= Vector2.left; //Direccion a la izquierda por default
+    public bool VeAlJugador { get; private set; }
 
-    [SerializeField] private bool veAlJugador=false;
-
-    public bool VeAlJugador { get => veAlJugador; set => veAlJugador = value; }
-
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        //Actualiza la direccion segun donde mire el sprite del enemigo
-        //si localScale.x es negativo mira a la derecha
-        direccionRayCast=(transform.localScale.x>0)? Vector2.left: Vector2.right;
-
-        //Lanza el raycast
-        RaycastHit2D hit=Physics2D.Raycast(transform.position,direccionRayCast,distanciaRayCast,capaDeteccion);
-
-        //Checa que toco el raycast
-        if (hit.collider != null)
+        VeAlJugador = false;
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radioDeteccion, capaJugador);
+        foreach (Collider2D hit in hits)
         {
-            if (hit.collider.CompareTag("Player"))
+            if (hit.CompareTag("Player"))
             {
-                veAlJugador=true;
-                //Logica de activar persecusion
-            }
-            else
-            {
-                veAlJugador=false;
+                VeAlJugador = true;
+                break;
             }
         }
     }
 
-    
+    // Dibuja el área de detección en el Editor
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = VeAlJugador ? Color.green : Color.red;
+        Gizmos.DrawWireSphere(transform.position, radioDeteccion);
+    }
 }
+
+
