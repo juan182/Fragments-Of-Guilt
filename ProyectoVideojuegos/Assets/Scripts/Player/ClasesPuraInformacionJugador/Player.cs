@@ -20,7 +20,7 @@ public class Player
 {
 
     // Atributos basicos del player
-    [SerializeField]private string name;
+    //[SerializeField]private string name;
     [SerializeField]private float health;
     [SerializeField]private float stamina; 
 
@@ -47,11 +47,11 @@ public class Player
         return listaHabilidades.Exists(s => s.tipo == habilidad && s.unlock);
     }
 
-    public string Name
-    {
-        get { return name; }
-        set { name = value; }
-    }
+    //public string Name
+    //{
+    //    get { return name; }
+    //    set { name = value; }
+    //}
 
     public float Health
     {

@@ -3,14 +3,14 @@
     <ui:VisualElement name="main" picking-mode="Ignore" class="contenedor" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Sprites/UI_Sprites/Space%20Background.png?fileID=2800000&amp;guid=d0f80962b36360247bff12f90389e5d0&amp;type=3#Space Background&quot;); -unity-background-image-tint-color: rgba(255, 255, 255, 0.63);">
         <ui:VisualElement name="T_Fragments" picking-mode="Ignore" class="tFragments" style="flex-grow: 1;">
             <ui:VisualElement name="textmain" class="textmain" style="flex-grow: 1;">
-                <ui:Label text="FRAGMENTS OF GUILT" name="FragmentsOfGuilt" parse-escape-sequences="false" style="width: auto; height: auto; font-size: 125px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/CinzelDecorative-Bold.otf?fileID=12800000&amp;guid=7d4cfba4f27ffa146b0815f408c8393e&amp;type=3#CinzelDecorative-Bold&quot;); -unity-font-style: normal; -unity-text-align: upper-left; text-overflow: clip; -unity-text-outline-width: 5px; -unity-paragraph-spacing: 0; -unity-text-auto-size: none; -unity-text-generator: standard; color: rgb(204, 204, 204); text-shadow: 0 0 0 rgba(0, 0, 0, 0); letter-spacing: 2px; border-left-color: rgb(36, 30, 30); border-right-color: rgb(36, 30, 30); border-top-color: rgb(36, 30, 30); border-bottom-color: rgb(36, 30, 30); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-text-outline-color: rgb(144, 144, 144); margin-top: 107px;"/>
+                <ui:Label text="FRAGMENTS OF GUILTY" name="fragments" class="fragmentsText" style="font-size: 90%; position: absolute; align-items: center; justify-content: center; max-width: none; max-height: none; top: 40%; right: auto; left: auto; bottom: auto; -unity-font-definition: url(&quot;project://database/Assets/Fonts/CinzelDecorative-Bold.otf?fileID=12800000&amp;guid=7d4cfba4f27ffa146b0815f408c8393e&amp;type=3#CinzelDecorative-Bold&quot;); color: rgb(231, 231, 231); -unity-text-align: middle-center; -unity-font-style: normal; -unity-text-auto-size: none; width: 100%; height: 50%;"/>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="containerbuttons" picking-mode="Ignore" class="containerbuttons" style="flex-grow: 1; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
-            <ui:Button text="PLAY" name="Play" class="button-p"/>
-            <ui:Button text="SAVED GAMES" name="Save" class="button-p"/>
-            <ui:Button text="CONTROLS" name="Controls" class="button-p"/>
-            <ui:Button text="OPTIONS" name="Options" class="button-p"/>
+        <ui:VisualElement name="containerbuttons" picking-mode="Ignore" class="containerbuttons">
+            <ui:Button text="PLAY" name="Play" class="button-p" style="font-size: 20px;"/>
+            <ui:Button text="SAVED GAMES" name="Save" class="button-p" style="font-size: 20px;"/>
+            <ui:Button text="CONTROLS" name="Controls" class="button-p" style="font-size: 20px;"/>
+            <ui:Button text="OPTIONS" name="Options" class="button-p" style="font-size: 20px;"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
