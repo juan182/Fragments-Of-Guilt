@@ -16,10 +16,8 @@ public class AtaqueFisico : IAttack
 
     public void EjecutarAtaque(Transform controller, Transform objetivo)
     {
-        // Verifica si el hitbox est� activo y toca al jugador
         if (hitboxCollider == null || !hitboxCollider.gameObject.activeInHierarchy) return;
 
-        // Obtiene todos los colliders que solapan con el hitbox
         ContactFilter2D filter = new ContactFilter2D();
         filter.NoFilter();
         Collider2D[] results = new Collider2D[5];
