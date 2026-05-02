@@ -1577,11 +1577,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 688136484}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &258373867 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5317895900767997532, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
-  m_PrefabInstance: {fileID: 1449103574}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &267144043
 GameObject:
   m_ObjectHideFlags: 0
@@ -9610,6 +9605,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -15.704
       objectReference: {fileID: 0}
+    - target: {fileID: 3767669732024620265, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.71843505
+      objectReference: {fileID: 0}
+    - target: {fileID: 3767669732024620265, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3767669732024620265, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3767669732024620265, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.69559413
+      objectReference: {fileID: 0}
+    - target: {fileID: 3767669732024620265, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 88.149
+      objectReference: {fileID: 0}
     - target: {fileID: 5367511342165347589, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
       propertyPath: puntoA
       value: 
@@ -9622,10 +9637,6 @@ PrefabInstance:
       propertyPath: velocidad
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5955348462479831499, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
-      propertyPath: hitbox
-      value: 
-      objectReference: {fileID: 258373867}
     - target: {fileID: 6551597088414086080, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
       propertyPath: radioDeteccion
       value: 1
@@ -9642,8 +9653,13 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6856691568875430879, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5317895900767997532, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}

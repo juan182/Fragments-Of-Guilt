@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    public enum Estado { Patrullando, Persiguiendo, Atacando, Muerto}
-    public Estado estadoActual=Estado.Patrullando; // Estado inicial del enemigo
+    public enum Estado { Patrullando, Persiguiendo, Atacando, Muerto }
+    public Estado estadoActual = Estado.Patrullando; // Estado inicial del enemigo
 
     [SerializeField] protected EnemyPatrol patrulla;
     [SerializeField] protected FollowPlayer persecusion;
@@ -11,7 +11,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] protected AttackManager ataque;
     [SerializeField] private bool puedeAtacarADistancia = false; //Activar o desactivar en el inspector
 
-    [SerializeField] private float rangoAtaque=1.2f;
+    [SerializeField] private float rangoAtaque = 2f;
 
     [SerializeField] protected float dañoFisico = 10f;
     [SerializeField] protected float dañoDistancia = 20f;
@@ -32,15 +32,15 @@ public class EnemyAI : MonoBehaviour
     {
         jugador = GameObject.FindGameObjectWithTag("Player").transform;
 
-        ConfigurarEnemigo(); 
+        ConfigurarEnemigo();
 
-        
+
     }
 
     private void Update()
     {
         //Si el jugador muere el enemigo solo patrulla
-        if (GameManager.Instance != null&&GameManager.Instance.IsPlayerDead) 
+        if (GameManager.Instance != null && GameManager.Instance.IsPlayerDead)
         {
             if (estadoActual != Estado.Muerto) // Solo una vez
             {
@@ -64,57 +64,100 @@ public class EnemyAI : MonoBehaviour
 
     private void ConfigurarEnemigo()
     {
-        if(ataque==null)
+        if (ataque == null)
         {
             ataque = GetComponent<AttackManager>();
         }
+        Collider2D hitboxCollider = hitbox.GetComponent<Collider2D>();
+        ataque.SetAtaqueFisico(dañoFisico, hitboxCollider);
     }
 
     private void DeterminarEstado()
     {
         if (deteccionJugador.VeAlJugador)
         {
+            OrientarHaciaJugador();
+
             float distancia = Vector3.Distance(transform.position, jugador.position);
-            Debug.Log($"Distancia al jugador: {distancia}, rangoAtaque: {rangoAtaque}");
 
-
-            if (distancia < rangoAtaque)
+            if (distancia <= rangoAtaque)
             {
                 estadoActual = Estado.Atacando;
-                Collider2D hitboxCollider = hitbox.GetComponent<Collider2D>(); // hitbox es el GameObject hijo
-
-                if (puedeAtacarADistancia && distancia > 2f)
-                    ataque.SetAtaqueDistancia(dañoDistancia, hitboxCollider);
-                else
-                    ataque.SetAtaqueFisico(dañoFisico, hitboxCollider);
+                persecusion.enabled = false;
             }
             else
             {
-                // Ve al jugador pero está lejos persigue
+                // Si venía de atacar, limpiar el trigger acumulado
+                if (estadoActual == Estado.Atacando)
+                {
+                    animator.ResetTrigger("Attacking");
+                }
                 estadoActual = Estado.Persiguiendo;
                 persecusion.SetObjetivo(jugador);
             }
         }
         else
         {
-            // No ve al jugador va a patrullar
+            if (estadoActual == Estado.Atacando)
+            {
+                animator.ResetTrigger("Attacking");
+            }
             estadoActual = Estado.Patrullando;
         }
+    }
+
+    private void OrientarHaciaJugador()
+    {
+        float direccionX = jugador.position.x - transform.position.x;
+        Vector3 escala = transform.localScale;
+
+        if (direccionX < 0)
+            escala.x = Mathf.Abs(escala.x);   // izquierda
+        else if (direccionX > 0)
+            escala.x = -Mathf.Abs(escala.x);  // derecha
+
+        transform.localScale = escala;
     }
 
     private void Comportamiento()
     {
         patrulla.enabled = (estadoActual == Estado.Patrullando);
-        persecusion.enabled=(estadoActual==Estado.Persiguiendo);
+        persecusion.enabled = (estadoActual == Estado.Persiguiendo);
 
         if (estadoActual == Estado.Atacando)
         {
+            animator.SetBool("IsWalking", false);
+
             if (Time.time >= tiempoUltimoAtaque + tiempoEntreAtaques)
             {
-                ataque.Atacar(jugador);
-                tiempoUltimoAtaque=Time.time;
+                animator.ResetTrigger("Attacking"); // Limpia antes de disparar
+                animator.SetTrigger("Attacking");
+                tiempoUltimoAtaque = Time.time;
             }
-            
+        }
+        else
+        {
+            // Si salimos del estado atacando, limpiar cualquier trigger pendiente
+            animator.ResetTrigger("Attacking");
+        }
+
+    
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Dibuja un círculo azul que representa el rango de ataque
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, rangoAtaque);
+    }
+
+    public void EjecutarLogicaDaño()
+    {
+        if (ataque != null && jugador != null)
+        {
+            // Esto le dice al AttackManager que ejecute el ataque actual
+            ataque.Atacar(jugador);
+            Debug.Log("¡La animación mandó la orden de hacer daño!");
         }
     }
 
@@ -135,25 +178,14 @@ public class EnemyAI : MonoBehaviour
     {
         if (animator == null) return;
 
-        //bool de movimiento de patrulla o persecusion llamado "seMueve"
-        bool estadoMovimiento = (estadoActual == Estado.Persiguiendo ||
-            estadoActual == Estado.Patrullando);
-      //  animator.SetBool("seMueve", estadoMovimiento);
+        // Evaluamos si el enemigo se está moviendo (Patrulla o Persecución)
 
-        //trigger para activar cuando inicia el ataque
-        if (estadoActual == Estado.Atacando && Time.time >= tiempoUltimoAtaque + tiempoEntreAtaques)
+        if (estadoActual != Estado.Atacando)
         {
-            animator.SetTrigger("Attack");
+            bool estaMoviendose = (estadoActual == Estado.Patrullando ||
+                                   estadoActual == Estado.Persiguiendo);
+            animator.SetBool("IsWalking", estaMoviendose);
         }
 
-        //segun tipo de ataque 0 para fisico, 1 para distancia
-        if (ataque != null&&ataque.ataqueActual!=null)
-        {
-            int tipoAtaque = (ataque.ataqueActual is AtaqueDistancia) ? 1 : 0;
-           // animator.SetInteger("tipoAtaque",tipoAtaque);
-
-        }
     }
-
-    
 }
