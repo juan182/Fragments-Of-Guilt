@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using static GameManager;
 
 public class GameController1 : MonoBehaviour
 {
@@ -18,21 +19,33 @@ public class GameController1 : MonoBehaviour
 
     private Coroutine coroutineNotificacion;
 
-    private void OnEnable()
+    private void Start()
     {
-        Spear.OnArmaObtenida += HandleArmaObtenida;
+        // Con esto hacemos que el GameManager pueda tomar la referencia del PlayerController
+        if (GameManager.Instance != null)
+        {
+            bool enGameplay = GameManager.Instance.EstadoJuego == GameState.Gameplay;
+            if (enGameplay)
+            {
+                GameManager.Instance.gc1 = this;
+            }
+        }
     }
+    //private void OnEnable()
+    //{
+    //    Spear.OnArmaObtenida += HandleArmaObtenida;
+    //}
 
-    private void OnDisable()
-    {
-        Spear.OnArmaObtenida -= HandleArmaObtenida;
-    }
+    //private void OnDisable()
+    //{
+    //    Spear.OnArmaObtenida -= HandleArmaObtenida;
+    //}
 
     private void HandleArmaObtenida(TipoHabilidadEnum habilidad)
     {
         Debug.Log($"Arma obtenida: {habilidad}");
         // Aquí puedes mostrar UI, activar siguiente fase del nivel, etc.
-        GameManager.Instance.RegistrarArmaObtenida();
+        //GameManager.Instance.RegistrarArmaObtenida();
     }
 
     //Presiona E para obtener la lanza UI

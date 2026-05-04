@@ -21,13 +21,13 @@ public class UI_Manager : MonoBehaviour
     public void Activar_o_DesactivarEstadisticas()
     {
         ui_Menu.gameObject.SetActive(false);
-        if (GameManager.Instance.CurrentState != GameState.Gameplay) return;
+        if (GameManager.Instance.EstadoJuego != GameState.Gameplay) return;
         ui_Estadisticas.root.style.opacity = 1;
     }
     
     public void VerificarInventario()
     {
-        if (GameManager.Instance.CurrentState == GameState.Gameplay)
+        if (GameManager.Instance.EstadoJuego == GameState.Gameplay)
         {
             if (Input.GetKeyDown(KeyCode.Tab))
             {

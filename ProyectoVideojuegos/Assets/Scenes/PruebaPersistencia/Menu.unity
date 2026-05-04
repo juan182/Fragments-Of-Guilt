@@ -151,7 +151,8 @@ MonoBehaviour:
   datosJugador: {fileID: 0}
   sceneManager: {fileID: 454164522}
   UI_Manager: {fileID: 683515184}
-  currentState: 3
+  gc1: {fileID: 0}
+  estadoDeJuego: 3
 --- !u!4 &60702673
 Transform:
   m_ObjectHideFlags: 0

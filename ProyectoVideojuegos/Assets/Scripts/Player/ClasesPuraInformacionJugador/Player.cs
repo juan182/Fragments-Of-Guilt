@@ -18,11 +18,9 @@ public class NodoHabilidad
 [System.Serializable]
 public class Player
 {
-
-    // Atributos basicos del player
-    //[SerializeField]private string name;
-    [SerializeField]private float health;
-    [SerializeField]private float stamina; 
+    //Atributos Generales
+    [SerializeField] private int vidaJugador;
+    [SerializeField] private int stamina;
 
 
     // Atributos de posicion.
@@ -31,15 +29,25 @@ public class Player
     // Lista de Habilidades
     // La lista tiene un espacio por cada enum presente en SkillType
     // Maneja dos estado True o False | Si es true podemos "acceder" o simplemente sirve como condicionador si algo(habilidad, ataque) se puede usar o no
-    [SerializeField] private List<NodoHabilidad> listaHabilidades = new List<NodoHabilidad>(); 
+    [SerializeField] private List<NodoHabilidad> listaHabilidades = new List<NodoHabilidad>();
     [SerializeField] private Inventario inventario;
 
-    
+    //Inicia Vacio
+    [SerializeField] private LanzaC_LP lanzaObjectInfo = null;
 
-    public void Unlock(TipoHabilidadEnum habilidad) 
+
+
+    public void Unlock(TipoHabilidadEnum habilidad)
     {
         var node = listaHabilidades.Find(s => s.tipo == habilidad);
+        if (habilidad == TipoHabilidadEnum.Lanza)
+        {
+            //Instancia del objeto.
+            lanzaObjectInfo = new LanzaC_LP();
+        }
+
         if (node != null) node.unlock = true;
+
     }
 
     public bool IsUnlocked(TipoHabilidadEnum habilidad)
@@ -47,16 +55,10 @@ public class Player
         return listaHabilidades.Exists(s => s.tipo == habilidad && s.unlock);
     }
 
-    //public string Name
-    //{
-    //    get { return name; }
-    //    set { name = value; }
-    //}
-
-    public float Health
+    public int VidaJugador
     {
-        get { return health; }
-        set { health = value; }
+        get { return vidaJugador; }
+        set { vidaJugador = value; }
     }
 
     public Vector2 PosicionActual
@@ -65,12 +67,12 @@ public class Player
         set { posicionActual = value; }
     }
 
-    public float Stamina
+    public int Stamina
     {
         get { return stamina; }
         set { stamina = value; }
     }
-   
+
     public Inventario Inventario
     {
         get // Cuando alguien intente acceder a los datos de inventario a la clase pura en especifico salta condicion 
@@ -90,5 +92,10 @@ public class Player
     {
         get { return listaHabilidades; }
         set { listaHabilidades = value; }
+    }
+    public LanzaC_LP GetLanza
+    {
+        get { return lanzaObjectInfo; }
+        set { lanzaObjectInfo = value; }
     }
 }
