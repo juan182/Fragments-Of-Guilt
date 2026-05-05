@@ -19,9 +19,29 @@ public class EnemyAI : MonoBehaviour
 
     [SerializeField] private float tiempoEntreAtaques = 0.8f;
 
-    //Variable para anexar animacion
-    [SerializeField] private Animator animator;
 
+    // Sebas: Asigna el Animator del enemigo UGA en el Inspector.
+    // *** LA ANIMACION QUE EXISTE ES PROVISIONAL ***
+    // El Animator actual de UGA es temporal. El animador debe reemplazarlo
+    // con las animaciones finales teniendo en cuenta los siguientes parámetros:
+    //
+    // PARAMETROS REQUERIDOS EN EL ANIMATOR DE UGA:
+    //   - "IsWalking"  (bool)    -> true cuando patrulla o persigue
+    //   - "Attacking"  (trigger) -> dispara la animación de ataque
+    //   - "seMueve"    (bool)    -> false cuando el jugador muere
+    //
+    // ANIMATION EVENTS requeridos en la animación de ataque de UGA:
+    //   - Al momento del impacto del golpe -> llamar: EjecutarLogicaDaño()
+    //   - Al inicio del área de daño       -> llamar: ActivarHitbox()
+    //   - Al final del área de daño        -> llamar: DesactivarHitbox()
+
+
+    //Variable para anexar animacion
+    [SerializeField] protected Animator animator;
+
+    // HITBOX DE UGA: Se asigna el GameObject con el Collider2D del área de daño de Uga
+    // Este hitbox es unicamente de Uga
+    // El jefe final tiene sus propios hitboxes
     [SerializeField] private GameObject hitbox;
 
 
@@ -40,10 +60,17 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-        //Si el jugador muere el enemigo solo patrulla
-       
+        ComportamientoEnemigo();
+    }
 
-        if (GameManager.Instance != null && GameManager.Instance.EstadoJuego==GameState.GameOver)
+    // Virtual para que el jefe final la sobreescriba con su propia configuracion
+    // sin depender del hitbox de Uga
+    protected virtual void ComportamientoEnemigo()
+    {
+        //Si el jugador muere el enemigo solo patrulla
+
+
+        if (GameManager.Instance != null && GameManager.Instance.EstadoJuego == GameState.GameOver)
         {
             if (estadoActual != Estado.Muerto) // Solo una vez
             {
@@ -53,7 +80,7 @@ public class EnemyAI : MonoBehaviour
                 if (ataque != null) ataque.enabled = false;
                 if (animator != null) animator.SetBool("seMueve", false);
             }
-            return; 
+            return;
         }
 
         // Si el jugador está vivo, comportamiento normal
@@ -65,7 +92,7 @@ public class EnemyAI : MonoBehaviour
         Animaciones();
     }
 
-    private void ConfigurarEnemigo()
+    protected virtual void ConfigurarEnemigo()
     {
         if (ataque == null)
         {
@@ -154,6 +181,8 @@ public class EnemyAI : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, rangoAtaque);
     }
 
+
+    // ANIMATION EVENT de UGA --- llamar en el frame de impacto del ataque
     public void EjecutarLogicaDaño()
     {
         if (ataque != null && jugador != null)
@@ -164,12 +193,13 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    // Métodos para Animation Events
+    // ANIMATION EVENT de UGA --- llamar al inicio del frame de daño.
     public void ActivarHitbox()
     {
         if (hitbox != null) hitbox.SetActive(true);
     }
 
+    // ANIMATION EVENT de UGA --- llamar al final del frame de daño
     public void DesactivarHitbox()
     {
         if (hitbox != null) hitbox.SetActive(false);
