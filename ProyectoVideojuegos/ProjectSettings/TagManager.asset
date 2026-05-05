@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Uga
+  - Lanza
   layers:
   - Default
   - TransparentFX
@@ -13,9 +14,9 @@ TagManager:
   - Water
   - UI
   - Suelo
-  - Fragmentos
-  - 
-  - 
+  - LanzaEstatica
+  - Lanza
+  - "Da\xF1oLanza"
   - 
   - 
   - 

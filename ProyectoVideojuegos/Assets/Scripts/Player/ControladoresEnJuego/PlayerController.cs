@@ -9,40 +9,34 @@ public class PlayerController : MonoBehaviour
     /// Esta es la base de datos central del Player, es donde vamos a estar consultando los
     /// diferentes atributos del player, tambien sirve para la recuperacion de datos en caso de errores entre scenas
     /// </summary>
-    [SerializeField]
     public GameSessionSO sessionSO;
-
+    public GameObject lanza;
 
     //Evento que notifica a el GameManager
     //GameManager se suscribe a este evento
     public static event Action OnPlayerDeath; 
 
 
-    #region Estadisticas
     [Header("Estadisticas")]
-    public float vidaActual; //VidaActual
-    public float staminaActual; //StaminaActual
-    public float staminaRegenRate = 5f; // Regeneracion de Stamina.
-    #endregion
+    public int vidaActual; 
+    public int staminaActual; 
+    public int staminaRegenRate = 5; //Esto aun no se utiliza.
 
-    #region ActualizarHabilidades
-    // Esto permite dos cosas:
-    // Conocer si el usuario ha desbloqueado una habilidad
-    // Validar el uso de ciertas funciones.
-    private bool tieneLanza;
-    private bool tieneMagia;
-    private bool tieneParry;
-    private bool tieneLibro;
-    #endregion
+    [Header("Habilidades")]
+    public bool tieneLanza;
+    public bool tieneMagia;
+    public bool tieneParry;
+    public bool tieneLibro;
+  
 
-    [Header("Configuracion de Deteccion")]
-    public float radioDeteccion = 5f;
+    [Header("Configuracion de Deteccion de Fragmentos e Items")]
+    public float radioDeteccion = 2f;
     public LayerMask capaItems;
     public LayerMask capaFragmentos;
 
     //Pongo esta variable para poder deshabilitar el movimiento por un momento al capturar la lanza
     private bool controlesHabilitados = true;
-    private MovementController movementController; //Referencia al script de movimiento
+    private MovementController movementController; //Perfecto aqui te me adelantaste con esto. by: Miguel
 
     private void Awake()
     {
@@ -77,25 +71,17 @@ public class PlayerController : MonoBehaviour
             //En caso de no tener una instancia generada, fuerza la inicializacion del inventario.
             sessionSO.playerDATOS.Inventario.ObtenerSlotsVacios();
         }
-
-        vidaActual = sessionSO.playerDATOS.Health;
-
+        ActualizarValoresEnControlador();
         
-
-        
-
-
-        //Logs para verificacion de creacion.
-        Debug.Log("PlayerController inicializado correctamente");
-        Debug.Log($"Slots de inventario disponibles: {sessionSO.playerDATOS.Inventario.ListaItemsIn_ReadOnly.Count}");
-        Debug.Log($"Slots vacíos: {sessionSO.playerDATOS.Inventario.ObtenerSlotsVacios()}");
-
-        //Las siguientes escenas valida si el usuario agarro la lanza
-        if (GameManager.Instance.tieneArma==true)
-        {
-            sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.Lanza);
-            ActualizarHabilidades();
-        }
+        ///Esto no es necesario puesto que quien le dice que tiene armas o no es la clase base Player.
+        ///el player controller atraves de Actualizar Habilidades pregunta a la lista del player y si esta simplemente activa la lanza que ya tiene el personaje 
+        ///Asignada, asi como solo es un nivel es mas facil el manejo entre scenas, no es lo mas optimo, pero es mas breve por ahora.
+       
+        //if (GameManager.Instance.tieneArma==true)
+        //{
+        //    sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.Lanza);
+        //    ActualizarHabilidades();
+        //}
     }
 
     private void Update()
@@ -106,15 +92,20 @@ public class PlayerController : MonoBehaviour
             return;
         }
         RecolectarItems();
+        RecolectarFragmentos();
     }
 
+
+    //Cada que por ejemplo reiniciemos una scena, este script playerController se reinicia
+    //Como este script se reinicia se ejecuta este metodo.
+    //Que rellena la vida del enemigo aqui como en la base de datos del personaje
     private void ActualizarValoresEnControlador()
     {
-        vidaActual = sessionSO.playerDATOS.Health;
+        vidaActual = sessionSO.playerDATOS.VidaJugador;
         // Si la vida es igual o menor a cero eso significa que es una nueva partida.
         if (vidaActual <= 0)
         {
-            vidaActual = 100f;
+            vidaActual = 100;
             GuardarVidaEnScriptableObject();
         }
         // ActualizamosHabilidades
@@ -128,22 +119,22 @@ public class PlayerController : MonoBehaviour
     {
         if(vidaActual > 100)
         {
-            sessionSO.playerDATOS.Health = 100f;
+            sessionSO.playerDATOS.VidaJugador = 100;
         }
-        if (vidaActual <= 0) sessionSO.playerDATOS.Health = 0;
+        if (vidaActual <= 0) sessionSO.playerDATOS.VidaJugador = 0;
         else
         {
-            sessionSO.playerDATOS.Health = vidaActual;
+            sessionSO.playerDATOS.VidaJugador = vidaActual;
         }
         
     }
-
 
     public void ActualizarHabilidades()
     {
         if (sessionSO == null || sessionSO.playerDATOS == null) return;
 
         tieneLanza = sessionSO.playerDATOS.IsUnlocked(TipoHabilidadEnum.Lanza);
+        if (tieneLanza == true) lanza.gameObject.SetActive(true);
         tieneMagia = sessionSO.playerDATOS.IsUnlocked(TipoHabilidadEnum.FragmentoMagia);
         tieneParry = sessionSO.playerDATOS.IsUnlocked(TipoHabilidadEnum.FragmentoParry_AtaqueFuerte);
         tieneLibro = sessionSO.playerDATOS.IsUnlocked(TipoHabilidadEnum.libroEGVA);
@@ -171,15 +162,17 @@ public class PlayerController : MonoBehaviour
     // Dibujar el círculo en el Editor para pruebas
     private void OnDrawGizmos()
     {
+        Vector2 posicionAjuste = (Vector2)transform.position + new Vector2(0f, 1.2f);
         // Chequeo rápido para el color del Gizmo en 2D
-        bool detectado = Physics2D.OverlapCircle(transform.position, radioDeteccion, capaItems);
+        bool detectado = Physics2D.OverlapCircle(posicionAjuste, radioDeteccion, capaItems);
 
         Gizmos.color = detectado ? Color.green : Color.red;
 
         // Dibujamos el círculo (usamos la posición del transform)
-        Gizmos.DrawWireSphere(transform.position, radioDeteccion);
+        Gizmos.DrawWireSphere(posicionAjuste, radioDeteccion);
     }
-    
+
+
     private void RecolectarItems()
     {
         ItemContainer item = GetItemMasCercano();
@@ -207,8 +200,9 @@ public class PlayerController : MonoBehaviour
 
     private ItemContainer GetItemMasCercano()
     {
+        Vector2 posicionAjuste = (Vector2)transform.position + new Vector2(0f, 1.2f);
         // Detectar todos los colliders en el radio
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radioDeteccion, capaItems);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(posicionAjuste, radioDeteccion, capaItems);
 
         ItemContainer itemMasCercano = null;
         float distanciaMinima = Mathf.Infinity; // Empezamos con una distancia infinita
@@ -233,6 +227,41 @@ public class PlayerController : MonoBehaviour
         return itemMasCercano;
     }
 
+    private void RecolectarFragmentos()
+    {
+        Vector2 posicionAjuste = (Vector2)transform.position + new Vector2(0f, 1.2f);
+        Collider2D collider = Physics2D.OverlapCircle(posicionAjuste, radioDeteccion, capaFragmentos);
+
+        if (collider != null)
+        {
+            string nombreCapaItem = LayerMask.LayerToName(collider.gameObject.layer);
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                switch (nombreCapaItem)
+                {
+                    case "LanzaEstatica":
+                        sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.Lanza);
+                        Destroy(collider.gameObject);
+                        lanza.SetActive(true);
+                        tieneLanza = true;
+                        break;
+                    case "FragmentoMagia":
+                        sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.FragmentoMagia);
+                        tieneMagia = true;
+                        break;
+                    case "FragmentoParry_AtaqueFuerte":
+                        sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.FragmentoParry_AtaqueFuerte);
+                        tieneParry = true;
+                        break;
+                    case "libroEGVA":
+                        sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.libroEGVA);
+                        tieneLibro = true;
+                        break;
+                }
+            }
+        }
+    }
+
     //Metodo publico para habilitar o deshabilitar controles
     public void HabilitarControles(bool enabled)
     {
@@ -252,47 +281,12 @@ public class PlayerController : MonoBehaviour
         if (!enabled)
         {
             // frena la velocidad
-            Rigidbody2D rb= GetComponent<Rigidbody2D>();
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
             if (rb != null)
             {
-                rb.linearVelocity=Vector2.zero;
+                rb.linearVelocity = Vector2.zero;
 
-                
-            }
-        }
-    }
 
-    private void RecolectarFragmentos()
-    {
-        Collider2D collider = Physics2D.OverlapCircle(transform.position, radioDeteccion,capaFragmentos);
-
-        if (collider != null)
-        {
-            if(Input.GetKeyDown(KeyCode.Y))
-            {
-                if (collider.TryGetComponent<FragmentContainer>(out FragmentContainer fragmento))
-                {
-                    FragmentsScriptable.TipoFragmento tipo = fragmento.fragmento.tipoFragmento;
-                    switch (tipo)
-                    {
-                        case FragmentsScriptable.TipoFragmento.Lanza:
-                            sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.Lanza);
-                            tieneLanza = true;
-                            break;
-                        case FragmentsScriptable.TipoFragmento.FragmentoMagia:
-                            sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.Lanza);
-                            tieneMagia = true;
-                            break;
-                        case FragmentsScriptable.TipoFragmento.FragmentoParry_AtaqueFuerte:
-                            sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.Lanza);
-                            tieneParry = true;
-                            break;
-                        case FragmentsScriptable.TipoFragmento.libroEGVA:
-                            sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.Lanza);
-                            tieneLibro = true;
-                            break;
-                    }
-                }
             }
         }
     }

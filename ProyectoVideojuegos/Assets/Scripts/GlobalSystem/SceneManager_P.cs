@@ -21,6 +21,8 @@ public class SceneManager_P : MonoBehaviour
         }
         SceneManager.LoadScene(nombreNivel);
     }
+
+    //Metodo que ira asociado a cualquier boton que requiera ir a el menu principal.
     public void IrAMenu(string nombre)
     {
         if (nombre == "Menu")
@@ -31,4 +33,13 @@ public class SceneManager_P : MonoBehaviour
         
     }
     
+    //Metodo que ira en boton de GameOver para reiniciar Nivel
+    public void ReiniciarNivel()
+    {
+        if (GameManager.Instance.EstadoJuego == GameState.GameOver)
+        {
+            string escenaActual = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(escenaActual);
+        } 
+    }
 }

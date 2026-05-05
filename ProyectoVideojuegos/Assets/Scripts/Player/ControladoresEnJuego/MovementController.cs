@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
+    public PlayerController playerController;
 
     [Header("Estados de Movimiento")]
     private Animator animator;
@@ -59,11 +60,9 @@ public class MovementController : MonoBehaviour
         //Horizontal registrar valores entre -1 0 1
         //Si el valor de horizontal cambia de 0 a valores entre -1 o 1 pues se ejecuta animacion de moverse.
         horizontalInput = Input.GetAxisRaw("Horizontal");
-        animator.SetBool("IsRunning",horizontalInput!=0);
-
         if (horizontalInput > 0) transform.localScale = new Vector3(0.18f, 0.18f, 0.18f);
         else if (horizontalInput < 0) transform.localScale = new Vector3(-0.18f, 0.18f, 0.18f);
-   
+        animator.SetBool("IsRunning", horizontalInput != 0);
     }
     
     void Movement()
@@ -110,6 +109,22 @@ public class MovementController : MonoBehaviour
     }
     #endregion
 
+    #region Caida
+    void DetectarCaidayAscenso()
+    {
+        if (!estaEnElSuelo)
+        {
+            animator.SetBool("IsJumping", rb.linearVelocityY > 0.05f);
+            animator.SetBool("IsFalling", rb.linearVelocityY < -0.1f);
+        }
+        else
+        {
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsFalling", false);
+        }
+
+    }
+    #endregion
 
     #region Ataques
     void ValidateAtack()
@@ -121,15 +136,19 @@ public class MovementController : MonoBehaviour
         // Si esta presionando Q y esta corriendo esta ejecutando ataque en movimiento
         bool canAtackWhileRun = Input.GetKey(KeyCode.Q) && animator.GetBool("IsRunning");
 
-        if (canAtack || canAtackWhileRun) 
-        {//Si se cumple que una de las dos esta en ejecucion
-        // QUE BASTARIA SOLO CON DEJAR EL PRIMERO : canAtack.
-            animator.SetBool("IsAttacking", true);
-        }
-        else
+        if (playerController.tieneLanza)//Esta opcion pregunta si ya se ha desbloqueado la habilidad de la lanza.
         {
-            animator.SetBool("IsAttacking", false);
+            if (canAtack || canAtackWhileRun)
+            {//Si se cumple que una de las dos esta en ejecucion
+             // QUE BASTARIA SOLO CON DEJAR EL PRIMERO : canAtack.
+                animator.SetBool("IsAttacking", true);
+            }
+            else
+            {
+                animator.SetBool("IsAttacking", false);
+            }
         }
+        
     }
 
     void ValidateMagicAtack()
@@ -148,20 +167,5 @@ public class MovementController : MonoBehaviour
     }
     #endregion
 
-    #region Caida
-    void DetectarCaidayAscenso()
-    {
-        if (!estaEnElSuelo)
-        {
-            animator.SetBool("IsJumping", rb.linearVelocityY > 0.05f);
-            animator.SetBool("IsFalling", rb.linearVelocityY < -0.1f);
-        }
-        else
-        {
-            animator.SetBool("IsJumping", false);
-            animator.SetBool("IsFalling", false);
-        }
-        
-    }
-    #endregion
+    
 }

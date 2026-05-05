@@ -34,7 +34,7 @@ public class UI_InGame : MonoBehaviour
 
     public void ActualizarVidaEnUI()
     {
-        vida_bar.lowValue = sesion.playerDATOS.Health;
+        vida_bar.lowValue = sesion.playerDATOS.VidaJugador;
         stamina_bar.lowValue= sesion.playerDATOS.Stamina;
     }
 

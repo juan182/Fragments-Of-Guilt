@@ -1,4 +1,5 @@
 using UnityEngine;
+using static GameManager;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -40,6 +41,17 @@ public class EnemyAI : MonoBehaviour
     private void Update()
     {
         //Si el jugador muere el enemigo solo patrulla
+        /// Correccion by Miguel: Este apartado podrias cambiar el IsPlayedead, porque si no de que sirve poner un GameStage puesto
+        /// Todos los managers y en general todo actuan dependiendo del estado de Juego, entonces estadoDeJuego.GameOver representa la muerte del jugador
+        /// Asi que es redundante el IsPlayerDead, tambien es importante revisar PlayerController tiene un callback que notifica a el 
+        /// GameManager para cambiar el estado a GameOver entonces todo los scripts que esten preguntando el estado del GameManager ejecutaran cierta condicion si es estadoDeJuego es .GameOver.
+
+
+        //if (GameManager.Instance != null && GameManager.Instance.EstadoJuego == GameState.GameOver) ->Para que se pueda usar la variable GameState.GameOver o cualquiera de los estados los scripts deben usar: using static GameManager;
+        //{
+
+        //}
+
         if (GameManager.Instance != null && GameManager.Instance.IsPlayerDead)
         {
             if (estadoActual != Estado.Muerto) // Solo una vez
