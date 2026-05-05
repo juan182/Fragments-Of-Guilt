@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
     public GameController1 gc1 = null;
     
     //ESTO NO VA AQUI.
-    public bool tieneArma { get; private set; } = false;
 
     //
     [SerializeField]private GameState estadoDeJuego;
@@ -27,8 +26,6 @@ public class GameManager : MonoBehaviour
     //El metodo suscrito a esa notificacion es el metodo de aqui llamado GameOver que cambia el estado de juego.
     //Entonces como sabemos cuando el jugador muere? Cuando el estadoDeJuego es GameOver.
 
-    //Verificar
-    public bool IsPlayerDead { get; private set; } = false; //Para saber si el jugador ha muerto
 
     private void Awake()
     {
