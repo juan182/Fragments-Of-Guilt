@@ -27,7 +27,7 @@ public class UI_Inventario : MonoBehaviour
     {
         uiDocument = GetComponent<UIDocument>();
         root = uiDocument.rootVisualElement;
-        contenedorGloblal = root.Q<VisualElement>("contenedor");
+        contenedorGloblal = root.Q<VisualElement>("Contenedor");
 
         CrearIconoFantasma();
         ConfigurarMochila();
@@ -65,7 +65,7 @@ public class UI_Inventario : MonoBehaviour
 
         //En la configuracion del archivo uXML tenemos 6 VisualElement con nombre [sl1,sls...sl6] 
         // Necesitamos meter la referencia a esos botones/ mas que nada necesitamos que se le queden registrados eventos a cada uno
-        for (int i = 1; i <= 6; i++)//Es por eso que hacemos la siguiente iteracion.
+        for (int i = 1; i <= 9; i++)//Es por eso que hacemos la siguiente iteracion.
         {
             //Los botones son visualElement : Asi que debemos buscarlos desde root y hacer una Query en la Hierarchy del archivo uXML
             VisualElement slot = root.Q<VisualElement>($"sl{i}");
@@ -232,14 +232,14 @@ public class UI_Inventario : MonoBehaviour
         inventarioActivo = !inventarioActivo;
         if (inventarioActivo)
         {
-            contenedorGloblal.RemoveFromClassList("contenedor");
+            contenedorGloblal.RemoveFromClassList("contenedorPadre");
             contenedorGloblal.AddToClassList("contenedor-activo");
             //contenedorGloblal.pickingMode = PickingMode.Position;
         }
         else
         {
             contenedorGloblal.RemoveFromClassList("contenedor-activo");
-            contenedorGloblal.AddToClassList("contenedor");
+            contenedorGloblal.AddToClassList("contenedorPadre");
             //contenedorGloblal.pickingMode = PickingMode.Ignore;
         }
     }

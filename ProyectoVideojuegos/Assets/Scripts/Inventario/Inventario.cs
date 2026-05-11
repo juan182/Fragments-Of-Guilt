@@ -13,7 +13,7 @@ public class SlotInventario
 [System.Serializable]
 public class Inventario : ISerializationCallbackReceiver
 {
-    private const int MaxCapacidadInventario = 6;
+    private const int MaxCapacidadInventario = 9;
     public event Action OnInventarioChanged;
 
    

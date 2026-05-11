@@ -1,16 +1,13 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Inventario/uSS_Inventario.uss?fileID=7433441132597879392&amp;guid=49006e1c328090b43937fccad9ebd5f7&amp;type=3#uSS_Inventario"/>
-    <ui:VisualElement name="contenedor" class="contenedor" style="flex-grow: 1; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
-        <ui:VisualElement name="menu" class="menu" style="flex-grow: 1;">
-            <ui:VisualElement name="fragmentosContainer" class="fragmentosContainer" style="flex-direction: column; justify-content: flex-start;">
-                <ui:VisualElement name="statsContainer" class="statsContainer" style="flex-grow: 1;">
-                    <ui:VisualElement name="healt" class="health" style="flex-grow: 1;">
-                        <ui:ProgressBar value="100" title="" name="ProgressBar" enabled="true" high-value="100" class="bar-ubication"/>
-                    </ui:VisualElement>
+    <ui:VisualElement name="Contenedor" class="contenedorPadre" style="align-items: center; justify-content: flex-start;">
+        <ui:VisualElement name="contenedorLateralIzquierdo" class="contenedorLateralIzquierdo" style="flex-grow: 1; border-left-width: 10px; border-bottom-width: 10px;">
+            <ui:VisualElement name="contenedorHabilidades" focusable="false" picking-mode="Ignore" class="contenedorHabilidades" style="flex-grow: 1;"/>
+            <ui:VisualElement name="contenedorInventario" class="contenedorInventario" style="flex-grow: 1; align-self: auto; align-content: auto; align-items: center; justify-content: center; border-left-color: rgb(70, 7, 38); border-right-color: rgb(70, 7, 38); border-top-color: rgb(70, 7, 38); border-bottom-color: rgb(70, 7, 38);">
+                <ui:VisualElement name="C-txtInventario" picking-mode="Ignore" class="txt-inventario" style="flex-grow: 1;">
+                    <ui:Label text="Inventario" name="invt-text" style="-unity-font-definition: url(&quot;project://database/Assets/Fonts/CinzelDecorative-Bold.otf?fileID=12800000&amp;guid=7d4cfba4f27ffa146b0815f408c8393e&amp;type=3#CinzelDecorative-Bold&quot;); padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; color: rgb(125, 9, 67); -unity-font-style: bold; font-size: 15%; -unity-text-align: middle-center; -unity-text-outline-width: 0; -unity-text-outline-color: rgb(183, 114, 18); text-overflow: clip; text-shadow: 0 0 0 rgb(180, 12, 224); letter-spacing: 65px; word-spacing: 0; -unity-paragraph-spacing: 0;"/>
                 </ui:VisualElement>
-            </ui:VisualElement>
-            <ui:VisualElement name="contenedorInventario" class="contenedorInventario" style="align-items: center; justify-content: flex-start; align-self: auto; align-content: auto; height: auto; max-height: 50%; flex-direction: column; flex-grow: 1; padding-top: 0%; padding-right: 0%; padding-bottom: 0%; padding-left: 0%;">
-                <ui:VisualElement name="Container" class="container" style="flex-grow: 1; width: 100%;">
+                <ui:VisualElement name="C-Inventario" class="c-Inventario" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; align-self: auto;">
                     <ui:VisualElement name="sl1" class="botones">
                         <ui:Image name="img" picking-mode="Ignore" style="position: absolute; top: auto; left: auto; right: auto; bottom: auto; width: 50%; height: 50%; aspect-ratio: 1;"/>
                         <ui:Label text="0" name="numeroContador" picking-mode="Ignore" class="numeroContador"/>
@@ -35,8 +32,21 @@
                         <ui:Image name="img" picking-mode="Ignore" style="position: absolute; top: auto; left: auto; right: auto; bottom: auto; width: 50%; height: 50%; aspect-ratio: 1;"/>
                         <ui:Label text="0" name="numeroContador" picking-mode="Ignore" class="numeroContador"/>
                     </ui:VisualElement>
+                    <ui:VisualElement name="sl7" class="botones">
+                        <ui:Image name="img" picking-mode="Ignore" style="position: absolute; top: auto; left: auto; right: auto; bottom: auto; width: 50%; height: 50%; aspect-ratio: 1;"/>
+                        <ui:Label text="0" name="numeroContador" picking-mode="Ignore" class="numeroContador"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="sl8" class="botones">
+                        <ui:Image name="img" picking-mode="Ignore" style="position: absolute; top: auto; left: auto; right: auto; bottom: auto; width: 50%; height: 50%; aspect-ratio: 1;"/>
+                        <ui:Label text="0" name="numeroContador" picking-mode="Ignore" class="numeroContador"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="sl9" class="botones">
+                        <ui:Image name="img" picking-mode="Ignore" style="position: absolute; top: auto; left: auto; right: auto; bottom: auto; width: 50%; height: 50%; aspect-ratio: 1;"/>
+                        <ui:Label text="0" name="numeroContador" picking-mode="Ignore" class="numeroContador"/>
+                    </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
+        <ui:VisualElement name="contenedorDerecho" class="contenedorDerecho" style="flex-grow: 1;"/>
     </ui:VisualElement>
 </ui:UXML>
