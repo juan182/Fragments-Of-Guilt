@@ -114,6 +114,7 @@ GameObject:
   - component: {fileID: 3538522897228780135}
   - component: {fileID: 5367511342165347589}
   - component: {fileID: 6551597088414086080}
+  - component: {fileID: 9192896470176241889}
   m_Layer: 0
   m_Name: Uga1
   m_TagString: Uga
@@ -325,6 +326,22 @@ MonoBehaviour:
   capaJugador:
     serializedVersion: 2
     m_Bits: 1
+--- !u!111 &9192896470176241889
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821150612939357778}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &1275131947493953964
 GameObject:
   m_ObjectHideFlags: 0
