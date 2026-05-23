@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4716342643693192656}
   - component: {fileID: 7481928776088051341}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: HitBoxAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6599779495721306130}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bone_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2593121468243343858}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bone_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +157,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2361032417300976272}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BrazoIntsup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +189,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2172708818632539886}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BrazoInting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,7 +220,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7291022550528113186}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bone_9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 3497697860127414809}
   - component: {fileID: 5330438148552799009}
   - component: {fileID: 8632000846789886715}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 3. InePata
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5462676852556773078}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bone_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -397,7 +397,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2103604621589682074}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bone_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -432,7 +432,7 @@ GameObject:
   - component: {fileID: 6101205589382544642}
   - component: {fileID: 2203224659624921482}
   - component: {fileID: 1712377890134071113}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 2. Tail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -588,7 +588,7 @@ GameObject:
   - component: {fileID: 6825900636806940422}
   - component: {fileID: 7835634453318863039}
   - component: {fileID: 4473973826030918158}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 4. Cabeza
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -698,7 +698,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7758469514003537187}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bone_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -740,7 +740,7 @@ GameObject:
   - component: {fileID: 8121737820848375461}
   - component: {fileID: 5590202617631214900}
   - component: {fileID: 6846897975247066309}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Uga2
   m_TagString: Uga
   m_Icon: {fileID: 0}
@@ -920,6 +920,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FollowPlayer
   velocidadPersecusion: 3
   distanciaAtaque: 1
+  detectorBorde: {fileID: 0}
+  distanciaDeteccion: 1
+  capaSuelo:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &8121737820848375461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -976,7 +981,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7246716987084828436}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bone_15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1008,7 +1013,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1411078982842050804}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bone_16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1039,7 +1044,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 740154204281980023}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bone_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1073,7 +1078,7 @@ GameObject:
   - component: {fileID: 6752414709092300614}
   - component: {fileID: 2711074720731190714}
   - component: {fileID: 5643460712695610517}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Capa 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1187,7 +1192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7497013186825267748}
   - component: {fileID: 473542146940710037}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: HitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1272,7 +1277,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5296960612198523942}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bone_14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1304,7 +1309,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 714132196779384606}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bone_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1336,7 +1341,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2952329149353267228}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bone_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1368,7 +1373,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4901836101768425847}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bone_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1403,7 +1408,7 @@ GameObject:
   - component: {fileID: 7833621658940255051}
   - component: {fileID: 4579359145520170979}
   - component: {fileID: 553780917642802562}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 5. ExtPata
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1515,7 +1520,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5231357068407236625}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bone_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}

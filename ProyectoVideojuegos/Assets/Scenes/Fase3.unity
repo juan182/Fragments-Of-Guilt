@@ -6055,8 +6055,16 @@ PrefabInstance:
       value: Boss1
       objectReference: {fileID: 0}
     - target: {fileID: 2706672906695614565, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2706672906695614565, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2706672906695614565, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 3843841522647660550, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_LocalScale.x
@@ -6319,10 +6327,16 @@ MonoBehaviour:
   hitboxTorso: {fileID: 203075104}
   velocidadEmbestida: 15
   duracionEmbestida: 0.8
+  pausaAntesEmbestida: 2
+  velocidadRetirada: 6
+  distanciaRetirada: 5
+  tiempoEsperaJugador: 3
   distanciaCerca: 2.5
   distanciaLejos: 4
   umbralFase2: 0.4
   tiempoEntreAtaques: 1.8
+  velocidadSalto: 10
+  alturaMaximaSalto: 4
   audioSource: {fileID: 939122663}
   musicaSource: {fileID: 939122662}
   musicaBoss: {fileID: 0}

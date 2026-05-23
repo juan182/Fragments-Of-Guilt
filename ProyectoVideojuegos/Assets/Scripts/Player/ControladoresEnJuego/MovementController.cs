@@ -152,7 +152,18 @@ public class MovementController : MonoBehaviour
     }
 
     void ValidateMagicAtack()
-    { //ES PRACTICAMENTE LO MISMO QUE EL DE ARRIBA
+    {
+        //Para arrojar el orbe magico
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            DisparoLanzaMagica scriptLanza = GetComponentInChildren<DisparoLanzaMagica>(true);
+            if (scriptLanza != null)
+            {
+                scriptLanza.DispararProyectil();
+            }
+        }
+
+        //ES PRACTICAMENTE LO MISMO QUE EL DE ARRIBA
         bool canUseMagic = Input.GetKey(KeyCode.E) && !animator.GetBool("IsRunning");
         bool canUseMagicWhileRun = Input.GetKey(KeyCode.E) && animator.GetBool("IsRunning");
 

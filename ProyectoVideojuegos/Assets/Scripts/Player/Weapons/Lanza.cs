@@ -6,6 +6,14 @@ public class Lanza : MonoBehaviour
     public GameObject colisionadorDaño;
     public int dañoLanza;
 
+    [Header("Magia")]
+    [SerializeField] private GameObject proyectilMagicoPrefab;
+    [SerializeField] private Transform puntaLanza;
+    [SerializeField] private float cooldownMagia = 0.5f;
+    private float timerCooldown = 0f;
+
+    private PlayerController playerController;
+
     private void Start()
     {
 
@@ -15,8 +23,20 @@ public class Lanza : MonoBehaviour
             lanzaAsignada = GameManager.Instance.datosJugador.sessionSO.playerDATOS.GetLanza;
             configurarLanza();
         }
-
+        playerController = GetComponentInParent<PlayerController>();
     }
+
+    private void Update()
+    {
+        timerCooldown -= Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.E) && timerCooldown <= 0f && playerController != null && playerController.tieneMagia)
+        {
+            LanzarMagia();
+            timerCooldown = cooldownMagia;
+        }
+    }
+
 
     private void configurarLanza()
     {
@@ -35,5 +55,22 @@ public class Lanza : MonoBehaviour
     void Activar_DesactivarColisionadorDeDaño()
     {
         //Aqui es para activar o desactivar el colisionador para cuando se active la animacion
+    }
+
+    private void LanzarMagia()
+    {
+        if (proyectilMagicoPrefab == null || puntaLanza == null)
+        {
+            Debug.LogWarning("Falta asignar proyectilMagicoPrefab o puntaLanza en el Inspector");
+            return;
+        }
+
+        int direccion = transform.root.localScale.x > 0 ? 1 : -1;
+
+        GameObject proyectil = Instantiate(proyectilMagicoPrefab, puntaLanza.position, Quaternion.identity);
+
+        ProyectilMagico comp = proyectil.GetComponent<ProyectilMagico>();
+        if (comp != null)
+            comp.Inicializar(direccion, dañoLanza);
     }
 }
