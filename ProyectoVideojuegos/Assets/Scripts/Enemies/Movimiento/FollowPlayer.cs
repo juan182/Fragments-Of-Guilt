@@ -8,7 +8,11 @@ public class FollowPlayer : MonoBehaviour
     [SerializeField] private float velocidadPersecusion=3f;
     [SerializeField] private float distanciaAtaque = 1.8f; //Distancia para dejar de caminar y atacar al jugador
 
-    
+    [Header("Deteccion de borde")]
+    [SerializeField] private Transform detectorBorde; // punto al frente de los pies
+    [SerializeField] private float distanciaDeteccion = 1f;
+    [SerializeField] private LayerMask capaSuelo;
+
 
     private Transform jugador;
 
