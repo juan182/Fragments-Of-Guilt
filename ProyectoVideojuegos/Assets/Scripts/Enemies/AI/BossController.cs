@@ -11,11 +11,11 @@ public class BossController : MonoBehaviour
     // animacion en el momento indicado abajo
     public static event Action OnMordida;
     public static event Action OnMordidaFin;
+    public static event Action OnCabezazo;
+    public static event Action OnCabezazoFin;
     public static event Action OnGolpeSuelo;
     public static event Action OnEmbestidaInicio;
     public static event Action OnEmbestidaFin;
-    public static event Action OnCabezazo;
-    public static event Action OnCabezazoFin;
 
     [Header("Referencias")]
     [SerializeField] private DeteccionJugador deteccionJugador;
@@ -32,21 +32,23 @@ public class BossController : MonoBehaviour
     [SerializeField] private float dañoMordida = 25f;
     [SerializeField] private float dañoOndaExpansiva = 15f;
     [SerializeField] private float dañoEmbestida = 40f;
+    [SerializeField] private float dañoCabezazo = 20f;
 
     [Header("HitBox del jefe")]
-    // HitboxMordida: GameObject hijo con Collider2D en modo IsTrigger
-    // Colocarlo en la boca del sprite. Empieza desactivado.
+    // HitboxMordida: hijo del HuesoCabeza con Collider2D IsTrigger, empieza desactivado
     // Se activa con EventoMordida() y desactiva con EventoMordidaFin()
     [SerializeField] private GameObject hitboxMordida;
 
-    // HitboxEmbestida: GameObject hijo con Collider2D en modo IsTrigger
-    // Colocarlo en el cuerpo frontal del sprite. Empieza desactivado.
-    // Se activa con EventoEmbestidaInicio() y desactiva con EventoEmbestidaFin()
-    [SerializeField] private GameObject hitboxEmbestida;
+    // HitboxCabezazo: hijo del HuesoCabeza con Collider2D IsTrigger, empieza desactivado
+    // Se activa con EventoCabezazo() y desactiva con EventoCabezazoFin()
     [SerializeField] private GameObject hitboxCabezazo;
 
+    // HitboxEmbestida: hijo del HuesoTorso con Collider2D IsTrigger, empieza desactivado
+    // Se activa con EventoEmbestidaInicio() y desactiva con EventoEmbestidaFin()
+    [SerializeField] private GameObject hitboxEmbestida;
+
     [Header("Onda Expansiva")]
-    // Prefab con OndaExpansiva.cs y Collider2D en modo IsTrigger
+    // Prefab con OndaExpansiva.cs y Collider2D IsTrigger
     // Se instancia al aterrizar y con EventoGolpeSuelo()
     [SerializeField] private GameObject ondaExpansivaPrefab;
     [SerializeField] private float velocidadOnda = 5f;
@@ -64,6 +66,18 @@ public class BossController : MonoBehaviour
     [SerializeField] private float umbralFase2 = 0.4f;
     [SerializeField] private float tiempoEntreAtaques = 1.8f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource musicaSource;
+    [SerializeField] private AudioClip musicaBoss;
+    [SerializeField] private AudioClip sfxDaño;
+    [SerializeField] private AudioClip sfxFase2;
+    [SerializeField] private AudioClip sfxMuerte;
+    [SerializeField] private AudioClip sfxMordida;
+    [SerializeField] private AudioClip sfxCabezazo;
+    [SerializeField] private AudioClip sfxEmbestida;
+    [SerializeField] private AudioClip sfxOnda;
+
     private Transform jugador;
     private bool estaEntrando = false;
     private bool jefeListo = false;
@@ -76,24 +90,28 @@ public class BossController : MonoBehaviour
 
     private Health health;
 
+    private Rigidbody2D rb;
+
     private enum TipoAtaque { Mordida, GolpeSuelo, Embestida }
 
     // ---- INICIALIZACION ----
 
     private void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         health = GetComponent<Health>();
-        if (health == null)
-            Debug.LogError("BossController requiere un componente Health en el mismo GameObject");
 
         jugador = GameObject.FindGameObjectWithTag("Player").transform;
-        if (jugador == null)
-            Debug.LogError("No se encontro el jugador, verifica que tenga el tag Player");
 
         if (hitboxMordida != null) hitboxMordida.SetActive(false);
+        if (hitboxCabezazo != null) hitboxCabezazo.SetActive(false);
         if (hitboxEmbestida != null) hitboxEmbestida.SetActive(false);
 
-        gameObject.SetActive(false);
+        // En vez de desactivar el GameObject, lo ponemos en el punto de entrada
+        // y esperamos a que se llame ActivarJefe()
+        transform.position = puntoEntrada.position;
+        rb.bodyType = RigidbodyType2D.Kinematic; // sin física hasta que entre
+        jefeListo = false;
     }
 
     private void Update()
@@ -105,22 +123,22 @@ public class BossController : MonoBehaviour
     {
         OnMordida += ActivarHitboxMordida;
         OnMordidaFin += DesactivarHitboxMordida;
+        OnCabezazo += ActivarHitboxCabezazo;
+        OnCabezazoFin += DesactivarHitboxCabezazo;
         OnGolpeSuelo += InstanciarOndaExpansiva;
         OnEmbestidaInicio += ActivarHitboxEmbestida;
         OnEmbestidaFin += DesactivarHitboxEmbestida;
-        OnCabezazo += ActivarHitboxCabezazo;     
-        OnCabezazoFin += DesactivarHitboxCabezazo;
     }
 
     private void OnDisable()
     {
         OnMordida -= ActivarHitboxMordida;
         OnMordidaFin -= DesactivarHitboxMordida;
+        OnCabezazo -= ActivarHitboxCabezazo;
+        OnCabezazoFin -= DesactivarHitboxCabezazo;
         OnGolpeSuelo -= InstanciarOndaExpansiva;
         OnEmbestidaInicio -= ActivarHitboxEmbestida;
         OnEmbestidaFin -= DesactivarHitboxEmbestida;
-        OnCabezazo -= ActivarHitboxCabezazo;    
-        OnCabezazoFin -= DesactivarHitboxCabezazo;
     }
 
     // ---- COMPORTAMIENTO PRINCIPAL ----
@@ -166,28 +184,45 @@ public class BossController : MonoBehaviour
 
     public void ActivarJefe()
     {
-        transform.position = puntoEntrada.position;
         gameObject.SetActive(true);
+        transform.position = puntoEntrada.position;
+        rb.bodyType = RigidbodyType2D.Kinematic; // kinematic mientras cae manualmente
+        rb.linearVelocity = Vector2.zero;
         estaEntrando = true;
         ResetearBools();
         animator.SetBool("IsJump", true);
-        Debug.Log("El jefe aparece");
+
+        if (musicaSource != null && musicaBoss != null)
+        {
+            musicaSource.clip = musicaBoss;
+            musicaSource.Play();
+        }
     }
 
     private void ProcesarEntrada()
     {
         transform.position += Vector3.down * velocidadCaida * Time.deltaTime;
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.5f);
-        if (hit.collider != null
-            && !hit.collider.CompareTag("Player")
-            && !hit.collider.CompareTag("Enemy"))
+        RaycastHit2D hit = Physics2D.Raycast(
+            transform.position,
+            Vector2.down,
+            0.1f,
+            LayerMask.GetMask("Suelo")  
+        );
+
+        if (hit.collider != null)
         {
+            transform.position = new Vector3(
+                transform.position.x,
+                hit.point.y + 1f,
+                transform.position.z
+            );
+
             estaEntrando = false;
             jefeListo = true;
+            rb.bodyType = RigidbodyType2D.Dynamic;
             animator.SetBool("IsJump", false);
             InstanciarOndaExpansiva();
-            Debug.Log("El jefe aterrizo");
         }
     }
 
@@ -202,23 +237,19 @@ public class BossController : MonoBehaviour
 
         if (distancia >= distanciaLejos)
         {
-            // Jugador huyo, embestida para alcanzarlo
             ataqueTipo = TipoAtaque.Embestida;
         }
         else if (distancia <= distanciaCerca)
         {
-            // Jugador cerca, alternar mordida y cabezazo
             ataqueTipo = UnityEngine.Random.value > 0.5f
                 ? TipoAtaque.Mordida
                 : TipoAtaque.GolpeSuelo;
 
-            // En fase 2 ocasionalmente onda expansiva para presionar
             if (estaEnFase2 && UnityEngine.Random.value > 0.7f)
                 InstanciarOndaExpansiva();
         }
         else
         {
-            // Distancia media, cabezazo
             ataqueTipo = TipoAtaque.GolpeSuelo;
         }
 
@@ -285,48 +316,45 @@ public class BossController : MonoBehaviour
         animator.SetBool(paramNombre, false);
     }
 
+    private void ReproducirSonido(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+            audioSource.PlayOneShot(clip);
+    }
+
     // ---- HITBOXES ----
-    // Activados y desactivados directamente desde los Animation Events
-    // El daño lo maneja el Collider2D de cada hitbox via OnTriggerEnter2D
 
-    // ANIMATION EVENT: en Cabezazo -> frame de impacto de la cabeza
-    private void ActivarHitboxCabezazo()
-    {
-        if (hitboxCabezazo != null) hitboxCabezazo.SetActive(true);
-    }
-
-    // ANIMATION EVENT: en Cabezazo -> frame donde termina el impacto
-    private void DesactivarHitboxCabezazo()
-    {
-        if (hitboxCabezazo != null) hitboxCabezazo.SetActive(false);
-    }
-
-    // ANIMATION EVENT: en mordida -> frame de impacto de la boca
     private void ActivarHitboxMordida()
     {
         if (hitboxMordida != null) hitboxMordida.SetActive(true);
     }
 
-    // ANIMATION EVENT: en mordida -> frame donde termina el impacto
     private void DesactivarHitboxMordida()
     {
         if (hitboxMordida != null) hitboxMordida.SetActive(false);
     }
 
-    // ANIMATION EVENT: en embestir -> frame donde inicia el impulso
+    private void ActivarHitboxCabezazo()
+    {
+        if (hitboxCabezazo != null) hitboxCabezazo.SetActive(true);
+    }
+
+    private void DesactivarHitboxCabezazo()
+    {
+        if (hitboxCabezazo != null) hitboxCabezazo.SetActive(false);
+    }
+
     private void ActivarHitboxEmbestida()
     {
         if (hitboxEmbestida != null) hitboxEmbestida.SetActive(true);
     }
 
-    // ANIMATION EVENT: en embestir -> frame donde termina el impulso
     private void DesactivarHitboxEmbestida()
     {
         if (hitboxEmbestida != null) hitboxEmbestida.SetActive(false);
     }
 
     // ---- ONDA EXPANSIVA ----
-    // ANIMATION EVENT: en Cabezazo -> frame de impacto en el suelo
 
     public void InstanciarOndaExpansiva()
     {
@@ -335,6 +363,8 @@ public class BossController : MonoBehaviour
             Debug.LogWarning("Falta asignar ondaExpansivaPrefab en el Inspector");
             return;
         }
+
+        ReproducirSonido(sfxOnda);
 
         for (int dir = -1; dir <= 1; dir += 2)
         {
@@ -349,6 +379,7 @@ public class BossController : MonoBehaviour
     {
         estaEmbistiendo = true;
         timerEmbestida = duracionEmbestida;
+        ReproducirSonido(sfxEmbestida);
     }
 
     private void ProcesarEmbestida()
@@ -359,7 +390,7 @@ public class BossController : MonoBehaviour
         {
             OrientarHaciaJugador();
             float direccionX = Mathf.Sign(jugador.position.x - transform.position.x);
-            transform.position += new Vector3(direccionX * velocidadEmbestida * Time.deltaTime, 0, 0);
+            rb.MovePosition(rb.position + new Vector2(direccionX * velocidadEmbestida * Time.deltaTime, 0));
         }
 
         if (timerEmbestida <= 0f)
@@ -393,7 +424,11 @@ public class BossController : MonoBehaviour
         ResetearBools();
 
         if (hitboxMordida != null) hitboxMordida.SetActive(false);
+        if (hitboxCabezazo != null) hitboxCabezazo.SetActive(false);
         if (hitboxEmbestida != null) hitboxEmbestida.SetActive(false);
+
+        if (musicaSource != null) musicaSource.Stop();
+        ReproducirSonido(sfxMuerte);
 
         if (GameManager.Instance != null)
             GameManager.Instance.LevelComplete();
@@ -412,6 +447,7 @@ public class BossController : MonoBehaviour
             estaEnFase2 = true;
             tiempoEntreAtaques = 1.2f;
             distanciaLejos = 3f;
+            ReproducirSonido(sfxFase2);
             Debug.Log("El jefe entro en fase 2");
         }
     }
@@ -421,10 +457,24 @@ public class BossController : MonoBehaviour
     // No modificar los nombres
 
     // Conectar en: mordida -> frame de impacto de la boca
-    public void EventoMordida() => OnMordida?.Invoke();
+    public void EventoMordida()
+    {
+        OnMordida?.Invoke();
+        ReproducirSonido(sfxMordida);
+    }
 
     // Conectar en: mordida -> frame donde termina el impacto
     public void EventoMordidaFin() => OnMordidaFin?.Invoke();
+
+    // Conectar en: Cabezazo -> frame de impacto de la cabeza
+    public void EventoCabezazo()
+    {
+        OnCabezazo?.Invoke();
+        ReproducirSonido(sfxCabezazo);
+    }
+
+    // Conectar en: Cabezazo -> frame donde termina el impacto
+    public void EventoCabezazoFin() => OnCabezazoFin?.Invoke();
 
     // Conectar en: Cabezazo -> frame de impacto en el suelo
     public void EventoGolpeSuelo() => OnGolpeSuelo?.Invoke();
@@ -434,12 +484,6 @@ public class BossController : MonoBehaviour
 
     // Conectar en: Embestir -> frame donde termina el impulso
     public void EventoEmbestidaFin() => OnEmbestidaFin?.Invoke();
-
-    // Conectar en: Cabezazo -> frame de impacto de la cabeza
-    public void EventoCabezazo() => OnCabezazo?.Invoke();
-
-    // Conectar en: Cabezazo -> frame donde termina el impacto
-    public void EventoCabezazoFin() => OnCabezazoFin?.Invoke();
 
     // ---- GIZMOS ----
 
