@@ -269,6 +269,7 @@ GameObject:
   - component: {fileID: 41169132}
   - component: {fileID: 41169131}
   - component: {fileID: 41169134}
+  - component: {fileID: 41169135}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -373,6 +374,30 @@ MonoBehaviour:
     MaxWindowSize: 0
     Padding: 0
   m_LegacyMaxWindowSize: -2
+--- !u!114 &41169135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41169130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseListener
+  ApplyAfter: 2
+  ChannelMask: 1
+  Gain: 1
+  Use2DDistance: 0
+  UseCameraSpace: 1
+  SignalCombinationMode: 0
+  ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &70142408
 GameObject:
   m_ObjectHideFlags: 0
@@ -6035,15 +6060,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3843841522647660550, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.28
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 3843841522647660550, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.28
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 3843841522647660550, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.28
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 3843841522647660550, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6131,6 +6156,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2706672906695614565, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       insertIndex: -1
       addedObject: {fileID: 939122662}
+    - targetCorrespondingSourceObject: {fileID: 2706672906695614565, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 939122665}
   m_SourcePrefab: {fileID: 100100000, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
 --- !u!1 &939122652 stripped
 GameObject:
@@ -6222,10 +6250,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 1000
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -6288,7 +6316,7 @@ MonoBehaviour:
   "da\xF1oCabezazo": 20
   hitboxMordida: {fileID: 1479305830}
   hitboxCabezazo: {fileID: 203075104}
-  hitboxTorso: {fileID: 0}
+  hitboxTorso: {fileID: 203075104}
   velocidadEmbestida: 15
   duracionEmbestida: 0.8
   distanciaCerca: 2.5
@@ -6512,6 +6540,66 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &939122665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939122652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd438dd108a0f284aa931a2da434f1d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCollisionImpulseSource
+  ImpulseDefinition:
+    ImpulseChannel: 1
+    ImpulseShape: 0
+    CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    ImpulseDuration: 0.2
+    ImpulseType: 3
+    DissipationRate: 0
+    RawSignal: {fileID: 11400000, guid: b059de50e5b0b6c4182d2d7368527a11, type: 2}
+    AmplitudeGain: 0.5
+    FrequencyGain: 1
+    RepeatMode: 0
+    Randomize: 1
+    TimeEnvelope:
+      AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      AttackTime: 0
+      SustainTime: 0.1
+      DecayTime: 0.2
+      ScaleWithImpact: 1
+      HoldForever: 0
+    ImpactRadius: 100
+    DirectionMode: 0
+    DissipationMode: 2
+    DissipationDistance: 100
+    PropagationSpeed: 343
+  DefaultVelocity: {x: 0, y: -1, z: 0}
+  LayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  IgnoreTag: 
+  UseImpactDirection: 0
+  ScaleImpactWithMass: 0
+  ScaleImpactWithSpeed: 0
 --- !u!1 &943441624
 GameObject:
   m_ObjectHideFlags: 0
@@ -10571,7 +10659,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1600465805}
   - component: {fileID: 1600465806}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TopeProta (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12255,7 +12343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1917497538}
   - component: {fileID: 1917497539}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TopeProta
   m_TagString: Untagged
   m_Icon: {fileID: 0}

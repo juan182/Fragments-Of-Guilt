@@ -41,12 +41,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _WaveForce: 0.02
-    - _WaveRadius: 36.8
-    - _WaveThickness: 0.3
+    - _WaveForce: 0.000028762817
+    - _WaveRadius: -10
+    - _WaveThickness: 0.4
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
-    - _WaveCenter: {r: 0, g: 0, b: 0, a: 0}
+    - _WaveCenter: {r: -51.74, g: -7.9700003, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &3943630293150458488

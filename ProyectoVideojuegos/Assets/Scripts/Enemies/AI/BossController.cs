@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 using static GameManager;
 
@@ -238,13 +239,22 @@ public class BossController : MonoBehaviour
     {
         if (audioSource != null && sfxOnda != null) audioSource.PlayOneShot(sfxOnda);
 
-        // Comunica el impacto al sistema central del suelo usando el nuevo método unificado
+        // 1. SACUDIR CÁMARA CON CINEMACHINE
+        // Buscamos el componente Impulse Source que le pusimos al jefe y disparamos el temblor
+        CinemachineImpulseSource emisorImpulso = GetComponent<CinemachineImpulseSource>();
+        if (emisorImpulso != null)
+        {
+            emisorImpulso.GenerateImpulse(); // Esto sacude la pantalla automáticamente
+        }
+
+        // 2. ACTIVAR LA ONDA EN EL SUELO (Tu lógica anterior intacta)
         SueloOndulante suelo = FindFirstObjectByType<SueloOndulante>();
         if (suelo != null)
         {
             suelo.ActivarOndaExpansiva(transform.position);
         }
     }
+
 
     private void ActivarHitboxMordida() { if (hitboxMordida != null) hitboxMordida.SetActive(true); }
     private void DesactivarHitboxMordida() { if (hitboxMordida != null) hitboxMordida.SetActive(false); }
