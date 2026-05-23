@@ -1236,6 +1236,7 @@ GameObject:
   - component: {fileID: 2762304433435079817}
   - component: {fileID: 7612342777802408377}
   - component: {fileID: 1653615256412030561}
+  - component: {fileID: 3878006692122591742}
   m_Layer: 0
   m_Name: Protagonist
   m_TagString: Player
@@ -1410,6 +1411,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   isBlocking: 0
+--- !u!114 &3878006692122591742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4835378585667111658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4768b2a036b873d4fa0b9b5b3c9301c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationBridge
 --- !u!1 &4891759354510624375
 GameObject:
   m_ObjectHideFlags: 0
