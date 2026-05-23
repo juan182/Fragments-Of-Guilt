@@ -115,6 +115,7 @@ GameObject:
   - component: {fileID: 5367511342165347589}
   - component: {fileID: 6551597088414086080}
   - component: {fileID: 9192896470176241889}
+  - component: {fileID: 2722722746703921842}
   m_Layer: 0
   m_Name: Uga1
   m_TagString: Uga
@@ -309,7 +310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPatrol
   puntoA: {fileID: 0}
   puntoB: {fileID: 0}
-  velocidad: 2
+  velocidad: 1
 --- !u!114 &6551597088414086080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,7 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ec1b7ddcc01474d9b0170e858b3333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeteccionJugador
-  radioDeteccion: 3
+  radioDeteccion: 1
   capaJugador:
     serializedVersion: 2
     m_Bits: 1
@@ -342,6 +343,24 @@ Animation:
   m_AnimatePhysics: 0
   m_UpdateMode: 0
   m_CullingType: 0
+--- !u!114 &2722722746703921842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821150612939357778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b406b1bf96950e94eaf88de381733b89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SwarmFollower
+  followSpeed: 4.35
+  surroundSpeed: 3.7
+  wobbleAmount: 0.2
+  damage: 8
+  damageInterval: 0.8
+  animator: {fileID: 5421897331000350768}
 --- !u!1 &1275131947493953964
 GameObject:
   m_ObjectHideFlags: 0

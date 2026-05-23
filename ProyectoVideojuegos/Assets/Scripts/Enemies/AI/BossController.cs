@@ -1,22 +1,30 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using static GameManager;
 
-public class BossController : EnemyAI
+public class BossController : MonoBehaviour
 {
     // ---- EVENTOS ----
     // Estos eventos son invocados desde los Animation Events del jefe
-    // El animador debe conectar los métodos públicos en cada
-    // animación en el momento indicado abajo
+    // El animador debe conectar los metodos publicos en cada
+    // animacion en el momento indicado abajo
     public static event Action OnMordida;
     public static event Action OnMordidaFin;
     public static event Action OnGolpeSuelo;
     public static event Action OnEmbestidaInicio;
     public static event Action OnEmbestidaFin;
+    public static event Action OnCabezazo;
+    public static event Action OnCabezazoFin;
+
+    [Header("Referencias")]
+    [SerializeField] private DeteccionJugador deteccionJugador;
+    [SerializeField] private AttackManager ataque;
+    [SerializeField] private Animator animator;
 
     [Header("Entrada")]
-    // ANIMACION: puntoEntrada es un Transform vacio colocado arriba de la escena
-    // El jefe aparece ahí y cae al inicio del combate
+    // puntoEntrada es un Transform vacio colocado arriba de la escena
+    // El jefe aparece ahi y cae al inicio del combate
     [SerializeField] private Transform puntoEntrada;
     [SerializeField] private float velocidadCaida = 8f;
 
@@ -26,33 +34,37 @@ public class BossController : EnemyAI
     [SerializeField] private float dañoEmbestida = 40f;
 
     [Header("HitBox del jefe")]
-    // HITBOX MORDIDA: GameObject hijo del jefe con Collider2D en modo IsTrigger.
+    // HitboxMordida: GameObject hijo con Collider2D en modo IsTrigger
     // Colocarlo en la boca del sprite. Empieza desactivado.
-    // ANIMATION EVENT: activar con EventoMordida() y desactivar con EventoMordidaFin()
+    // Se activa con EventoMordida() y desactiva con EventoMordidaFin()
     [SerializeField] private GameObject hitboxMordida;
 
-    // HITBOX EMBESTIDA: GameObject hijo del jefe con Collider2D en modo IsTrigger.
-    // Colocarlo en los cuernos/cuerpo frontal del sprite. Empieza desactivado.
-    // ANIMATION EVENT: activar con EventoEmbestidaInicio() y desactivar con EventoEmbestidaFin()
+    // HitboxEmbestida: GameObject hijo con Collider2D en modo IsTrigger
+    // Colocarlo en el cuerpo frontal del sprite. Empieza desactivado.
+    // Se activa con EventoEmbestidaInicio() y desactiva con EventoEmbestidaFin()
     [SerializeField] private GameObject hitboxEmbestida;
+    [SerializeField] private GameObject hitboxCabezazo;
 
     [Header("Onda Expansiva")]
-    // ONDA EXPANSIVA: Prefab con OndaExpansiva.cs y Collider2D en modo IsTrigger.
-    // Representa la onda que viaja por el suelo tras el golpe. Asignar en el Inspector.
-    // ANIMATION EVENT: instanciar con EventoGolpeSuelo() en el frame de impacto al suelo.
+    // Prefab con OndaExpansiva.cs y Collider2D en modo IsTrigger
+    // Se instancia al aterrizar y con EventoGolpeSuelo()
     [SerializeField] private GameObject ondaExpansivaPrefab;
     [SerializeField] private float velocidadOnda = 5f;
     [SerializeField] private float duracionOnda = 3f;
 
     [Header("Embestida")]
-    [SerializeField] private float velocidadEmbestida = 12f;
-    [SerializeField] private float duracionEmbestida = 0.6f;
+    [SerializeField] private float velocidadEmbestida = 15f;
+    [SerializeField] private float duracionEmbestida = 0.8f;
+
+    [Header("Distancias")]
+    [SerializeField] private float distanciaCerca = 2.5f;
+    [SerializeField] private float distanciaLejos = 4f;
 
     [Header("Fases")]
     [SerializeField] private float umbralFase2 = 0.4f;
-    [SerializeField] private float tiempoEntreAtaques = 2f;
+    [SerializeField] private float tiempoEntreAtaques = 1.8f;
 
-    // Estados internos
+    private Transform jugador;
     private bool estaEntrando = false;
     private bool jefeListo = false;
     private bool estaEnFase2 = false;
@@ -62,29 +74,32 @@ public class BossController : EnemyAI
     private float timerAtaque = 0f;
     private float timerEmbestida = 0f;
 
-    
-
     private Health health;
 
     private enum TipoAtaque { Mordida, GolpeSuelo, Embestida }
 
+    // ---- INICIALIZACION ----
 
-    protected new void Start()
+    private void Start()
     {
         health = GetComponent<Health>();
         if (health == null)
             Debug.LogError("BossController requiere un componente Health en el mismo GameObject");
 
-        // Hitboxes empiezan desactivados
+        jugador = GameObject.FindGameObjectWithTag("Player").transform;
+        if (jugador == null)
+            Debug.LogError("No se encontro el jugador, verifica que tenga el tag Player");
+
         if (hitboxMordida != null) hitboxMordida.SetActive(false);
         if (hitboxEmbestida != null) hitboxEmbestida.SetActive(false);
 
         gameObject.SetActive(false);
     }
 
-    // Sobreescribe ConfigurarEnemigo para que el jefe no dependa
-    // del hitbox ni del AttackManager de Uga
-    protected override void ConfigurarEnemigo() { }
+    private void Update()
+    {
+        ComportamientoJefe();
+    }
 
     private void OnEnable()
     {
@@ -93,6 +108,8 @@ public class BossController : EnemyAI
         OnGolpeSuelo += InstanciarOndaExpansiva;
         OnEmbestidaInicio += ActivarHitboxEmbestida;
         OnEmbestidaFin += DesactivarHitboxEmbestida;
+        OnCabezazo += ActivarHitboxCabezazo;     
+        OnCabezazoFin += DesactivarHitboxCabezazo;
     }
 
     private void OnDisable()
@@ -102,9 +119,13 @@ public class BossController : EnemyAI
         OnGolpeSuelo -= InstanciarOndaExpansiva;
         OnEmbestidaInicio -= ActivarHitboxEmbestida;
         OnEmbestidaFin -= DesactivarHitboxEmbestida;
+        OnCabezazo -= ActivarHitboxCabezazo;    
+        OnCabezazoFin -= DesactivarHitboxCabezazo;
     }
 
-    protected override void ComportamientoEnemigo()
+    // ---- COMPORTAMIENTO PRINCIPAL ----
+
+    private void ComportamientoJefe()
     {
         if (estaMuerto) return;
 
@@ -133,8 +154,6 @@ public class BossController : EnemyAI
             return;
         }
 
-        base.ComportamientoEnemigo();
-
         timerAtaque += Time.deltaTime;
         if (timerAtaque >= tiempoEntreAtaques)
         {
@@ -150,6 +169,8 @@ public class BossController : EnemyAI
         transform.position = puntoEntrada.position;
         gameObject.SetActive(true);
         estaEntrando = true;
+        ResetearBools();
+        animator.SetBool("IsJump", true);
         Debug.Log("El jefe aparece");
     }
 
@@ -164,94 +185,149 @@ public class BossController : EnemyAI
         {
             estaEntrando = false;
             jefeListo = true;
-            // El aterrizaje genera onda expansiva automáticamente como primer ataque
+            animator.SetBool("IsJump", false);
             InstanciarOndaExpansiva();
-            Debug.Log("El jefe aterrizó");
+            Debug.Log("El jefe aterrizo");
         }
     }
 
-    // ---- SELECCIÓN DE ATAQUE ----
+    // ---- SELECCION DE ATAQUE ----
 
     private void EscogerAtaque()
     {
-        float distancia = Vector2.Distance(transform.position, jugador.position);
-        bool cerca = distancia <= 2.5f;
-        TipoAtaque ataque;
+        if (jugador == null) return;
 
-        if (estaEnFase2)
+        float distancia = Vector2.Distance(transform.position, jugador.position);
+        TipoAtaque ataqueTipo;
+
+        if (distancia >= distanciaLejos)
         {
-            // Fase 2: cerca -> Mordida o GolpeSuelo | lejos -> Embestida o GolpeSuelo
-            ataque = cerca
-                ? (UnityEngine.Random.value > 0.7f ? TipoAtaque.Mordida : TipoAtaque.GolpeSuelo)
-                : (UnityEngine.Random.value > 0.6f ? TipoAtaque.Embestida : TipoAtaque.GolpeSuelo);
+            // Jugador huyo, embestida para alcanzarlo
+            ataqueTipo = TipoAtaque.Embestida;
+        }
+        else if (distancia <= distanciaCerca)
+        {
+            // Jugador cerca, alternar mordida y cabezazo
+            ataqueTipo = UnityEngine.Random.value > 0.5f
+                ? TipoAtaque.Mordida
+                : TipoAtaque.GolpeSuelo;
+
+            // En fase 2 ocasionalmente onda expansiva para presionar
+            if (estaEnFase2 && UnityEngine.Random.value > 0.7f)
+                InstanciarOndaExpansiva();
         }
         else
         {
-            // Fase 1: cerca -> Mordida | lejos -> GolpeSuelo
-            ataque = cerca ? TipoAtaque.Mordida : TipoAtaque.GolpeSuelo;
+            // Distancia media, cabezazo
+            ataqueTipo = TipoAtaque.GolpeSuelo;
         }
 
-        EjecutarAtaque(ataque);
+        EjecutarAtaque(ataqueTipo);
     }
+
+    // ---- EJECUCION DE ATAQUE ----
 
     private void EjecutarAtaque(TipoAtaque tipo)
     {
-        // ANIMACION: El Animator del jefe debe tener estos triggers:
-        //   - "Mordida"    -> animación de ataque con la boca
-        //   - "GolpeSuelo" -> animación de golpe al suelo
-        //   - "Embestida"  -> animación de carga horizontal
+        ResetearBools();
 
         switch (tipo)
         {
             case TipoAtaque.Mordida:
-                animator.SetTrigger("Mordida");
+                OrientarHaciaJugador();
+                animator.SetBool("IsBitting", true);
+                StartCoroutine(DesactivarBoolTrasAnimacion("IsBitting"));
                 break;
+
             case TipoAtaque.GolpeSuelo:
-                animator.SetTrigger("GolpeSuelo");
+                OrientarHaciaJugador();
+                animator.SetBool("IsHeadbut", true);
+                StartCoroutine(DesactivarBoolTrasAnimacion("IsHeadbut"));
                 break;
+
             case TipoAtaque.Embestida:
-                animator.SetTrigger("Embestida");
+                OrientarHaciaJugador();
+                animator.SetBool("Ischarged", true);
                 IniciarEmbestida();
+                StartCoroutine(DesactivarBoolTrasAnimacion("Ischarged"));
                 break;
         }
     }
 
-    // ---- HITBOXES ----
+    private void OrientarHaciaJugador()
+    {
+        if (jugador == null) return;
+        float direccionX = jugador.position.x - transform.position.x;
+        Vector3 escala = transform.localScale;
 
-    // Suscrito a OnMordida
-    // ANIMATION EVENT: en "Mordida" -> frame donde la boca impacta -> EventoMordida()
+        if (direccionX < 0)
+            escala.x = Mathf.Abs(escala.x);
+        else if (direccionX > 0)
+            escala.x = -Mathf.Abs(escala.x);
+
+        transform.localScale = escala;
+    }
+
+    private void ResetearBools()
+    {
+        animator.SetBool("IsBitting", false);
+        animator.SetBool("IsHeadbut", false);
+        animator.SetBool("IsJump", false);
+        animator.SetBool("Ischarged", false);
+    }
+
+    private IEnumerator DesactivarBoolTrasAnimacion(string paramNombre)
+    {
+        yield return null;
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        float duracion = stateInfo.length;
+        yield return new WaitForSeconds(duracion);
+        animator.SetBool(paramNombre, false);
+    }
+
+    // ---- HITBOXES ----
+    // Activados y desactivados directamente desde los Animation Events
+    // El daño lo maneja el Collider2D de cada hitbox via OnTriggerEnter2D
+
+    // ANIMATION EVENT: en Cabezazo -> frame de impacto de la cabeza
+    private void ActivarHitboxCabezazo()
+    {
+        if (hitboxCabezazo != null) hitboxCabezazo.SetActive(true);
+    }
+
+    // ANIMATION EVENT: en Cabezazo -> frame donde termina el impacto
+    private void DesactivarHitboxCabezazo()
+    {
+        if (hitboxCabezazo != null) hitboxCabezazo.SetActive(false);
+    }
+
+    // ANIMATION EVENT: en mordida -> frame de impacto de la boca
     private void ActivarHitboxMordida()
     {
         if (hitboxMordida != null) hitboxMordida.SetActive(true);
     }
 
-    // Suscrito a OnMordidaFin
-    // ANIMATION EVENT: en "Mordida" -> frame donde termina el impacto -> EventoMordidaFin()
+    // ANIMATION EVENT: en mordida -> frame donde termina el impacto
     private void DesactivarHitboxMordida()
     {
         if (hitboxMordida != null) hitboxMordida.SetActive(false);
     }
 
-    // Suscrito a OnEmbestidaInicio
-    // ANIMATION EVENT: en "Embestida" -> frame donde inicia el impulso -> EventoEmbestidaInicio()
+    // ANIMATION EVENT: en embestir -> frame donde inicia el impulso
     private void ActivarHitboxEmbestida()
     {
         if (hitboxEmbestida != null) hitboxEmbestida.SetActive(true);
     }
 
-
-    // Suscrito a OnEmbestidaFin
-    // ANIMATION EVENT: en "Embestida" -> frame donde termina el impulso -> EventoEmbestidaFin()
+    // ANIMATION EVENT: en embestir -> frame donde termina el impulso
     private void DesactivarHitboxEmbestida()
     {
         if (hitboxEmbestida != null) hitboxEmbestida.SetActive(false);
     }
 
-
     // ---- ONDA EXPANSIVA ----
+    // ANIMATION EVENT: en Cabezazo -> frame de impacto en el suelo
 
-    // Suscrito a OnGolpeSuelo y también se llama al aterrizar
-    // ANIMATION EVENT: en "GolpeSuelo" -> frame de impacto al suelo -> EventoGolpeSuelo()
     public void InstanciarOndaExpansiva()
     {
         if (ondaExpansivaPrefab == null)
@@ -260,7 +336,6 @@ public class BossController : EnemyAI
             return;
         }
 
-        // Instancia dos ondas: una hacia la izquierda (-1) y otra hacia la derecha (1)
         for (int dir = -1; dir <= 1; dir += 2)
         {
             GameObject onda = Instantiate(ondaExpansivaPrefab, transform.position, Quaternion.identity);
@@ -268,8 +343,8 @@ public class BossController : EnemyAI
         }
     }
 
-
     // ---- EMBESTIDA ----
+
     private void IniciarEmbestida()
     {
         estaEmbistiendo = true;
@@ -282,29 +357,30 @@ public class BossController : EnemyAI
 
         if (jugador != null)
         {
+            OrientarHaciaJugador();
             float direccionX = Mathf.Sign(jugador.position.x - transform.position.x);
             transform.position += new Vector3(direccionX * velocidadEmbestida * Time.deltaTime, 0, 0);
         }
 
         if (timerEmbestida <= 0f)
-            estaEmbistiendo = false;
-    }
-
-    // El hitboxEmbestida maneja el daño por trigger, no por colision directa
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (!estaEmbistiendo) return;
-
-        if (other.CompareTag("Player"))
         {
-            PlayerController player = other.GetComponent<PlayerController>();
-            if (player != null)
-                player.TakeDamage(Mathf.RoundToInt(dañoEmbestida));
+            estaEmbistiendo = false;
+            animator.SetBool("Ischarged", false);
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!estaEmbistiendo) return;
+        if (!other.CompareTag("Player")) return;
+
+        Health healthJugador = other.GetComponent<Health>();
+        if (healthJugador != null)
+            healthJugador.Daño(dañoEmbestida);
+    }
 
     // ---- MUERTE ----
+
     private void MorirJefe()
     {
         if (estaMuerto) return;
@@ -313,15 +389,11 @@ public class BossController : EnemyAI
         estaEmbistiendo = false;
         estaEntrando = false;
 
+        StopAllCoroutines();
+        ResetearBools();
+
         if (hitboxMordida != null) hitboxMordida.SetActive(false);
         if (hitboxEmbestida != null) hitboxEmbestida.SetActive(false);
-
-        // ANIMACION: El trigger "muerte" debe estar en el Animator del jefe.
-        // Health.cs ya lo dispara automáticamente, pero se refuerza aquí por seguridad.
-        // La destrucción del GameObject la maneja Health.cs con delay de 1f
-        // para que la animación de muerte se reproduzca completa.
-        if (animator != null)
-            animator.SetTrigger("muerte");
 
         if (GameManager.Instance != null)
             GameManager.Instance.LevelComplete();
@@ -330,6 +402,7 @@ public class BossController : EnemyAI
     }
 
     // ---- FASE 2 ----
+
     private void VerificarFase2()
     {
         if (health == null) return;
@@ -337,35 +410,44 @@ public class BossController : EnemyAI
         if (!estaEnFase2 && health.VidaActual / health.VidaMaxima <= umbralFase2)
         {
             estaEnFase2 = true;
-            tiempoEntreAtaques = 1.5f;
+            tiempoEntreAtaques = 1.2f;
+            distanciaLejos = 3f;
             Debug.Log("El jefe entro en fase 2");
         }
     }
 
     // ---- ANIMATION EVENTS ----
-    // Estos son los métodos que el animador conecta en el Animator del jefe.
-    // NO modificar los nombres.
+    // Conectar estos metodos en el Animator del jefe en los frames indicados
+    // No modificar los nombres
 
-    // Conectar en: "Mordida" -> frame de impacto de la boca
+    // Conectar en: mordida -> frame de impacto de la boca
     public void EventoMordida() => OnMordida?.Invoke();
 
-    // Conectar en: "Mordida" -> frame donde termina el impacto
+    // Conectar en: mordida -> frame donde termina el impacto
     public void EventoMordidaFin() => OnMordidaFin?.Invoke();
 
-    // Conectar en: "GolpeSuelo" -> frame de impacto en el suelo
+    // Conectar en: Cabezazo -> frame de impacto en el suelo
     public void EventoGolpeSuelo() => OnGolpeSuelo?.Invoke();
 
-    // Conectar en: "Embestida" -> frame donde inicia el impulso
+    // Conectar en: Embestir -> frame donde inicia el impulso
     public void EventoEmbestidaInicio() => OnEmbestidaInicio?.Invoke();
 
-    // Conectar en: "Embestida" -> frame donde termina el impulso
+    // Conectar en: Embestir -> frame donde termina el impulso
     public void EventoEmbestidaFin() => OnEmbestidaFin?.Invoke();
 
+    // Conectar en: Cabezazo -> frame de impacto de la cabeza
+    public void EventoCabezazo() => OnCabezazo?.Invoke();
+
+    // Conectar en: Cabezazo -> frame donde termina el impacto
+    public void EventoCabezazoFin() => OnCabezazoFin?.Invoke();
+
     // ---- GIZMOS ----
-    private new void OnDrawGizmos()
+
+    private void OnDrawGizmos()
     {
-        // Círculo magenta = radio cercano/lejano para selección de ataque
         Gizmos.color = Color.magenta;
-        Gizmos.DrawWireSphere(transform.position, 2.5f);
+        Gizmos.DrawWireSphere(transform.position, distanciaCerca);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, distanciaLejos);
     }
 }

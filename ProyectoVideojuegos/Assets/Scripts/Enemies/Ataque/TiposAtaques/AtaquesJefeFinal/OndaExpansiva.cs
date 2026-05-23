@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class OndaExpansiva : MonoBehaviour
 {
-    private float daño;
     private float velocidad;
     private float duracion;
-    private float timerVida;
+    private float daño;
     private int direccion;
+    private float timer;
+    private bool yaGolpeo = false;
 
     public void Inicializar(float daño, float velocidad, float duracion, int direccion)
     {
@@ -14,41 +15,34 @@ public class OndaExpansiva : MonoBehaviour
         this.velocidad = velocidad;
         this.duracion = duracion;
         this.direccion = direccion;
-        timerVida = duracion;
+
+        // Voltea el particle system segun la direccion
+        if (direccion < 0)
+            transform.localScale = new Vector3(-1, 1, 1);
     }
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Update()
     {
-        
-    }
+        timer += Time.deltaTime;
 
-    // Update is called once per frame
-    void Update()
-    {
-        // Movimiento horizontal
-        transform.position += Vector3.right * direccion * velocidad * Time.deltaTime;
+        // Mueve la onda horizontalmente pegada al suelo
+        transform.position += new Vector3(direccion * velocidad * Time.deltaTime, 0, 0);
 
-        timerVida -= Time.deltaTime;
-        if (timerVida <= 0f)
-        {
+        // Se destruye al terminar su duracion
+        if (timer >= duracion)
             Destroy(gameObject);
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (yaGolpeo) return;
+        if (!other.CompareTag("Player")) return;
+
+        Health health = other.GetComponent<Health>();
+        if (health != null)
         {
-            PlayerController player = other.GetComponent<PlayerController>();
-            if (player != null)
-            {
-                player.TakeDamage(Mathf.RoundToInt(daño));
-                Debug.Log($"Onda expansiva golpeó al jugador: {daño} daño");
-            }
-            Destroy(gameObject);
+            health.Daño(daño);
+            yaGolpeo = true;
         }
     }
-
 }
