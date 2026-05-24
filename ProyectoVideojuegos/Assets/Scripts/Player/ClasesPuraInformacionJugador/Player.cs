@@ -22,10 +22,6 @@ public class Player
     [SerializeField] private int vidaJugador;
     [SerializeField] private int stamina;
 
-
-    // Atributos de posicion.
-    public Vector2 posicionActual;
-
     // Lista de Habilidades
     // La lista tiene un espacio por cada enum presente en SkillType
     // Maneja dos estado True o False | Si es true podemos "acceder" o simplemente sirve como condicionador si algo(habilidad, ataque) se puede usar o no
@@ -61,11 +57,7 @@ public class Player
         set { vidaJugador = value; }
     }
 
-    public Vector2 PosicionActual
-    {
-        get { return posicionActual; }
-        set { posicionActual = value; }
-    }
+    
 
     public int Stamina
     {

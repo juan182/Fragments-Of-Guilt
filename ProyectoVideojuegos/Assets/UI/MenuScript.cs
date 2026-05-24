@@ -28,7 +28,6 @@ public class MenuScript : MonoBehaviour
 
     private void Jugar(PointerDownEvent evt)
     {
-        Debug.Log("Hola hola hola");
         GameManager.Instance.sceneManager.CargarNivelesDeJuego("Nivel1");
     }
 }
