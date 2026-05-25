@@ -1,62 +1,54 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 
-
 [System.Serializable]
-// Nombre que se le asigna cuando se crea es "NewItem" y Ubicacion : "Items/Item"
-[CreateAssetMenu(fileName = "NewItem", menuName = "Items/Item")] //<- Esto crea la propiedad para poder crearlos desde creador de assets
-
+[CreateAssetMenu(fileName = "NewItem", menuName = "Items/Item")]
 public sealed class Item : ScriptableObject
 {
-    //Los tipos de Item que podemos elegir
-    public enum TipoItem {Oro, PocionVerde, PocionRoja,Almas,FragmentoEspecial}
+    // ==========================================
+    // ENUMS Y CONFIGURACIÓN ESTÁTICA
+    // ==========================================
+    public enum TipoItem { Oro, PocionVerde, PocionRoja, Almas, FragmentoEspecial }
 
-    [SerializeField] private TipoItem tipo; //Con esto en el inspector podremos ver una lista plegable de los enum que hay
-                                            
-
-    [HideInInspector][SerializeField] private string nombre; //Con esto le estamos asignando un nombre a el Item
-    [SerializeField] private GameObject prefab; //Prefab del objeto aqui
-    [SerializeField] public Sprite sprite;  //Esto es con el asignar una imagen y que el UI_INVENTARIO LA TOME
-    
-
-    // Diccionario de límites, cada Enum de tipo solo puede almacenar cierta cantidad
+    // Diccionario de límites de apilamiento máximos indexados por el tipo de ítem
     private static readonly Dictionary<TipoItem, int> MaxCantidadPorTipo = new()
     {
-        { TipoItem.Oro,          30 },
-        { TipoItem.FragmentoEspecial,       3 },
-        { TipoItem.PocionRoja,   15 },
-        { TipoItem.PocionVerde,   3 },
+        { TipoItem.Oro,               30 },
+        { TipoItem.FragmentoEspecial,  3 },
+        { TipoItem.PocionRoja,        15 },
+        { TipoItem.PocionVerde,        3 },
     };
 
-    
-    //Metodo Get de tipo.
-    public TipoItem Tipo => tipo; //Por ahora nadie lo usa y ni me acuerdo porque lo puse :V
+    // ==========================================
+    // VARIABLES Y CAMPOS SERIALIZADOS (CAMPOS)
+    // ==========================================
+    [SerializeField] private TipoItem tipo;              // Desplegable en el inspector para definir la identidad del ítem.
+    [SerializeField] private GameObject prefab;          // Referencia al objeto físico que se instancia en el mundo 2D.
+    [SerializeField] public Sprite sprite;               // Icono representativo texturizado que lee el UI_Inventario.
 
+    [HideInInspector]
+    [SerializeField] private string nombre;              // Identificador de cadena de texto interno expuesto por propiedad.
 
-    //Metodo Get y Sett del atributo nombre
-    /// Nombre que se muestra en UI.  
-    /// Se actualiza automáticamente cuando cambias el enum 
+    // ==========================================
+    // PROPIEDADES DE ACCESO (GETTERS Y SETTERS)
+    // ==========================================
+    public TipoItem Tipo => tipo;                        // Retorna el identificador del enumerador puro.
+
     public string Nombre
     {
         get => nombre;
-        set => nombre = value ?? $"Unnamed_{tipo}";
+        set => nombre = value ?? $"Unnamed_{tipo}";     // Asigna un nombre por defecto estructurado si el valor es nulo.
     }
 
-    // Este metodo obtiene el valor maximo definido para cada objeto del inventario.
-    // recibe la clave de el mismo.
-    public int CantidadMaxima => MaxCantidadPorTipo[tipo]; //Este metodo Get es usado en ItemContainer.
+    public int CantidadMaxima => MaxCantidadPorTipo[tipo]; // Devuelve el límite de stack consultando el diccionario estático.
 
-    // Metodo Get de tipo, pero no como enum si no como string.
-    public string TipoItemString => tipo.ToString();
+    public string TipoItemString => tipo.ToString();     // Conversión explícita del enumerador actual a cadena de texto.
 
-    // Se ejecuta no mas se haga una instancia de esta clase.
+    // ==========================================
+    // MÉTODOS DE VALIDACIÓN DEL EDITOR
+    // ==========================================
     private void OnValidate()
     {
-        // Nombre tendra la referencia de un tipo como nombre
-        // Si el tipo cambia el nombre igual
-        // La logica de este metodo luego debe ser cambiada att:MIguelito
-        nombre = TipoItemString;
+        nombre = TipoItemString;                         // Sincroniza automáticamente el nombre con el enum al cambiarlo en el Inspector.
     }
 }
-    

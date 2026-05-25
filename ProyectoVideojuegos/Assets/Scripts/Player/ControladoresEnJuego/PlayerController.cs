@@ -5,242 +5,172 @@ using static GameManager;
 
 public class PlayerController : MonoBehaviour
 {
-    /// <summary>
-    /// Esta es la base de datos central del Player, es donde vamos a estar consultando los
-    /// diferentes atributos del player, tambien sirve para la recuperacion de datos en caso de errores entre scenas
-    /// </summary>
-    public GameSessionSO sessionSO;
-    public GameObject lanza;
+    // DELEGADOS Y EVENTOS (ESTÁTICOS Y DE INSTANCIA)
+    public static event Action OnPlayerDeath;            // Notifica al GameManager el deceso del jugador.
+    public event Action<bool, bool, bool, bool> OnHabilidadesChanged; // Sincroniza las 4 habilidades con la UI.
+    public event Action<int, int> OnVidaChanged;        // Actualiza el valor de salud en los medidores.
+    public event Action<int, int> OnStaminaChanged;// Actualiza el valor de energía en los medidores.
 
-    //Evento que notifica a el GameManager
-    //GameManager se suscribe a este evento
-    public static event Action OnPlayerDeath;
+    // CONFIGURACIÓN CONSTANTE Y PARÁMETROS BASE
+    private const int VIDA_MAXIMA = 100;// Límite superior de salud del personaje.
+    private const int STAMINA_MAXIMA = 100;// Límite superior de energía del personaje.
 
-    public event Action<int, int> OnVidaChanged;
-    public event Action<int, int> OnStaminaChanged;
-    private const int VIDA_MAXIMA = 100;
-    private const int STAMINA_MAXIMA = 100;
+    [Header("Bases de Datos y Componentes")]
+    public GameSessionSO sessionSO; // ScriptableObject con la persistencia de datos.
+    public GameObject lanza;// Referencia del objeto físico de la lanza.
+    private MovementController movementController; // Componente encargado de las físicas de movimiento.
 
-    [Header("Estadisticas")]
-    public int vidaActual; 
-    public int staminaActual; 
-    public int staminaRegenRate = 5; //Esto aun no se utiliza.
+    [Header("Estadísticas Locales")]
+    public int vidaActual;// Registro de salud en tiempo real.
+    public int staminaActual;// Registro de energía en tiempo real.
+    public int staminaRegenRate = 5; // Tasa de recuperación de energía (pendiente de uso).
 
-    [Header("Habilidades")]
-    public bool tieneLanza;
-    public bool tieneMagia;
-    public bool tieneParry;
-    public bool tieneLibro;
-  
+    [Header("Estados de Desbloqueo (Habilidades)")]
+    public bool tieneLanza;// Estado de posesión de la Lanza.
+    public bool tieneMagia;// Estado de posesión del Fragmento de Magia.
+    public bool tieneParry;// Estado de posesión del Fragmento de Parry.
+    public bool tieneLibro;// Estado de posesión del Libro EGVA.
 
-    [Header("Configuracion de Deteccion de Fragmentos e Items")]
-    public float radioDeteccion = 2f;
-    public LayerMask capaItems;
-    public LayerMask capaFragmentos;
+    [Header("Parámetros de Detección")]
+    public float radioDeteccion = 2f; // Rango del círculo de interacción.
+    public LayerMask capaItems; // Filtro de colisión para consumibles u objetos.
+    public LayerMask capaFragmentos;// Filtro de colisión para fragmentos de historia/habilidad.
+    private bool controlesHabilitados = true;  // Flag de control de inputs del periférico.
 
-
-    //Pongo esta variable para poder deshabilitar el movimiento por un momento al capturar la lanza
-    private bool controlesHabilitados = true;
-    private MovementController movementController; //Perfecto aqui te me adelantaste con esto. by: Miguel
-
+    // CICLO DE VIDA DE UNITY (LIFECYCLE)
     private void Awake()
     {
-        // Con esto hacemos que el GameManager pueda tomar la referencia del PlayerController
         if (GameManager.Instance != null)
         {
-            bool enGameplay = GameManager.Instance.EstadoJuego == GameState.Gameplay;
-            if (enGameplay)
-            {
-                GameManager.Instance.datosJugador = this;
-                GameManager.Instance.ChangeState(GameState.Gameplay);   
-            }
+            // Vinculamos de manera segura la instancia del jugador al mánager central
+            GameManager.Instance.datosJugador = this;
         }
-
         movementController = GetComponent<MovementController>();
-
     }
+
     private void Start()
     {
-        // Validaciones
         if (sessionSO == null || sessionSO.playerDATOS == null)
         {
-            Debug.LogError("Verifique que el scriptableObject del jugador este asignado");
+            Debug.LogError("ScriptableObject del jugador no asignado en PlayerController.");
             return;
         }
 
-        // Validacion que nuestro player haya inicializado su inventario.
-        if (sessionSO.playerDATOS.Inventario == null)
+        if (sessionSO.playerDATOS.Inventario == null) // Inicialización forzada del inventario defensivo.
         {
-            Debug.LogError("Inventario Vacio");
-            Debug.Log("CreandoInventario");
-            //En caso de no tener una instancia generada, fuerza la inicializacion del inventario.
+            Debug.Log("Inicializando inventario vacío en base de datos.");
             sessionSO.playerDATOS.Inventario.ObtenerSlotsVacios();
         }
-        ActualizarValoresEnControlador();
-        
-        ///Esto no es necesario puesto que quien le dice que tiene armas o no es la clase base Player.
-        ///el player controller atraves de Actualizar Habilidades pregunta a la lista del player y si esta simplemente activa la lanza que ya tiene el personaje 
-        ///Asignada, asi como solo es un nivel es mas facil el manejo entre scenas, no es lo mas optimo, pero es mas breve por ahora.
-       
-        //if (GameManager.Instance.tieneArma==true)
-        //{
-        //    sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.Lanza);
-        //    ActualizarHabilidades();
-        //}
+
+        ActualizarValoresEnControlador(); // Carga la información persistente al arrancar escena.
     }
 
     private void Update()
     {
-        //Validación defensiva
         if (sessionSO == null || sessionSO.playerDATOS == null) return;
-        RecolectarItems();
-        RecolectarFragmentos();
+        RecolectarItems(); // Escucha el input para agarrar consumibles.
+        RecolectarFragmentos();// Escucha el input para absorber habilidades.
     }
 
+    private void OnDrawGizmos()
+    {
+        Vector2 posicionAjuste = (Vector2)transform.position + new Vector2(0f, 1.2f); // Desfase vertical del centro.
+        bool detectado = Physics2D.OverlapCircle(posicionAjuste, radioDeteccion, capaItems);
+        Gizmos.color = detectado ? Color.green : Color.red;
+        Gizmos.DrawWireSphere(posicionAjuste, radioDeteccion); // Dibuja el área de interacción en el Editor.
+    }
 
-    //Cada que por ejemplo reiniciemos una scena, este script playerController se reinicia
-    //Como este script se reinicia se ejecuta este metodo.
-    //Que rellena la vida del enemigo aqui como en la base de datos del personaje
+    // MÉTODOS DE CONTROL DE ESTADO Y PERSISTENCIA
     private void ActualizarValoresEnControlador()
     {
         vidaActual = sessionSO.playerDATOS.VidaJugador;
         staminaActual = sessionSO.playerDATOS.Stamina;
-        // Si la vida es igual o menor a cero eso significa que es una nueva partida.
-        if (vidaActual <= 0)
+
+        if (vidaActual <= 0)// Reseteo de salud si es una sesión nueva o corrupta.
         {
             vidaActual = VIDA_MAXIMA;
             GuardarVidaEnScriptableObject();
         }
 
-        if(staminaActual  <= 0)
+        if (staminaActual <= 0)// Reseteo de energía en las mismas condiciones.
         {
             staminaActual = STAMINA_MAXIMA;
             GuardarVidaEnScriptableObject();
         }
-        // ActualizamosHabilidades
-        ActualizarHabilidades();
+
+        ActualizarHabilidades(); // Sincroniza estados visuales de las armas e interfaz.
         OnVidaChanged?.Invoke(vidaActual, VIDA_MAXIMA);
         OnStaminaChanged?.Invoke(staminaActual, STAMINA_MAXIMA);
-
     }
-    /// <summary>
-    /// Este metodo debemos usarlo cada que aumentemos o disminuyamos la vida en el jugador.
-    /// Para tener actualizado siempre el valor de la base de datos.
-    /// </summary>
+
     private void GuardarVidaEnScriptableObject()
     {
         if (vidaActual > VIDA_MAXIMA) vidaActual = VIDA_MAXIMA;
-        if (vidaActual <= 0) sessionSO.playerDATOS.VidaJugador = 0;
-        else sessionSO.playerDATOS.VidaJugador = vidaActual;
+        sessionSO.playerDATOS.VidaJugador = vidaActual <= 0 ? 0 : vidaActual;
 
-        // Cada vez que se guarda/modifica la vida en el flujo, disparamos el evento
-        OnVidaChanged?.Invoke(vidaActual, VIDA_MAXIMA);
-    }
-
-    private void GuardarStaminaEnScriptableObject()
-    {
-        if (staminaActual > STAMINA_MAXIMA) staminaActual = STAMINA_MAXIMA;
-        if (staminaActual <= 0) sessionSO.playerDATOS.Stamina = 0;
-        else sessionSO.playerDATOS.Stamina = staminaActual;
-
-        // Cada vez que se guarda/modifica la stamina, disparamos el evento
-        OnStaminaChanged?.Invoke(staminaActual, STAMINA_MAXIMA);
+        OnVidaChanged?.Invoke(vidaActual, VIDA_MAXIMA);  // Dispara actualización síncrona a la interfaz.
     }
 
     public void ActualizarHabilidades()
     {
         if (sessionSO == null || sessionSO.playerDATOS == null) return;
+
         tieneLanza = sessionSO.playerDATOS.IsUnlocked(TipoHabilidadEnum.Lanza);
-        if (tieneLanza == true) lanza.gameObject.SetActive(true);
+        if (tieneLanza) lanza.SetActive(true);           // Activa el objeto gráfico de la lanza en el personaje.
+
         tieneMagia = sessionSO.playerDATOS.IsUnlocked(TipoHabilidadEnum.FragmentoMagia);
         tieneParry = sessionSO.playerDATOS.IsUnlocked(TipoHabilidadEnum.FragmentoParry_AtaqueFuerte);
         tieneLibro = sessionSO.playerDATOS.IsUnlocked(TipoHabilidadEnum.libroEGVA);
+
+        OnHabilidadesChanged?.Invoke(tieneLanza, tieneMagia, tieneParry, tieneLibro);
     }
 
+    // SISTEMA DE COMBATE, DAÑO Y DECESO
     public void TakeDamage(int damage)
     {
         vidaActual -= damage;
         GuardarVidaEnScriptableObject();
-        Debug.Log("El jugador recibió " + damage + " de daño. Vida actual: " + vidaActual);
 
-        if (vidaActual <= 0)
-        {
-            Die();
-        }
+        if (vidaActual <= 0) Die();
     }
 
     private void Die()
     {
-        HabilitarControles(false);
-        OnPlayerDeath?.Invoke();
+        HabilitarControles(false);// Corta las físicas y comandos de entrada del jugador.
+        OnPlayerDeath?.Invoke();// Delega la secuencia de muerte al GameManager.
     }
 
-
-    // Dibujar el círculo en el Editor para pruebas
-    private void OnDrawGizmos()
-    {
-        Vector2 posicionAjuste = (Vector2)transform.position + new Vector2(0f, 1.2f);
-        // Chequeo rápido para el color del Gizmo en 2D
-        bool detectado = Physics2D.OverlapCircle(posicionAjuste, radioDeteccion, capaItems);
-
-        Gizmos.color = detectado ? Color.green : Color.red;
-
-        // Dibujamos el círculo (usamos la posición del transform)
-        Gizmos.DrawWireSphere(posicionAjuste, radioDeteccion);
-    }
-
-
+    // SISTEMA DE DETECCIÓN E INTERACCIÓN (ITEMS/FRAGMENTS)
     private void RecolectarItems()
     {
         ItemContainer item = GetItemMasCercano();
-
-        if (item != null)
+        if (item != null && Input.GetKeyDown(KeyCode.Y))
         {
-
-            if (Input.GetKeyDown(KeyCode.Y))
-            {
-                Debug.Log($"Item recolectado: {item.ItemDATA.Nombre} cantidad : {item.Cantidad}");
-                bool exito = sessionSO.playerDATOS.Inventario.AgregarItem(item);
-
-                    if (exito)
-                    {
-                        Debug.Log($"Total de items en inventario: {sessionSO.playerDATOS.Inventario.ObtenerCantidadTotalItems()}");
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"Inventario está LLENO ({sessionSO.playerDATOS.Inventario.ObtenerSlotsVacios()} slots disponibles)");
-                    }
-             }
-            
+            bool exito = sessionSO.playerDATOS.Inventario.AgregarItem(item);
+            if (!exito) Debug.LogWarning("Inventario lleno. No se pudo agregar el ítem.");
         }
     }
 
     private ItemContainer GetItemMasCercano()
     {
         Vector2 posicionAjuste = (Vector2)transform.position + new Vector2(0f, 1.2f);
-        // Detectar todos los colliders en el radio
         Collider2D[] colliders = Physics2D.OverlapCircleAll(posicionAjuste, radioDeteccion, capaItems);
 
         ItemContainer itemMasCercano = null;
-        float distanciaMinima = Mathf.Infinity; // Empezamos con una distancia infinita
+        float distanciaMinima = Mathf.Infinity;
 
         foreach (Collider2D col in colliders)
         {
-            //Verificacion si el objeto tiene ItemContainer
             if (col.TryGetComponent<ItemContainer>(out ItemContainer item))
             {
-                //Calcular la distancia entre yo(player) y el objeto
                 float distancia = Vector2.Distance(transform.position, col.transform.position);
-
-                // 4. Si esta distancia es menor a la anterior, este es nuestro nuevo "ganador"
-                if (distancia < distanciaMinima)
+                if (distancia < distanciaMinima)// Filtra de forma iterativa el objeto a menor distancia.
                 {
                     distanciaMinima = distancia;
                     itemMasCercano = item;
                 }
             }
         }
-
         return itemMasCercano;
     }
 
@@ -249,62 +179,50 @@ public class PlayerController : MonoBehaviour
         Vector2 posicionAjuste = (Vector2)transform.position + new Vector2(0f, 1.2f);
         Collider2D collider = Physics2D.OverlapCircle(posicionAjuste, radioDeteccion, capaFragmentos);
 
-        if (collider != null)
+        if (collider != null && Input.GetKeyDown(KeyCode.R))
         {
             string nombreCapaItem = LayerMask.LayerToName(collider.gameObject.layer);
-            if (Input.GetKeyDown(KeyCode.R))
+            switch (nombreCapaItem)// Desbloqueo lógico según la capa del objeto detectado.
             {
-                switch (nombreCapaItem)
-                {
-                    case "LanzaEstatica":
-                        sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.Lanza);
-                        Destroy(collider.gameObject);
-                        lanza.SetActive(true);
-                        tieneLanza = true;
-                        break;
-                    case "FragmentoMagia":
-                        sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.FragmentoMagia);
-                        tieneMagia = true;
-                        break;
-                    case "FragmentoParry_AtaqueFuerte":
-                        sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.FragmentoParry_AtaqueFuerte);
-                        tieneParry = true;
-                        break;
-                    case "libroEGVA":
-                        sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.libroEGVA);
-                        tieneLibro = true;
-                        break;
-                }
+                case "LanzaEstatica":
+                    sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.Lanza);
+                    Destroy(collider.gameObject);
+                    lanza.SetActive(true);
+                    tieneLanza = true;
+                    break;
+                case "FragmentoMagia":
+                    sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.FragmentoMagia);
+                    tieneMagia = true;
+                    break;
+                case "FragmentoParry_AtaqueFuerte":
+                    sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.FragmentoParry_AtaqueFuerte);
+                    tieneParry = true;
+                    break;
+                case "libroEGVA":
+                    sessionSO.playerDATOS.Unlock(TipoHabilidadEnum.libroEGVA);
+                    tieneLibro = true;
+                    break;
             }
+            ActualizarHabilidades(); //Fuerza el refresco inmediato de los cambios en la UI.
         }
     }
 
-    //Metodo publico para habilitar o deshabilitar controles
     public void HabilitarControles(bool enabled)
     {
         controlesHabilitados = enabled;
-
-        Debug.Log($"SetControlEnabled({enabled}), movementController = {movementController}");
         if (movementController != null)
         {
-            movementController.enabled = enabled;
-            Debug.Log($"MovementController.enabled ahora es {movementController.enabled}");
+            movementController.enabled = enabled;// Enciende o apaga el procesamiento del script de movimiento.
         }
         else
         {
-            Debug.LogError("MovementController NO encontrado en el mismo GameObject que PlayerController");
+            Debug.LogError("MovementController no configurado en este GameObject.");
         }
 
         if (!enabled)
         {
-            // frena la velocidad
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.linearVelocity = Vector2.zero;
-
-
-            }
+            if (rb != null) rb.linearVelocity = Vector2.zero; // Anula la inercia del cuerpo rígido al bloquear.
         }
     }
 }

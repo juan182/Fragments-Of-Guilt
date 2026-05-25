@@ -1,0 +1,112 @@
+/* ==========================================
+   CONFIGURACIÓN GENERAL (FONDO PLANO OSCURO)
+   ========================================== */
+
+/* CORREGIDO: Tenía dos puntos (..) y causaba que Unity ignorara todo el archivo */
+.muerte-contenedor {
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(12, 2, 4);
+    padding: 40px;
+
+    /* Configuración de la transición suave */
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.8s;
+    transition-timing-function: ease-in-out;
+}
+
+.muerte-contenedor.visible {
+    opacity: 1;
+}
+
+/* ==========================================
+   BLOQUE CENTRAL (TEXTOS)
+   ========================================== */
+
+.muerte-bloque-texto {
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 60px;
+    width: 100%;
+}
+
+.texto-titulo-muerte {
+    color: rgb(214, 10, 22);
+    font-size: 75px;
+    letter-spacing: 5px;
+    -unity-font-style: bold;
+    -unity-font-definition: url("project://database/Assets/Fonts/CinzelDecorative-Bold.otf?fileID=12800000&guid=7d4cfba4f27ffa146b0815f408c8393e&type=3#CinzelDecorative-Bold");
+    -unity-text-align: middle-center;
+    margin-bottom: 15px;
+}
+
+.texto-subtitulo-muerte {
+    color: rgb(115, 115, 115);
+    font-size: 18px;
+    -unity-font-style: italic;
+    -unity-text-align: middle-center;
+}
+
+/* ==========================================
+   BLOQUE INFERIOR (BOTONES)
+   ========================================== */
+
+.muerte-bloque-botones {
+    width: 35%;
+    align-items: center;
+}
+
+/* Botón REINTENTAR */
+.btn-muerte-principal {
+    width: 100%;
+    height: 45px;
+    background-color: rgba(212, 163, 89, 0.15);
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-color: rgb(212, 163, 89);
+    border-radius: 4px;
+    color: rgb(212, 163, 89);
+    font-size: 16px;
+    margin-bottom: 15px;
+    -unity-font-definition: url("project://database/Assets/Fonts/CinzelDecorative-Bold.otf?fileID=12800000&guid=7d4cfba4f27ffa146b0815f408c8393e&type=3#CinzelDecorative-Bold");
+    
+    transition-property: background-color, color;
+    transition-duration: 0.2s, 0.2s;
+}
+
+.btn-muerte-principal:hover {
+    background-color: rgba(212, 163, 89, 0.45);
+    color: rgb(255, 255, 255);
+}
+
+/* Botón MENÚ PRINCIPAL */
+.btn-muerte-secundario {
+    width: 100%;
+    height: 45px;
+    background-color: rgba(25, 25, 25, 0.6);
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-color: rgb(55, 55, 55);
+    border-radius: 4px;
+    color: rgb(155, 155, 155);
+    font-size: 15px;
+    -unity-font-definition: url("project://database/Assets/Fonts/CinzelDecorative-Bold.otf?fileID=12800000&guid=7d4cfba4f27ffa146b0815f408c8393e&type=3#CinzelDecorative-Bold");
+    
+    transition-property: background-color, border-color, color;
+    transition-duration: 0.2s, 0.2s, 0.2s;
+}
+
+.btn-muerte-secundario:hover {
+    background-color: rgba(45, 45, 45, 0.8);
+    border-color: rgb(115, 115, 115);
+    color: rgb(225, 225, 225);
+}

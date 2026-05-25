@@ -5,8 +5,7 @@ using static GameManager;
 public class UI_Manager : MonoBehaviour
 {
     public MenuScript ui_Menu;
-    public UI_Inventario inventario = null;
-
+    public GameOverScript gameOverUI;
     private void Start()
     {
 

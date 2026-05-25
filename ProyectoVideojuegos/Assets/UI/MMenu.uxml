@@ -7,10 +7,59 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="containerbuttons" picking-mode="Ignore" class="containerbuttons">
-            <ui:Button text="PLAY" name="Play" class="button-p" style="font-size: 20px;"/>
-            <ui:Button text="SAVED GAMES" name="Save" class="button-p" style="font-size: 20px;"/>
-            <ui:Button text="CONTROLS" name="Controls" class="button-p" style="font-size: 20px;"/>
-            <ui:Button text="OPTIONS" name="Options" class="button-p" style="font-size: 20px;"/>
+            <ui:Button text="JUGAR" name="Play" class="button-p" style="font-size: 20px;"/>
+            <ui:Button text="OPCIONES" name="Options" class="button-p" style="font-size: 20px;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="MenuOpciones" class="panel-opciones oculto">
+            <ui:VisualElement name="VisualElement" class="opciones-header">
+                <ui:Label text="OPCIONES" class="texto-dorado titulo-seccion"/>
+                <ui:Button name="BtnCerrarTop" text="X" class="btn-cerrar-x"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="DondeSlider" class="seccion-bloque">
+                <ui:Label text="AUDIO" class="texto-dorado subtitulo-seccion"/>
+                <ui:VisualElement class="fila-slider">
+                    <ui:Label text="Volumen de Musica" class="texto-blanco"/>
+                    <ui:Slider name="SliderMusica" value="67" start-value="0" end-value="100" class="slider-personalizado"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="ContenedorControles" class="seccion-bloque" style="flex-grow: 1;">
+                <ui:Label text="CONTROLES" class="texto-dorado subtitulo-seccion"/>
+                <ui:VisualElement class="grid-controles">
+                    <ui:VisualElement class="control-item">
+                        <ui:Label text="Mover Izquierda" class="texto-blanco"/>
+                        <ui:Label text="A" class="tecla-box"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="control-item">
+                        <ui:Label text="Mover Derecha" class="texto-blanco"/>
+                        <ui:Label text="D" class="tecla-box"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="control-item">
+                        <ui:Label text="Saltar" class="texto-blanco"/>
+                        <ui:Label text="SPACE" class="tecla-box"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="control-item">
+                        <ui:Label text="Recolectar Items" class="texto-blanco"/>
+                        <ui:Label text="R" class="tecla-box"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="control-item">
+                        <ui:Label text="Atacar" class="texto-blanco"/>
+                        <ui:Label text="Q" class="tecla-box"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="control-item">
+                        <ui:Label text="Usar Magia" class="texto-blanco"/>
+                        <ui:Label text="E" class="tecla-box"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="control-item">
+                        <ui:Label text="Inventario" class="texto-blanco"/>
+                        <ui:Label text="TAB" class="tecla-box"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="control-item">
+                        <ui:Label text="Opciones" class="texto-blanco"/>
+                        <ui:Label text="ESC" class="tecla-box"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:Button name="BtnVolver" text="VOLVER AL MENU" class="btn-volver-menu"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

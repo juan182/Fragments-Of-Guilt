@@ -156,6 +156,7 @@ public class MovementController : MonoBehaviour
         //Para arrojar el orbe magico
         if (Input.GetKeyDown(KeyCode.E))
         {
+            
             DisparoLanzaMagica scriptLanza = GetComponentInChildren<DisparoLanzaMagica>(true);
             if (scriptLanza != null)
             {
