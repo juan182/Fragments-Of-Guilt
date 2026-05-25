@@ -249,8 +249,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   vidaMaxima: 100
-  audioSource: {fileID: 0}
-  sfxMuerte: {fileID: 0}
+  tiempoParpadeo: 1.5
 --- !u!114 &5955348462479831499
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -73,7 +73,6 @@ public class BossController : MonoBehaviour
     private bool estaEntrando = false;
     private bool jefeListo = false;
     private bool estaEnFase2 = false;
-    private bool estaMuerto = false;
 
     private Health health;
     private Rigidbody2D rb;
@@ -124,16 +123,10 @@ public class BossController : MonoBehaviour
 
     private void Update()
     {
-        if (estaMuerto) return;
 
         if (GameManager.Instance != null && GameManager.Instance.EstadoJuego == GameState.GameOver)
             return;
 
-        if (health != null && health.VidaActual <= 0)
-        {
-            MorirJefe();
-            return;
-        }
 
         VerificarFase2();
 
@@ -514,29 +507,6 @@ public class BossController : MonoBehaviour
         }
     }
 
-    // ---- MUERTE ----
-
-    private void MorirJefe()
-    {
-        if (estaMuerto) return;
-        estaMuerto = true;
-
-        StopAllCoroutines();
-        rb.linearVelocity = Vector2.zero;
-        rb.bodyType = RigidbodyType2D.Static;
-
-        if (hitboxMordida != null) hitboxMordida.SetActive(false);
-        if (hitboxCabezazo != null) hitboxCabezazo.SetActive(false);
-        if (hitboxTorso != null) hitboxTorso.SetActive(false);
-
-        if (musicaSource != null) musicaSource.Stop();
-        if (audioSource != null && sfxMuerte != null) audioSource.PlayOneShot(sfxMuerte);
-
-        if (GameManager.Instance != null)
-            GameManager.Instance.LevelComplete();
-
-        gameObject.SetActive(false);
-    }
 
     // ---- ANIMATION EVENTS ----
 
