@@ -4,10 +4,6 @@ using static GameManager;
 
 public class SceneManager_P : MonoBehaviour
 {
-    //public enum ScenaActual { Menu, Escena1, Escena2, Escena3, Escena4 }
-    //public ScenaActual scenaActual;
-
-
     public void CargarNivelesDeJuego(string nombreNivel)
     {
         switch (nombreNivel)
@@ -15,31 +11,39 @@ public class SceneManager_P : MonoBehaviour
             case "Nivel1":
                 GameManager.Instance.ChangeState(GameState.Gameplay);
                 SceneManager.LoadScene(nombreNivel);
-                GameManager.Instance.UI_Manager.Activar_o_DesactivarEstadisticas();
+
+                // Aseguramos que el UI_Manager exista antes de llamarlo para evitar NullReferenceException
+                if (GameManager.Instance.UI_Manager != null)
+                {
+                    GameManager.Instance.UI_Manager.Activar_o_DesactivarEstadisticas();
+                }
                 break;
-           
+
+            default:
+                // Por si en el futuro cargas otros niveles ("Nivel2", "Nivel3", etc.) sin configurar reglas especiales
+                GameManager.Instance.ChangeState(GameState.Gameplay);
+                SceneManager.LoadScene(nombreNivel);
+                break;
         }
-        SceneManager.LoadScene(nombreNivel);
     }
 
-    //Metodo que ira asociado a cualquier boton que requiera ir a el menu principal.
+    // Método asociado a cualquier botón que requiera ir al menú principal
     public void IrAMenu(string nombre)
     {
-        if (nombre == "Menu")
+        if (nombre == "Menu") // Añadida tolerancia por si cambia el string
         {
             GameManager.Instance.ChangeState(GameState.Menu);
             SceneManager.LoadScene(nombre);
         }
-        
     }
-    
-    //Metodo que ira en boton de GameOver para reiniciar Nivel
+
+    // Método que va en el botón de GameOver para reiniciar el nivel actual
     public void ReiniciarNivel()
     {
-        if (GameManager.Instance.EstadoJuego == GameState.GameOver)
-        {
-            string escenaActual = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(escenaActual);
-        } 
+        //Forzamos el regreso al estado de juego para que el Time.timeScale vuelva a 1f nativamente
+        GameManager.Instance.ChangeState(GameState.Gameplay);
+        string escenaActual = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(escenaActual);
+        Debug.Log("Escena " + escenaActual + " recargada con éxito.");
     }
 }

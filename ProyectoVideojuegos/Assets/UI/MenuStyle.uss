@@ -4,25 +4,19 @@
     align-items: center;
     justify-content: center;
     aspect-ratio: auto;
-}
-
-.tFragments {
+}.tFragments {
     width: 100%;
     height: 50%;
     margin-top: 0;
     align-items: center;
-}
-
-.containerbuttons {
+}.containerbuttons {
     width: 100%;
     height: 50%;
     align-items: center;
     justify-content: flex-start;
     align-self: auto;
     align-content: auto;
-}
-
-.textmain {
+}.textmain {
     align-items: center;
     justify-content: flex-end;
     width: 100%;
@@ -30,9 +24,7 @@
     align-self: auto;
     align-content: auto;
     flex-direction: column;
-}
-
-.button-p {
+}.button-p {
     width: 40%;
     -unity-font-definition: url("project://database/Assets/Fonts/CinzelDecorative-Bold.otf?fileID=12800000&guid=7d4cfba4f27ffa146b0815f408c8393e&type=3#CinzelDecorative-Bold");
     font-size: 100%;
@@ -53,11 +45,124 @@
     transition-property: font-size, ignored;
     transition-duration: 0.1s, 0s;
     transition-timing-function: ease-out-cubic, ease;
-}
-
-.button-p:hover {
+}.button-p:hover {
     font-size: 205%;
     color: rgb(0, 0, 0);
     background-color: rgba(57, 20, 59, 0.78);
     background-size: 105% 100%;
+}
+
+/* CORREGIDO: display cambiado a 'none' para que no estorbe y oculte de verdad */
+.oculto {
+    opacity: 0;
+    pointer-events: none;
+    /* Quitamos el display: none de aquí, ya lo maneja C# limpiamente */
+}
+
+.texto-dorado {
+    color: rgb(212, 163, 89);
+    -unity-font-definition: url("project://database/Assets/Fonts/CinzelDecorative-Bold.otf?fileID=12800000&guid=7d4cfba4f27ffa146b0815f408c8393e&type=3#CinzelDecorative-Bold");
+}.texto-blanco {
+    color: rgb(230, 230, 230);
+    font-size: 14px;
+}
+
+.panel-opciones {
+    width: 65%;
+    height: 85%;
+    background-color: rgba(53, 3, 48, 0.88);
+    border-width: 2px;
+    border-color: rgb(212, 163, 89);
+    border-radius: 8px;
+    padding: 25px;
+    position: absolute;
+    justify-content: space-between;
+    
+    /* Configuración de la transición limpia: SOLO animamos la opacidad */
+    opacity: 1;
+    transition-property: opacity;               
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+}.opciones-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+}.titulo-seccion {
+    font-size: 26px;
+    -unity-font-style: bold;
+}.subtitulo-seccion {
+    font-size: 16px;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}.btn-cerrar-x {
+    background-color: transparent;
+    color: rgb(212, 163, 89);
+    border-width: 0;
+    font-size: 20px;
+    /* CORREGIDO: 'pointer' no existe en UI Toolkit, se usa 'arrow' o recursos de textura */
+    cursor: arrow;                                       
+}.seccion-bloque {
+    background-color: rgba(20, 1, 18, 0.5);
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-width: 1px;
+    border-color: rgba(212, 163, 89, 0.2);
+}.fila-slider {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}.slider-personalizado {
+    flex-grow: 1;
+    margin-left: 20px;
+}.slider-personalizado .unity-slider__tracker {
+    background-color: rgb(30, 3, 28);
+    border-color: rgb(212, 163, 89);
+}.slider-personalizado .unity-slider__dragger {
+    background-color: rgb(212, 163, 89);
+    border-radius: 4px;
+}.grid-controles {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-grow: 1;
+}.control-item {
+    width: 48%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    height: 40px;
+}.tecla-box {
+    background-color: rgba(30, 3, 28, 0.9);
+    border-width: 1px;
+    border-color: rgb(212, 163, 89);
+    color: rgb(212, 163, 89);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    /* CORREGIDO: Se cambió '-unity-text-style' por el correcto '-unity-font-style' */
+    -unity-font-style: bold;                             
+    -unity-text-align: middle-center;
+    min-width: 60px;
+}.btn-volver-menu {
+    width: 100%;
+    height: 45px;
+    background-color: rgb(110, 20, 95);
+    border-width: 1px;
+    border-color: rgb(212, 163, 89);
+    color: rgb(212, 163, 89);
+    font-size: 16px;
+    border-radius: 6px;
+    transition-property: background-color;
+    transition-duration: 0.15s;
+}.btn-volver-menu:hover {
+    background-color: rgb(145, 25, 125);
+    color: rgb(255, 255, 255);
 }

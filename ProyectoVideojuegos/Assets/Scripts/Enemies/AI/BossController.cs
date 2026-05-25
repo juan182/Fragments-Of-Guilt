@@ -528,8 +528,8 @@ public class BossController : MonoBehaviour
         if (musicaSource != null) musicaSource.Stop();
         if (audioSource != null && sfxMuerte != null) audioSource.PlayOneShot(sfxMuerte);
 
-        if (GameManager.Instance != null)
-            GameManager.Instance.LevelComplete();
+        //if (GameManager.Instance != null)
+        //    GameManager.Instance.LevelComplete();
 
         gameObject.SetActive(false);
     }
