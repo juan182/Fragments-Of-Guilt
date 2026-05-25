@@ -7,9 +7,6 @@ public class GameSessionSO : ScriptableObject
     [Header("DATOS DEL JUGADOR")]
     public Player playerDATOS;
 
-    
-
-
     /// <summary>
     /// Este metodo se ejecuta automaticamente apenas se inicie el juego
     /// Lo que hace es basicamente agregar a la listadeHabilidades cada tipo existente por cada valor del enum tipoHabilidadEnum

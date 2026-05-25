@@ -1,38 +1,46 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UI_Inventario : MonoBehaviour
 {
-    public PlayerController playerController;
-    // Acceso a los datos del jugador
-    public GameSessionSO sesion;
+    [Header("Referencias del Jugador")]
+    public PlayerController playerController;            // Controlador lógico del personaje.
+    public GameSessionSO sesion;                         // Contenedor de persistencia de datos del jugador.
 
-    [Header("Estado de la ui")]
-    private bool inventarioActivo = false;
-    private UIDocument uiDocument;
-    private VisualElement root;
+    [Header("Nombres de Equipamiento (Editables)")]
+    [SerializeField] private string textoLanza = "LANZA CELESTIAL";
+    [SerializeField] private string textoMagia = "FRAGMENTO MAGIA";
+    [SerializeField] private string textoParry = "CONTRAATAQUE FUERTE";
+    [SerializeField] private string textoLibro = "LIBRO DE EGVA";
+    [SerializeField] private string textoVacio = "VACIO";
 
-    [Header("Contenedores Principales")]
-    private VisualElement hudInGame;
-    private VisualElement menuInventario;
+    // Elementos del Toolkit UI (Estructura Base)
+    private UIDocument uiDocument;                      // Componente puente de la interfaz.
+    private VisualElement root;                         // Nodo contenedor raíz del UXML.
+    private bool inventarioActivo = false;              // Control de estado de la ventana.
 
-    [Header("Elementos del HUD exploracion")]
-    private ProgressBar barraVidaHud;
-    private ProgressBar barraStaminaHUD;
-    private List<VisualElement> slotsHotbar = new List<VisualElement>();
+    // Elementos del Contenedor HUD e Inventario
+    private VisualElement hudInGame;                    // Panel principal en estado de exploración.
+    private VisualElement menuInventario;               // Panel principal en estado de pausa/mochila.
+    private ProgressBar barraVidaHud;                   // Medidor de salud en la interfaz de acción.
+    private ProgressBar barraStaminaHUD;                // Medidor de energía en la interfaz de acción.
+    private ProgressBar barraVidaMenu;                  // Medidor de salud dentro del menú de estado.
+    private ProgressBar barraStaminaMenu;               // Medidor de energía dentro del menú de estado.
 
+    // Slots de Equipamiento / Habilidades
+    private VisualElement slotEquip1;                   // Espacio para la Lanza.
+    private VisualElement slotEquip2;                   // Espacio para el Fragmento de Magia.
+    private VisualElement slotEquip3;                   // Espacio para el Fragmento de Parry.
+    private VisualElement slotEquip4;                   // Espacio para el Libro EGVA.
 
-    [Header("Elementos del Menu Inventario")]
-    private ProgressBar barraVidaMenu;
-    private ProgressBar barraStaminaMenu;
-
-
-    private VisualElement slotSeleccionado;
-    private int indexOrigen = -1;
-    private VisualElement iconoFantasma;
-    private List<VisualElement> slotsMochila = new List<VisualElement>();
+    // Colecciones y Gestión de Arrastre (Drag and Drop)
+    private List<VisualElement> slotsHotbar = new List<VisualElement>();    // Lista de accesos rápidos del HUD.
+    private List<VisualElement> slotsMochila = new List<VisualElement>();   // Lista de cuadrículas de la mochila.
+    private VisualElement slotSeleccionado;             // Elemento de interfaz que retiene el puntero.
+    private VisualElement iconoFantasma;                // Sprite flotante durante el arrastre.
+    private int indexOrigen = -1;                       // Posición inicial del ítem arrastrado.
 
     private void Awake()
     {
@@ -41,36 +49,32 @@ public class UI_Inventario : MonoBehaviour
 
         if (playerController == null) Debug.LogError("PlayerController sin asignar");
 
-        // 1. Vincular los contenedores principales según tu UXML
+        // Enlace de paneles contenedores principales
         hudInGame = root.Q<VisualElement>("HudInGame");
         menuInventario = root.Q<VisualElement>("MenuInventario");
 
-        // 2. Vincular componentes del HUD In-Game
+        // Enlace de ranuras fijas de equipamiento
+        slotEquip1 = root.Q<VisualElement>("EquipSlot1");
+        slotEquip2 = root.Q<VisualElement>("EquipSlot2");
+        slotEquip3 = root.Q<VisualElement>("EquipSlot3");
+        slotEquip4 = root.Q<VisualElement>("EquipSlot4");
+
+        // Enlace de medidores visuales
         barraVidaHud = root.Q<ProgressBar>("BarraVidaHUD");
         barraStaminaHUD = root.Q<ProgressBar>("BarraStaminaHUD");
-        ConfigurarHotbar();
-
-        // 3. Vincular componentes del Menú de Estado
         barraVidaMenu = root.Q<ProgressBar>("BarraVidaMenu");
         barraStaminaMenu = root.Q<ProgressBar>("BarraStaminaMenu");
 
+        // Inicialización de componentes internos
+        ConfigurarHotbar();
         CrearIconoFantasma();
         ConfigurarMochila();
-
-        // Inicializar el estado de las pantallas (Comienzas explorando con el HUD activo)
-        RefrescarVisibilidadPantallas();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            ActivarUI();
-        }
+        RefrescarVisibilidadPantallas(); // Configura visibilidad inicial (HUD activo por defecto).
     }
 
     private void OnEnable()
     {
+        // Registro a eventos del inventario y del personaje
         if (sesion?.playerDATOS?.Inventario != null)
             sesion.playerDATOS.Inventario.OnInventarioChanged += ActualizarVisualizacion;
 
@@ -78,14 +82,14 @@ public class UI_Inventario : MonoBehaviour
         {
             playerController.OnVidaChanged += CambiarVisualizacionVida;
             playerController.OnStaminaChanged += CambiarVisualizacionStamina;
+            playerController.OnHabilidadesChanged += ActualizarSlotsEquipamiento;
         }
         ActualizarVisualizacion();
-
-
     }
 
     private void OnDisable()
     {
+        // Remoción de suscripciones para evitar fugas en memoria
         if (sesion?.playerDATOS?.Inventario != null)
             sesion.playerDATOS.Inventario.OnInventarioChanged -= ActualizarVisualizacion;
 
@@ -93,49 +97,16 @@ public class UI_Inventario : MonoBehaviour
         {
             playerController.OnVidaChanged -= CambiarVisualizacionVida;
             playerController.OnStaminaChanged -= CambiarVisualizacionStamina;
+            playerController.OnHabilidadesChanged -= ActualizarSlotsEquipamiento;
         }
     }
 
-    private void CrearIconoFantasma()
+    private void Update()
     {
-        iconoFantasma = new VisualElement();
-        iconoFantasma.style.width = 20;  // Ajusta al tamaño de tus slots
-        iconoFantasma.style.height = 20;
-        iconoFantasma.style.position = Position.Absolute; // Para moverlo libremente
-        iconoFantasma.style.visibility = Visibility.Hidden;
-        iconoFantasma.pickingMode = PickingMode.Ignore; // IMPORTANTE: Que no tape los clics
-        iconoFantasma.style.opacity = 1f;
-        root.Add(iconoFantasma);
+        if (Input.GetKeyDown(KeyCode.I)) ActivarUI();   // Alterna la visibilidad del menú.
     }
 
-    private void ConfigurarMochila()
-    {
-        //Limpiamos la lista donde estan los botones
-        slotsMochila.Clear();
-
-        //En la configuracion del archivo uXML tenemos 6 VisualElement con nombre [sl1,sls...sl6] 
-        // Necesitamos meter la referencia a esos botones/ mas que nada necesitamos que se le queden registrados eventos a cada uno
-        for (int i = 1; i <= 9; i++)//Es por eso que hacemos la siguiente iteracion.
-        {
-            //Los botones son visualElement : Asi que debemos buscarlos desde root y hacer una Query en la Hierarchy del archivo uXML
-            VisualElement slot = root.Q<VisualElement>($"sl{i}");
-            //Si el slot no esta vacio. O mejor dicho es encontrado
-            if (slot != null)
-            {
-                // Lo agregamos a nuestra lista
-                slotsMochila.Add(slot);
-                //asignamos PickingMode que permite la "seleccion"
-                slot.pickingMode = PickingMode.Position;
-                // Registramos los diferentes eventos.
-                slot.RegisterCallback<PointerDownEvent>(OnPointerDownCustom, TrickleDown.TrickleDown);
-                slot.RegisterCallback<PointerUpEvent>(OnPointerUpCustom, TrickleDown.TrickleDown);
-
-                // Este es un evento que lo podemos denominar como : Sensor de movimiento :v porque se ejecutara cada vez que pasemos el cursor por  el elemento registrado.
-                slot.RegisterCallback<PointerMoveEvent>(OnPointerMoveCustom, TrickleDown.TrickleDown);
-            }
-        }
-    }
-
+    // CONFIGURACIÓN E INICIALIZACIÓN DE ELEMENTOS
     private void ConfigurarHotbar()
     {
         slotsHotbar.Clear();
@@ -144,34 +115,54 @@ public class UI_Inventario : MonoBehaviour
         foreach (string pos in posiciones)
         {
             VisualElement slot = root.Q<VisualElement>($"HotbarSlot{pos}");
+            if (slot != null) slotsHotbar.Add(slot);
+        }
+    }
+
+    private void ConfigurarMochila()
+    {
+        slotsMochila.Clear();
+        for (int i = 1; i <= 9; i++) // Recorre las 9 ranuras del inventario físico.
+        {
+            VisualElement slot = root.Q<VisualElement>($"sl{i}");
             if (slot != null)
             {
-                slotsHotbar.Add(slot);
+                slotsMochila.Add(slot);
+                slot.pickingMode = PickingMode.Position;
+                slot.RegisterCallback<PointerDownEvent>(OnPointerDownCustom, TrickleDown.TrickleDown);
+                slot.RegisterCallback<PointerUpEvent>(OnPointerUpCustom, TrickleDown.TrickleDown);
+                slot.RegisterCallback<PointerMoveEvent>(OnPointerMoveCustom, TrickleDown.TrickleDown);
             }
         }
     }
 
-    //Punto de partida de la interaccion.
+    private void CrearIconoFantasma()
+    {
+        iconoFantasma = new VisualElement();
+        iconoFantasma.style.width = 20;
+        iconoFantasma.style.height = 20;
+        iconoFantasma.style.position = Position.Absolute;
+        iconoFantasma.style.visibility = Visibility.Hidden;
+        iconoFantasma.pickingMode = PickingMode.Ignore; // Evita que interfiera con la detección de slots debajo.
+        iconoFantasma.style.opacity = 1f;
+        root.Add(iconoFantasma);
+    }
+
+    // GESTIÓN DEL SISTEMA DRAG AND DROP (PUNTERO)
     private void OnPointerDownCustom(PointerDownEvent evt)
     {
-        if (evt.button != 0) return; //Esto es para solo usar el click izquierdo y asi no tomar el registro del click derecho
+        if (evt.button != 0) return;// Restringe la acción solo al clic izquierdo.
 
         VisualElement target = evt.currentTarget as VisualElement;
-
         int index = slotsMochila.IndexOf(target);
-
         var inv = sesion.playerDATOS.Inventario.ListaItemsIn_ReadOnly;
 
         if (index >= 0 && index < inv.Count && inv[index]?.itemData != null)
         {
-            //Guardamos momentaneamente el boton se picamos.
             slotSeleccionado = target;
-            //Guardamos el indice, esto con el proposito de saber en que indice de la mochila de "botones" esta
             indexOrigen = index;
+            slotSeleccionado.CapturePointer(evt.pointerId); // Bloquea la interacción en este elemento.
 
-            slotSeleccionado.CapturePointer(evt.pointerId);
-
-            // ACTIVAR ICONO FANTASMA
             iconoFantasma.style.backgroundImage = new StyleBackground(inv[index].itemData.sprite);
             iconoFantasma.style.visibility = Visibility.Visible;
         }
@@ -179,30 +170,22 @@ public class UI_Inventario : MonoBehaviour
 
     private void OnPointerMoveCustom(PointerMoveEvent evt)
     {
-        if (slotSeleccionado != null)
-        {
-            ActualizarPosicionFantasma(evt.position);
-        }
+        if (slotSeleccionado != null) ActualizarPosicionFantasma(evt.position);
     }
 
-    // Punto de finalizacion de la interaccion.
     private void OnPointerUpCustom(PointerUpEvent evt)
     {
         if (slotSeleccionado == null || evt.button != 0) return;
 
-        slotSeleccionado.ReleasePointer(evt.pointerId);
-
-        // OCULTAR ICONO FANTASMA
+        slotSeleccionado.ReleasePointer(evt.pointerId); // Libera el bloqueo de puntero.
         iconoFantasma.style.visibility = Visibility.Hidden;
 
         VisualElement debajo = root.panel.Pick(evt.position);
-
         VisualElement slotDestino = BuscarSlotEnPadres(debajo);
 
         if (slotDestino != null)
         {
             int indexDestino = slotsMochila.IndexOf(slotDestino);
-
             if (indexDestino != -1 && indexDestino != indexOrigen)
             {
                 IntercambiarEnDatos(indexOrigen, indexDestino);
@@ -234,6 +217,35 @@ public class UI_Inventario : MonoBehaviour
         ActualizarVisualizacion();
     }
 
+    // ACTUALIZACIÓN DE INTERFAZ Y ESTADÍSTICAS
+    public void ActivarUI()
+    {
+        inventarioActivo = !inventarioActivo;
+        RefrescarVisibilidadPantallas();
+
+        if (inventarioActivo) ActualizarVisualizacion();
+    }
+
+    private void RefrescarVisibilidadPantallas()
+    {
+        if (inventarioActivo)
+        {
+            hudInGame?.AddToClassList("oculto");
+            if (hudInGame != null) hudInGame.pickingMode = PickingMode.Ignore;
+
+            menuInventario?.RemoveFromClassList("oculto");
+            if (menuInventario != null) menuInventario.pickingMode = PickingMode.Position;
+        }
+        else
+        {
+            hudInGame?.RemoveFromClassList("oculto");
+            if (hudInGame != null) hudInGame.pickingMode = PickingMode.Position;
+
+            menuInventario?.AddToClassList("oculto");
+            if (menuInventario != null) menuInventario.pickingMode = PickingMode.Ignore;
+        }
+    }
+
     public void ActualizarVisualizacion()
     {
         if (sesion?.playerDATOS?.Inventario == null) return;
@@ -259,52 +271,14 @@ public class UI_Inventario : MonoBehaviour
         }
     }
 
-    public void ActivarUI()
-    {
-        inventarioActivo = !inventarioActivo;
-        RefrescarVisibilidadPantallas();
-
-        if (inventarioActivo)
-        {
-            ActualizarVisualizacion();
-        }
-    }
-
-    // Reemplaza por completo el método RefrescarVisibilidadPantallas de tu script con este:
-    private void RefrescarVisibilidadPantallas()
-    {
-        if (inventarioActivo)
-        {
-            // 1. Desvanecer HUD In-game (Barras de exploración)
-            hudInGame?.AddToClassList("oculto");
-            if (hudInGame != null) hudInGame.pickingMode = PickingMode.Ignore;
-
-            // 2. Aparecer Menú de Inventario gradualmente
-            menuInventario?.RemoveFromClassList("oculto");
-            if (menuInventario != null) menuInventario.pickingMode = PickingMode.Position;
-        }
-        else
-        {
-            // 1. Aparecer HUD In-game gradualmente
-            hudInGame?.RemoveFromClassList("oculto");
-            if (hudInGame != null) hudInGame.pickingMode = PickingMode.Position;
-
-            // 2. Desvanecer Menú de Inventario
-            menuInventario?.AddToClassList("oculto");
-            if (menuInventario != null) menuInventario.pickingMode = PickingMode.Ignore;
-        }
-    }
-
     private void CambiarVisualizacionVida(int vidaActual, int vidaMaxima)
     {
-        // Se ejecuta al instante cada vez que el player corre TakeDamage()
         if (barraVidaHud != null)
         {
             barraVidaHud.highValue = vidaMaxima;
             barraVidaHud.value = vidaActual;
             barraVidaHud.title = $"{vidaActual} / {vidaMaxima}";
         }
-
         if (barraVidaMenu != null)
         {
             barraVidaMenu.highValue = vidaMaxima;
@@ -315,19 +289,48 @@ public class UI_Inventario : MonoBehaviour
 
     private void CambiarVisualizacionStamina(int staminaActual, int staminaMaxima)
     {
-        // Se ejecutará cuando implementemos el gasto de stamina en el movimiento/ataque
         if (barraStaminaHUD != null)
         {
             barraStaminaHUD.highValue = staminaMaxima;
             barraStaminaHUD.value = staminaActual;
             barraStaminaHUD.title = $"{staminaActual} / {staminaMaxima}";
         }
-
         if (barraStaminaMenu != null)
         {
             barraStaminaMenu.highValue = staminaMaxima;
             barraStaminaMenu.value = staminaActual;
             barraStaminaMenu.title = $"{staminaActual} / {staminaMaxima}";
+        }
+    }
+
+    // SISTEMA DE EQUIPAMIENTO / HABILIDADES
+    private void ActualizarSlotsEquipamiento(bool tieneLanza, bool tieneMagia, bool tieneParry, bool tieneLibro)
+    {
+        AjustarEstadoSlot(slotEquip1, tieneLanza, textoLanza);
+        AjustarEstadoSlot(slotEquip2, tieneMagia, textoMagia);
+        AjustarEstadoSlot(slotEquip3, tieneParry, textoParry);
+        AjustarEstadoSlot(slotEquip4, tieneLibro, textoLibro);
+    }
+
+    private void AjustarEstadoSlot(VisualElement slotElement, bool estaDesbloqueado, string textoHabilidad)
+    {
+        if (slotElement == null) return;
+
+        VisualElement imagenIcono = slotElement.Q<VisualElement>("img");
+        Label tituloLabel = slotElement.Q<Label>("TituloSlot");
+
+        if (imagenIcono != null && tituloLabel != null)
+        {
+            if (estaDesbloqueado)
+            {
+                imagenIcono.RemoveFromClassList("imagen-fragmento-oculto"); // Muestra la imagen.
+                tituloLabel.text = textoHabilidad;
+            }
+            else
+            {
+                imagenIcono.AddToClassList("imagen-fragmento-oculto");    // Oculta la imagen vía USS.
+                tituloLabel.text = textoVacio;
+            }
         }
     }
 }

@@ -13,17 +13,8 @@ MonoBehaviour:
   m_Name: BaseDeDatosJugador
   m_EditorClassIdentifier: Assembly-CSharp::GameSessionSO
   playerDATOS:
-    vidaJugador: 37
+    vidaJugador: 5
     stamina: 30
-    listaHabilidades:
-    - tipo: 0
-      unlock: 0
-    - tipo: 1
-      unlock: 0
-    - tipo: 2
-      unlock: 0
-    - tipo: 3
-      unlock: 0
     inventario:
       listaItemsInventario:
       - itemData: {fileID: 0}
@@ -44,3 +35,12 @@ MonoBehaviour:
         cantidad: 0
       - itemData: {fileID: 0}
         cantidad: 0
+    listaHabilidades:
+    - tipo: 0
+      unlock: 0
+    - tipo: 1
+      unlock: 0
+    - tipo: 2
+      unlock: 0
+    - tipo: 3
+      unlock: 0

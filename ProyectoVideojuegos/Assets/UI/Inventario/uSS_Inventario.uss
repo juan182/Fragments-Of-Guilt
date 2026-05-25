@@ -253,13 +253,13 @@
 .icono-equipamiento {
     width: 40px;
     height: 40px;
-    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
     border-radius: 3px;
     margin-right: 12px;
-    border-top-width: 2px;
-    border-right-width: 2px;
-    border-bottom-width: 2px;
-    border-left-width: 2px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
     border-left-color: rgb(54, 65, 83);
     border-right-color: rgb(54, 65, 83);
     border-top-color: rgb(54, 65, 83);
@@ -269,6 +269,10 @@
     left: 15px;
     bottom: auto;
     top: auto;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 .texto-equipamiento {
@@ -340,4 +344,8 @@
     border-right-color: rgb(65, 55, 40);
     border-top-color: rgb(65, 55, 40);
     border-bottom-color: rgb(65, 55, 40);
+}
+
+.imagen-fragmento-oculto {
+    display: none;
 }

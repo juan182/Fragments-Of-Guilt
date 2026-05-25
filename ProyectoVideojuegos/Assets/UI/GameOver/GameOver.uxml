@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/GameOver/GameOverStyle.uss?fileID=7433441132597879392&amp;guid=7c130357ba271904092ef2ed0393dd18&amp;type=3#GameOverStyle"/>
+    <ui:VisualElement name="PantallaMuerteRoot" class="muerte-contenedor">
+        <ui:VisualElement name="ContenedorMensaje" class="muerte-bloque-texto">
+            <ui:Label text="HAS MUERTO" name="TxtHasMuerto" class="texto-titulo-muerte"/>
+            <ui:Label text="Tu viaje llega a su fin..." name="TxtSubtitulo" class="texto-subtitulo-muerte"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="ContenedorBotonesMuerte" class="muerte-bloque-botones">
+            <ui:Button text="REINTENTAR" name="BtnReintentar" class="btn-muerte-principal"/>
+            <ui:Button text="MENÚ PRINCIPAL" name="BtnMenuPrincipal" class="btn-muerte-secundario"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -11,9 +11,9 @@ public class LanzaLuz : MonoBehaviour
 
     void Start()
     {
-        _light = GetComponent<Light2D>();
-        if (_light == null)
-            Debug.LogError("LanzaLuz requiere un componente Light2D en " + gameObject.name);
+        //_light = GetComponent<Light2D>();
+        //if (_light == null)
+        //    Debug.LogError("LanzaLuz requiere un componente Light2D en " + gameObject.name);
     }
 
     void Update()
