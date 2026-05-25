@@ -57,17 +57,8 @@ public class BossController : MonoBehaviour
     [SerializeField] private float alturaMaximaSalto = 4f;
 
     [Header("Audio")]
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioSource musicaSource;
+    [SerializeField] private EnemySoundController enemySoundController;
     [SerializeField] private AudioClip musicaBoss;
-    [SerializeField] private AudioClip sfxEntrada;
-    [SerializeField] private AudioClip sfxDaño;
-    [SerializeField] private AudioClip sfxFase2;
-    [SerializeField] private AudioClip sfxMuerte;
-    [SerializeField] private AudioClip sfxMordida;
-    [SerializeField] private AudioClip sfxCabezazo;
-    [SerializeField] private AudioClip sfxEmbestida;
-    [SerializeField] private AudioClip sfxOnda;
 
     private Transform jugador;
     private bool estaEntrando = false;
@@ -196,11 +187,6 @@ public class BossController : MonoBehaviour
         estadoActual = EstadoBoss.Entrando;
         if (animator != null) animator.SetBool("IsJump", true);
 
-        if (musicaSource != null && musicaBoss != null)
-        {
-            musicaSource.clip = musicaBoss;
-            musicaSource.Play();
-        }
     }
 
     private void ProcesarEntrada()
@@ -216,8 +202,8 @@ public class BossController : MonoBehaviour
             if (animator != null) animator.SetBool("IsJump", false);
             InstanciarOndaExpansiva();
 
-            if (audioSource != null && sfxEntrada != null)
-                audioSource.PlayOneShot(sfxEntrada);
+            InstanciarOndaExpansiva();
+            if (enemySoundController != null) enemySoundController.PlayEntrada();
 
             // Al aterrizar pausa y luego embestida
             estadoActual = EstadoBoss.Pausado;
@@ -243,7 +229,7 @@ public class BossController : MonoBehaviour
         timerEmbestida = 0f;
         OrientarHaciaJugador();
         if (animator != null) animator.SetBool("Ischarged", true);
-        if (audioSource != null && sfxEmbestida != null) audioSource.PlayOneShot(sfxEmbestida);
+        if (enemySoundController != null) enemySoundController.PlayEmbestida();
     }
 
     private void ProcesarEmbestida()
@@ -380,13 +366,13 @@ public class BossController : MonoBehaviour
         {
             if (animator != null) animator.SetBool("IsBitting", true);
             StartCoroutine(DesactivarBoolTrasAnimacion("IsBitting"));
-            if (audioSource != null && sfxMordida != null) audioSource.PlayOneShot(sfxMordida);
+            if (enemySoundController != null) enemySoundController.PlayMordida();
         }
         else
         {
             if (animator != null) animator.SetBool("IsHeadbut", true);
             StartCoroutine(DesactivarBoolTrasAnimacion("IsHeadbut"));
-            if (audioSource != null && sfxCabezazo != null) audioSource.PlayOneShot(sfxCabezazo);
+            if (enemySoundController != null) enemySoundController.PlayCabezazo();
         }
     }
 
@@ -481,7 +467,7 @@ public class BossController : MonoBehaviour
 
     private void InstanciarOndaExpansiva()
     {
-        if (audioSource != null && sfxOnda != null) audioSource.PlayOneShot(sfxOnda);
+        if (enemySoundController != null) enemySoundController.PlayOndaExpansiva();
 
         CinemachineImpulseSource emisorImpulso = GetComponent<CinemachineImpulseSource>();
         if (emisorImpulso != null)
@@ -502,7 +488,7 @@ public class BossController : MonoBehaviour
             estaEnFase2 = true;
             tiempoEntreAtaques = 1.2f;
             distanciaLejos = 3f;
-            if (audioSource != null && sfxFase2 != null) audioSource.PlayOneShot(sfxFase2);
+            if (enemySoundController != null) enemySoundController.PlayFase2();
             Debug.Log("El jefe entro en fase 2");
         }
     }
