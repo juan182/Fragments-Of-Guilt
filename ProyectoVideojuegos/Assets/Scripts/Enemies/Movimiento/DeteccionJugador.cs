@@ -1,36 +1,50 @@
 using UnityEngine;
 
-/// <summary>
-/// Gestiona la deteccion del jugador/ Puede ser usado por cualquier elemento del juego
-/// No solo por enemigos
-/// </summary>
 public class DeteccionJugador : MonoBehaviour
 {
-    [SerializeField] private float radioDeteccion = 3f;
-    [SerializeField] private LayerMask capaJugador; // Asigna la capa donde está el jugador (ej: "Player" o "Default")
+    [Header("Audio")]
+    [SerializeField] private EnemySoundController enemySoundController;
+    [Header("Cooldown")]
+    [SerializeField] private float cooldownDeteccion = 2f;
 
     public bool VeAlJugador { get; private set; }
+    private float tiempoUltimoSonido = -100f;
+    private int jugadoresDentro = 0; // Contador por si hay múltiples players
 
-    private void Update()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        VeAlJugador = false;
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radioDeteccion, capaJugador);
-        foreach (Collider2D hit in hits)
+        if (other.CompareTag("Player"))
         {
-            if (hit.CompareTag("Player"))
+            jugadoresDentro++;
+            VeAlJugador = true;
+
+            if (Time.time >= tiempoUltimoSonido + cooldownDeteccion)
             {
-                VeAlJugador = true;
-                break;
+                enemySoundController?.PlayDetectaJugador();
+                tiempoUltimoSonido = Time.time;
             }
         }
     }
 
-    // Dibuja el área de detección en el Editor
-    private void OnDrawGizmosSelected()
+    private void OnTriggerStay2D(Collider2D other)
     {
-        Gizmos.color = VeAlJugador ? Color.green : Color.red;
-        Gizmos.DrawWireSphere(transform.position, radioDeteccion);
+        if (other.CompareTag("Player"))
+        {
+            // Aseguramos que siga siendo true mientras esté dentro
+            VeAlJugador = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            jugadoresDentro--;
+            if (jugadoresDentro <= 0)
+            {
+                VeAlJugador = false;
+                jugadoresDentro = 0;
+            }
+        }
     }
 }
-
-

@@ -6340,9 +6340,10 @@ MonoBehaviour:
   audioSource: {fileID: 939122663}
   musicaSource: {fileID: 939122662}
   musicaBoss: {fileID: 0}
-  "sfxDa\xF1o": {fileID: 0}
-  sfxFase2: {fileID: 0}
-  sfxMuerte: {fileID: 0}
+  sfxEntrada: {fileID: 8300000, guid: e04251acb82e5754a8ec4bdf49539cc6, type: 3}
+  "sfxDa\xF1o": {fileID: 8300000, guid: b9c576db019e8004bb2210239a198a5f, type: 3}
+  sfxFase2: {fileID: 8300000, guid: 27dc8c27e25cdfa43a2ccfa1534ef210, type: 3}
+  sfxMuerte: {fileID: 8300000, guid: 9f956c698bd957142b45fb030eb9fdc3, type: 3}
   sfxMordida: {fileID: 0}
   sfxCabezazo: {fileID: 0}
   sfxEmbestida: {fileID: 0}

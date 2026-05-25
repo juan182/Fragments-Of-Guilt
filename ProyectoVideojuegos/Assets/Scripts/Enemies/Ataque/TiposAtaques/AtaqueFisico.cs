@@ -16,12 +16,14 @@ public class AtaqueFisico : IAttack
 
     public void EjecutarAtaque(Transform controller, Transform objetivo)
     {
+        Debug.Log("EjecutarAtaque Físico - Hitbox activo? " + hitboxCollider.gameObject.activeSelf);
         if (hitboxCollider == null || !hitboxCollider.gameObject.activeInHierarchy) return;
 
         ContactFilter2D filter = new ContactFilter2D();
         filter.NoFilter();
         Collider2D[] results = new Collider2D[5];
         int count = hitboxCollider.Overlap(filter, results);
+        Debug.Log($"Overlap encontró {count} colliders");
 
         for (int i = 0; i < count; i++)
         {
@@ -31,7 +33,7 @@ public class AtaqueFisico : IAttack
                 if (player != null)
                 {
                     player.TakeDamage(Mathf.RoundToInt(daño));
-                    Debug.Log($"Hitbox aplica {daño} de daño");
+                    Debug.Log($"Daño aplicado: {daño}");
                     break;
                 }
             }

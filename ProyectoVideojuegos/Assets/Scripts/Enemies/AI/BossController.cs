@@ -60,6 +60,7 @@ public class BossController : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioSource musicaSource;
     [SerializeField] private AudioClip musicaBoss;
+    [SerializeField] private AudioClip sfxEntrada;
     [SerializeField] private AudioClip sfxDaño;
     [SerializeField] private AudioClip sfxFase2;
     [SerializeField] private AudioClip sfxMuerte;
@@ -221,6 +222,9 @@ public class BossController : MonoBehaviour
             rb.bodyType = RigidbodyType2D.Dynamic;
             if (animator != null) animator.SetBool("IsJump", false);
             InstanciarOndaExpansiva();
+
+            if (audioSource != null && sfxEntrada != null)
+                audioSource.PlayOneShot(sfxEntrada);
 
             // Al aterrizar pausa y luego embestida
             estadoActual = EstadoBoss.Pausado;

@@ -68,6 +68,5 @@ public class FollowPlayer : MonoBehaviour
             
         }
         transform.localScale = escala;
-        Debug.Log($"Dirección: {direccionX}, Nueva escala X: {escala.x}");
     }
 }
