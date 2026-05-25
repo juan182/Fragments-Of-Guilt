@@ -14,8 +14,12 @@ public class PlayerController : MonoBehaviour
 
     //Evento que notifica a el GameManager
     //GameManager se suscribe a este evento
-    public static event Action OnPlayerDeath; 
+    public static event Action OnPlayerDeath;
 
+    public event Action<int, int> OnVidaChanged;
+    public event Action<int, int> OnStaminaChanged;
+    private const int VIDA_MAXIMA = 100;
+    private const int STAMINA_MAXIMA = 100;
 
     [Header("Estadisticas")]
     public int vidaActual; 
@@ -33,6 +37,7 @@ public class PlayerController : MonoBehaviour
     public float radioDeteccion = 2f;
     public LayerMask capaItems;
     public LayerMask capaFragmentos;
+
 
     //Pongo esta variable para poder deshabilitar el movimiento por un momento al capturar la lanza
     private bool controlesHabilitados = true;
@@ -87,10 +92,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         //Validación defensiva
-        if (sessionSO == null || sessionSO.playerDATOS == null)
-        {
-            return;
-        }
+        if (sessionSO == null || sessionSO.playerDATOS == null) return;
         RecolectarItems();
         RecolectarFragmentos();
     }
@@ -102,14 +104,24 @@ public class PlayerController : MonoBehaviour
     private void ActualizarValoresEnControlador()
     {
         vidaActual = sessionSO.playerDATOS.VidaJugador;
+        staminaActual = sessionSO.playerDATOS.Stamina;
         // Si la vida es igual o menor a cero eso significa que es una nueva partida.
         if (vidaActual <= 0)
         {
-            vidaActual = 100;
+            vidaActual = VIDA_MAXIMA;
+            GuardarVidaEnScriptableObject();
+        }
+
+        if(staminaActual  <= 0)
+        {
+            staminaActual = STAMINA_MAXIMA;
             GuardarVidaEnScriptableObject();
         }
         // ActualizamosHabilidades
         ActualizarHabilidades();
+        OnVidaChanged?.Invoke(vidaActual, VIDA_MAXIMA);
+        OnStaminaChanged?.Invoke(staminaActual, STAMINA_MAXIMA);
+
     }
     /// <summary>
     /// Este metodo debemos usarlo cada que aumentemos o disminuyamos la vida en el jugador.
@@ -117,22 +129,27 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void GuardarVidaEnScriptableObject()
     {
-        if(vidaActual > 100)
-        {
-            sessionSO.playerDATOS.VidaJugador = 100;
-        }
+        if (vidaActual > VIDA_MAXIMA) vidaActual = VIDA_MAXIMA;
         if (vidaActual <= 0) sessionSO.playerDATOS.VidaJugador = 0;
-        else
-        {
-            sessionSO.playerDATOS.VidaJugador = vidaActual;
-        }
-        
+        else sessionSO.playerDATOS.VidaJugador = vidaActual;
+
+        // Cada vez que se guarda/modifica la vida en el flujo, disparamos el evento
+        OnVidaChanged?.Invoke(vidaActual, VIDA_MAXIMA);
+    }
+
+    private void GuardarStaminaEnScriptableObject()
+    {
+        if (staminaActual > STAMINA_MAXIMA) staminaActual = STAMINA_MAXIMA;
+        if (staminaActual <= 0) sessionSO.playerDATOS.Stamina = 0;
+        else sessionSO.playerDATOS.Stamina = staminaActual;
+
+        // Cada vez que se guarda/modifica la stamina, disparamos el evento
+        OnStaminaChanged?.Invoke(staminaActual, STAMINA_MAXIMA);
     }
 
     public void ActualizarHabilidades()
     {
         if (sessionSO == null || sessionSO.playerDATOS == null) return;
-
         tieneLanza = sessionSO.playerDATOS.IsUnlocked(TipoHabilidadEnum.Lanza);
         if (tieneLanza == true) lanza.gameObject.SetActive(true);
         tieneMagia = sessionSO.playerDATOS.IsUnlocked(TipoHabilidadEnum.FragmentoMagia);
@@ -155,7 +172,7 @@ public class PlayerController : MonoBehaviour
     private void Die()
     {
         HabilitarControles(false);
-        OnPlayerDeath?.Invoke(); 
+        OnPlayerDeath?.Invoke();
     }
 
 
