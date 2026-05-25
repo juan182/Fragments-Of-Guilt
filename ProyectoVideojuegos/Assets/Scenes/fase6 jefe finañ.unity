@@ -9363,6 +9363,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 691092497474294401, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
+      propertyPath: enemySoundController
+      value: 
+      objectReference: {fileID: 1103147031}
     - target: {fileID: 919325245278765951, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: ataque
       value: 
@@ -9376,6 +9380,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 375295679}
     - target: {fileID: 919325245278765951, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
+      propertyPath: puntoEntrada
+      value: 
+      objectReference: {fileID: 489534117}
+    - target: {fileID: 919325245278765951, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: hitboxMordida
       value: 
       objectReference: {fileID: 375295680}
@@ -9387,6 +9395,10 @@ PrefabInstance:
       propertyPath: deteccionJugador
       value: 
       objectReference: {fileID: 375295677}
+    - target: {fileID: 919325245278765951, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
+      propertyPath: enemySoundController
+      value: 
+      objectReference: {fileID: 1103147031}
     - target: {fileID: 2706672906695614565, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_Name
       value: Boss1
@@ -12919,6 +12931,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6320f00b0ce73bc42a1f5955ec07d598, type: 3}
+--- !u!4 &489534117 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3294998912256884775, guid: 6320f00b0ce73bc42a1f5955ec07d598, type: 3}
+  m_PrefabInstance: {fileID: 489534116}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &493045617
 GameObject:
   m_ObjectHideFlags: 0
