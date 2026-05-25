@@ -334,7 +334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeteccionJugador
   enemySoundController: {fileID: 1955937899724382529}
-  cooldownDeteccion: 2
+  cooldownDeteccion: 20
 --- !u!111 &9192896470176241889
 Animation:
   m_ObjectHideFlags: 0
@@ -464,7 +464,7 @@ MonoBehaviour:
   vuelo: {fileID: 0}
   ataque: {fileID: 8300000, guid: 02d5abc0223d87c47a2ae0b56860a96a, type: 3}
   detectaJugador: {fileID: 8300000, guid: 5ef58c1ac33363a448ce128b9a454bd9, type: 3}
-  muerte: {fileID: 0}
+  muerte: {fileID: 8300000, guid: 6ad3c3be63afc06458c51c72971a0550, type: 3}
 --- !u!58 &3107199630046045657
 CircleCollider2D:
   m_ObjectHideFlags: 0

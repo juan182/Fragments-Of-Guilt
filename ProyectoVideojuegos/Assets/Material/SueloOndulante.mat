@@ -41,7 +41,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _WaveForce: 0.000028762817
+    - _WaveForce: 0.0000983715
     - _WaveRadius: -10
     - _WaveThickness: 0.4
     m_Colors:

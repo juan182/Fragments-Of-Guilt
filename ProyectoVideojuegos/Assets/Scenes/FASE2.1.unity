@@ -7886,18 +7886,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1944750528}
     m_Modifications:
-    - target: {fileID: 2527095170288743412, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
-      propertyPath: vidaMaxima
-      value: 150
-      objectReference: {fileID: 0}
     - target: {fileID: 2540187156071839313, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
       propertyPath: detectorBorde
       value: 
       objectReference: {fileID: 242696124}
-    - target: {fileID: 2540187156071839313, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
-      propertyPath: velocidadPersecusion
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 2892698891391418587, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.15
@@ -7966,6 +7958,10 @@ PrefabInstance:
       propertyPath: radioDeteccion
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5590202617631214900, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
+      propertyPath: enemySoundController
+      value: 
+      objectReference: {fileID: 1134004408}
     - target: {fileID: 7426750893296591043, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
       propertyPath: sfxVuelo
       value: 
@@ -7979,13 +7975,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1134004415}
     - target: {fileID: 7426750893296591043, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
-      propertyPath: "da\xF1oFisico"
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7426750893296591043, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
-      propertyPath: tiempoEntreAtaques
-      value: 1.2
-      objectReference: {fileID: 0}
+      propertyPath: enemySoundController
+      value: 
+      objectReference: {fileID: 1134004408}
     - target: {fileID: 8121737820848375461, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
       propertyPath: puntoA
       value: 
@@ -7997,118 +7989,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3834094429062104197, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1134004415}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
 --- !u!4 &1134004407 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2892698891391418587, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
   m_PrefabInstance: {fileID: 1134004406}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1134004409 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3834094429062104197, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
+--- !u!114 &1134004408 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 423780127561342819, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
   m_PrefabInstance: {fileID: 1134004406}
   m_PrefabAsset: {fileID: 0}
---- !u!82 &1134004415
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dac6405f0d8e309408fdfd9bbdcace0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySoundController
+--- !u!82 &1134004415 stripped
 AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 6635698103483026978, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
+  m_PrefabInstance: {fileID: 1134004406}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1134004409}
-  m_Enabled: 0
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &1145408412
 GameObject:
   m_ObjectHideFlags: 0
@@ -14876,10 +14779,6 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
-    - target: {fileID: 1955937899724382529, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
-      propertyPath: muerte
-      value: 
-      objectReference: {fileID: 8300000, guid: 6ad3c3be63afc06458c51c72971a0550, type: 3}
     - target: {fileID: 1994331528419829297, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.11999999
@@ -15043,10 +14942,6 @@ PrefabInstance:
     - target: {fileID: 6551597088414086080, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
       propertyPath: distanciaRayCast
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6551597088414086080, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
-      propertyPath: cooldownDeteccion
-      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6551597088414086080, guid: 7742874d38ae35e4ba5c3fbe84046c68, type: 3}
       propertyPath: sfxDetectaJugador
