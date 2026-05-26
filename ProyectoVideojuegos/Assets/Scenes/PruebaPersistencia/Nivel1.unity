@@ -119,17 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &21840675 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7612342777802408377, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
-  m_PrefabInstance: {fileID: 1048874340}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 020ba944afd5e8a4ebfa8bdc179b99b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
 --- !u!1 &462435236
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,22 +310,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1653615256412030561, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
-      propertyPath: jumpForce
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653615256412030561, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
-      propertyPath: isBlocking
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653615256412030561, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
-      propertyPath: movementSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653615256412030561, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
-      propertyPath: capaSuelo.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
     - target: {fileID: 4835378585667111658, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
       propertyPath: m_Name
       value: Protagonist
@@ -381,24 +354,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6192430021234407677, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
-      propertyPath: playerController
-      value: 
-      objectReference: {fileID: 21840675}
-    - target: {fileID: 7612342777802408377, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
-      propertyPath: sessionSO
-      value: 
-      objectReference: {fileID: 11400000, guid: fa6684d78c55c0d4bba3a81e052dc17b, type: 2}
-    - target: {fileID: 7612342777802408377, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
-      propertyPath: capaItems.m_Bits
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7612342777802408377, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
-      propertyPath: capaFragmentos.m_Bits
-      value: 128
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3878006692122591742, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

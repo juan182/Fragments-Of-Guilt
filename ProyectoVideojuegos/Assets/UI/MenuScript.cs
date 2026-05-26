@@ -3,33 +3,34 @@ using UnityEngine.UIElements;
 
 public class MenuScript : MonoBehaviour
 {
-    // ==========================================
-    // REFERENCIAS DE UI ELEMENTS (ELEMENTOS Y CONTENEDORES)
-    // ==========================================
+    [Header("Sistema de Audio Local (SFX)")]
+    public AudioSource reproductor;
+    public AudioClip[] sonidos;
+
     private UIDocument menuDocument;
     private VisualElement root;
     private VisualElement menuOpciones;
 
-    // ==========================================
-    // COMPONENTES DE INTERACCIÓN (BOTONES)
-    // ==========================================
     private Button btnPlay;
     private Button btnOptions;
     private Button btnVolver;
     private Button btnCerrarTop;
 
     // ==========================================
-    // CICLO DE VIDA DE UNITY (LIFECYCLE)
+    // COMPONENTE NUEVO: EL SLIDER DE AUDIO
     // ==========================================
+    private Slider sliderMusica;
+
     private void Awake()
     {
         menuDocument = GetComponent<UIDocument>();
         root = menuDocument.rootVisualElement;
 
+        if (reproductor == null) reproductor = gameObject.AddComponent<AudioSource>();
+
         AsignarReferencias();
         ConfigurarCallbacks();
 
-        // SOLUCIÓN RADICAL: Forzar el apagado directo en el sistema de layout de Unity
         if (menuOpciones != null)
         {
             menuOpciones.style.display = DisplayStyle.None;
@@ -37,9 +38,6 @@ public class MenuScript : MonoBehaviour
         }
     }
 
-    // ==========================================
-    // CONFIGURACIÓN E INICIALIZACIÓN
-    // ==========================================
     private void AsignarReferencias()
     {
         btnPlay = root.Q<Button>("Play");
@@ -47,43 +45,94 @@ public class MenuScript : MonoBehaviour
         btnVolver = root.Q<Button>("BtnVolver");
         btnCerrarTop = root.Q<Button>("BtnCerrarTop");
         menuOpciones = root.Q<VisualElement>("MenuOpciones");
+
+        // ------Uso Aqui---- Buscamos el Slider por su nombre exacto del UXML
+        sliderMusica = root.Q<Slider>("SliderMusica");
     }
 
     private void ConfigurarCallbacks()
     {
-        btnPlay.RegisterCallback<PointerDownEvent>(OnJugarPressed, TrickleDown.TrickleDown);
-        btnOptions.RegisterCallback<PointerDownEvent>(OnOpcionesOpenPressed, TrickleDown.TrickleDown);
-        btnVolver.RegisterCallback<PointerDownEvent>(OnOpcionesClosePressed, TrickleDown.TrickleDown);
-        btnCerrarTop.RegisterCallback<PointerDownEvent>(OnOpcionesClosePressed, TrickleDown.TrickleDown);
+        if (btnPlay != null) btnPlay.RegisterCallback<ClickEvent>(OnJugarPressed);
+        if (btnOptions != null) btnOptions.RegisterCallback<ClickEvent>(OnOpcionesOpenPressed);
+        if (btnVolver != null) btnVolver.RegisterCallback<ClickEvent>(OnOpcionesClosePressed);
+        if (btnCerrarTop != null) btnCerrarTop.RegisterCallback<ClickEvent>(OnOpcionesClosePressed);
+
+        // ------Uso Aqui---- ESCUCHA DE CAMBIO DEL SLIDER
+        if (sliderMusica != null)
+        {
+            sliderMusica.RegisterCallback<ChangeEvent<float>>(OnVolumenMusicaChanged);
+
+            // Inicializamos el volumen de la música con el valor que tenga el slider por defecto en el UXML (Ej: 67 / 100 = 0.67)
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.CambiarVolumenMusica(sliderMusica.value / 100f);
+            }
+        }
+
+        Button[] todosLosBotones = { btnPlay, btnOptions, btnVolver, btnCerrarTop };
+        foreach (Button btn in todosLosBotones)
+        {
+            if (btn != null) btn.RegisterCallback<MouseEnterEvent>(OnBottonHoverIn);
+        }
+    }
+
+    private void ReproducirSFXLocal(int indice)
+    {
+        if (reproductor != null && sonidos != null && indice >= 0 && indice < sonidos.Length)
+        {
+            if (sonidos[indice] != null) reproductor.PlayOneShot(sonidos[indice]);
+        }
     }
 
     // ==========================================
-    // CONTROLADORES DE EVENTOS (MANEJADORES DE CALLBACKS)
+    // MANEJADORES DE CALLBACKS (EVENTOS)
     // ==========================================
-    private void OnJugarPressed(PointerDownEvent evt)
+
+    // ------Uso Aqui---- Se ejecuta en tiempo real cada vez que el usuario mueve el slider
+    private void OnVolumenMusicaChanged(ChangeEvent<float> evt)
     {
-        GameManager.Instance.sceneManager.CargarNivelesDeJuego("Nivel1");
+        // evt.newValue nos da el número entre 0 y 100 actual.
+        float volumenConvertido = evt.newValue / 100f; // Lo pasamos a escala de 0.0 a 1.0
+
+        if (GameManager.Instance != null)
+        {
+            // Le enviamos el nuevo valor directamente al AudioSource persistente del GameManager
+            GameManager.Instance.CambiarVolumenMusica(volumenConvertido);
+        }
     }
 
-    private void OnOpcionesOpenPressed(PointerDownEvent evt)
+    private void OnBottonHoverIn(MouseEnterEvent evt)
     {
+        ReproducirSFXLocal(1);
+    }
+
+    private void OnJugarPressed(ClickEvent evt)
+    {
+        ReproducirSFXLocal(0);
+        if (GameManager.Instance != null && GameManager.Instance.sceneManager != null)
+        {
+            GameManager.Instance.sceneManager.CargarNivelesDeJuego("Nivel1");
+        }
+    }
+
+    private void OnOpcionesOpenPressed(ClickEvent evt)
+    {
+        ReproducirSFXLocal(0);
         if (menuOpciones != null)
         {
-            menuOpciones.style.display = DisplayStyle.Flex; // Primero lo habilitamos en el Layout
-            // Usamos un pequeño truco de temporizador para que Unity procese el cambio de display antes de la opacidad
+            menuOpciones.style.display = DisplayStyle.Flex;
             menuOpciones.schedule.Execute(() => {
-                menuOpciones.RemoveFromClassList("oculto");  // Desvanece hacia arriba (Alpha 1)
+                menuOpciones.RemoveFromClassList("oculto");
             }).StartingIn(10);
         }
     }
 
-    private void OnOpcionesClosePressed(PointerDownEvent evt)
+    private void OnOpcionesClosePressed(ClickEvent evt)
     {
+        ReproducirSFXLocal(0);
         if (menuOpciones != null)
         {
-            menuOpciones.AddToClassList("oculto");       // Inicia desvanecimiento hacia abajo (Alpha 0)
-
-            // Esperamos los 300ms (0.3s) que dura tu animación antes de cortar el display por completo
+            menuOpciones.AddToClassList("oculto");
             menuOpciones.schedule.Execute(() => {
                 if (menuOpciones.ClassListContains("oculto"))
                 {

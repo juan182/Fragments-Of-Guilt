@@ -6,20 +6,15 @@ public class GameManager : MonoBehaviour
 
     public enum GameState { Gameplay, Paused, GameOver, Menu }
 
-    // Identificadores para organizar tu arreglo de audios sin usar números sueltos
-    public enum TipoSonidoUI { SonidoMuerteImpacto, MusicaGameOver, ClickBoton, HoverBoton }
-
     [Header("Referencias de Control")]
     public PlayerController datosJugador = null;
     public SceneManager_P sceneManager;
     public UI_Manager UI_Manager;
     public GameController1 gc1 = null;
 
-    [Header("Sistema de Audio")]
-    [SerializeField] private AudioSource audioSourceUI;
-
-    // ------Uso Aqui---- Arreglo para almacenar múltiples audios de la interfaz (Tamaño asignado en el Inspector)
-    [SerializeField] private AudioClip[] sonidosUI;
+    [Header("Sistema de Música Central")]
+    [SerializeField] private AudioSource audioSourceMusica;
+    [SerializeField] private AudioClip musicaPrincipalDeUnaHora; // ------Uso Aqui---- Tu pista de 1 hora
 
     [Header("Estado Actual")]
     [SerializeField] private GameState estadoDeJuego;
@@ -31,10 +26,20 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            if (audioSourceUI == null) audioSourceUI = gameObject.AddComponent<AudioSource>();
+            if (audioSourceMusica != null)
+            {
+                audioSourceMusica.loop = true;
+                audioSourceMusica.ignoreListenerPause = true;
+                IniciarMusicaGlobal();
+            }
         }
         else if (Instance != this)
         {
+            // ------Uso Aqui---- 
+            // Desvinculamos el objeto de la jerarquía activa inmediatamente 
+            // para que el Inspector de Unity no intente leer sus componentes de UI en este fotograma
+            transform.SetParent(null);
+
             Destroy(gameObject);
             return;
         }
@@ -43,7 +48,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         if (Instance != this) return;
-        ChangeState(GameState.Menu);
+        ChangeState(GameState.Menu); // El estado cambia aquí tranquilamente
     }
 
     private void OnEnable()
@@ -75,8 +80,7 @@ public class GameManager : MonoBehaviour
                     if (UI_Manager.gameOverUI != null) UI_Manager.gameOverUI.DesactivarPantallaImedatadamente();
                 }
 
-                // ------Uso Aqui---- Detener música fúnebre si el jugador vuelve al menú principal
-                if (audioSourceUI.isPlaying) audioSourceUI.Stop();
+                // NOTA: Ya no detenemos la música aquí, se mantiene sonando de fondo fluidamente.
                 break;
 
             case GameState.Gameplay:
@@ -88,9 +92,6 @@ public class GameManager : MonoBehaviour
                     if (UI_Manager.gameOverUI != null) UI_Manager.gameOverUI.DesactivarPantallaImedatadamente();
                     UI_Manager.Activar_o_DesactivarEstadisticas();
                 }
-
-                // ------Uso Aqui---- Detener música de Game Over inmediatamente al reintentar el nivel
-                if (audioSourceUI.isPlaying) audioSourceUI.Stop();
                 break;
 
             case GameState.Paused:
@@ -104,13 +105,7 @@ public class GameManager : MonoBehaviour
                 {
                     UI_Manager.gameOverUI.ActivarPantallaConFade();
                 }
-
-                // ------Uso Aqui---- REPRODUCCIÓN DE EFECTOS SIMULTÁNEOS PARA EL GAME OVER
-                // 1. Sonido de impacto seco/orquesta al morir instantáneamente
-                ReproducirEfectoUI((int)TipoSonidoUI.SonidoMuerteImpacto);
-
-                // 2. Música melancólica de fondo que se queda en bucle mientras decide si reintentar
-                ReproducirMusicaFondoUI((int)TipoSonidoUI.MusicaGameOver, true);
+                // Si deseas que en Game Over baje un poco el volumen de la música para dar tensión, podrías modularlo aquí.
                 break;
         }
     }
@@ -127,35 +122,48 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    #region REPRODUCTORES DE AUDIO PERSONALIZADOS
+    // ==========================================
+    // CONTROLADORES DE AUDIO CENTRAL
+    // ==========================================
 
-    // ------Uso Aqui---- Disparar efectos cortos (clicks, hovers, golpes) sin interrumpir lo que ya está sonando
-    public void ReproducirEfectoUI(int indiceClip)
+    private void IniciarMusicaGlobal()
     {
-        if (sonidosUI != null && indiceClip >= 0 && indiceClip < sonidosUI.Length)
+        if (audioSourceMusica != null && musicaPrincipalDeUnaHora != null && !audioSourceMusica.isPlaying)
         {
-            if (sonidosUI[indiceClip] != null)
-            {
-                audioSourceUI.PlayOneShot(sonidosUI[indiceClip]);
-            }
+            audioSourceMusica.clip = musicaPrincipalDeUnaHora;
+            audioSourceMusica.volume = 0.5f; // Volumen seguro por defecto al arrancar
+            audioSourceMusica.Play();
+            Debug.Log("Música global iniciada correctamente.");
         }
     }
 
-    // ------Uso Aqui---- Cambiar la música o ambiente de fondo de la interfaz (como la de Game Over)
-    public void ReproducirMusicaFondoUI(int indiceClip, bool loop)
+    // ------Uso Aqui---- Método público que llamará el Slider de la UI para ajustar el volumen (recibe de 0.0 a 1.0)
+    public void CambiarVolumenMusica(float nuevoVolumen)
     {
-        if (sonidosUI != null && indiceClip >= 0 && indiceClip < sonidosUI.Length)
+        if (audioSourceMusica != null)
         {
-            if (sonidosUI[indiceClip] != null)
-            {
-                audioSourceUI.clip = sonidosUI[indiceClip];
-                audioSourceUI.loop = loop;
-                audioSourceUI.ignoreListenerPause = true; // CRÍTICO: Permite que suene aunque el Time.timeScale sea 0
-                audioSourceUI.Play();
-            }
+            audioSourceMusica.volume = Mathf.Clamp01(nuevoVolumen);
         }
     }
-    #endregion
 
     public GameState EstadoJuego => estadoDeJuego;
+
+    public void PausarMusicaGlobal()
+    {
+        if (audioSourceMusica != null && audioSourceMusica.isPlaying)
+        {
+            audioSourceMusica.Pause();
+            Debug.Log("Música global pausada en el segundo: " + audioSourceMusica.time);
+        }
+    }
+
+    // ------Uso Aqui---- Reanuda la música exactamente desde donde se pausó
+    public void ReanudarMusicaGlobal()
+    {
+        if (audioSourceMusica != null && !audioSourceMusica.isPlaying)
+        {
+            audioSourceMusica.UnPause();
+            Debug.Log("Música global reanudada.");
+        }
+    }
 }
