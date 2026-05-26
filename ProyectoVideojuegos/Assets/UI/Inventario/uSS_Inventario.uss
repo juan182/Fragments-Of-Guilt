@@ -349,3 +349,30 @@
 .imagen-fragmento-oculto {
     display: none;
 }
+.cartel-interaccion {
+    position: absolute;
+    bottom: 15%; /* Posicionado abajo, ideal para no tapar el centro */
+    align-self: center;
+    background-color: rgba(18, 12, 8, 0.85); /* Fondo oscuro traslúcido */
+    border-width: 1px;
+    border-color: rgba(204, 164, 59, 0.4); /* Borde dorado apagado */
+    border-radius: 4px;
+    padding: 8px 24px;
+    transition-property: opacity;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-in-out;
+    opacity: 1;
+}
+
+.cartel-oculto {
+    opacity: 0;
+    display: flex; /* Mantiene el flujo pero invisible para la animación */
+}
+
+.texto-cartel {
+    color: rgb(215, 200, 175);
+    font-size: 13px;
+    -unity-font-style: bold;
+    letter-spacing: 0.5px;
+    -unity-text-align: middle-center;
+}

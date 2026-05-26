@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: BaseDeDatosJugador
   m_EditorClassIdentifier: Assembly-CSharp::GameSessionSO
   playerDATOS:
-    vidaJugador: 5
-    stamina: 30
+    vidaJugador: 100
+    stamina: 60
     inventario:
       listaItemsInventario:
+      - itemData: {fileID: 11400000, guid: 7ac29ac34876d1341b79df76b19ea35d, type: 2}
+        cantidad: 20
       - itemData: {fileID: 0}
         cantidad: 0
       - itemData: {fileID: 0}
@@ -31,13 +33,20 @@ MonoBehaviour:
         cantidad: 0
       - itemData: {fileID: 0}
         cantidad: 0
+      - itemData: {fileID: 0}
+        cantidad: 0
+      hotbarSlots:
+      - itemData: {fileID: 11400000, guid: 7ac29ac34876d1341b79df76b19ea35d, type: 2}
+        cantidad: 17
+      - itemData: {fileID: 11400000, guid: b41760f9769aa114b89c516085406a81, type: 2}
+        cantidad: 14
       - itemData: {fileID: 0}
         cantidad: 0
       - itemData: {fileID: 0}
         cantidad: 0
     listaHabilidades:
     - tipo: 0
-      unlock: 0
+      unlock: 1
     - tipo: 1
       unlock: 0
     - tipo: 2
