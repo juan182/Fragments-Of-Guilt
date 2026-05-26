@@ -896,7 +896,7 @@ MonoBehaviour:
   "da\xF1oFisico": 20
   "da\xF1oDistancia": 0
   tiempoEntreAtaques: 1.2
-  enemySoundController: {fileID: 0}
+  enemySoundController: {fileID: 423780127561342819}
   animator: {fileID: 73665336328824152}
   hitbox: {fileID: 441832576443708176}
 --- !u!114 &954248497153629299
@@ -957,7 +957,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ec1b7ddcc01474d9b0170e858b3333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeteccionJugador
-  enemySoundController: {fileID: 0}
+  enemySoundController: {fileID: 423780127561342819}
   cooldownDeteccion: 2
 --- !u!111 &6846897975247066309
 Animation:
@@ -1089,6 +1089,12 @@ MonoBehaviour:
   ataque: {fileID: 8300000, guid: 2541de6eae2f37f4d834aae2e9828c82, type: 3}
   detectaJugador: {fileID: 8300000, guid: 1d2e15f9e392a9b47bb06af95a220600, type: 3}
   muerte: {fileID: 8300000, guid: 6ad3c3be63afc06458c51c72971a0550, type: 3}
+  entrada: {fileID: 0}
+  fase2: {fileID: 0}
+  mordida: {fileID: 0}
+  cabezazo: {fileID: 0}
+  embestida: {fileID: 0}
+  ondaExpansiva: {fileID: 0}
 --- !u!58 &3977994028169024356
 CircleCollider2D:
   m_ObjectHideFlags: 0
