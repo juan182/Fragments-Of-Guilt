@@ -5079,7 +5079,7 @@ Transform:
   m_GameObject: {fileID: 699264218}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -71.32743, y: -7.617147, z: -10}
+  m_LocalPosition: {x: -73.28687, y: -7.617147, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7865,7 +7865,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1858839412}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6058163994958678396, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9682abd2cf0bd8046b6a6234ac4696a7, type: 3}
@@ -14792,7 +14793,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1458804952
 Transform:
   m_ObjectHideFlags: 0
