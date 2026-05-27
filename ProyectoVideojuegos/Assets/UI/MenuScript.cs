@@ -111,7 +111,7 @@ public class MenuScript : MonoBehaviour
         ReproducirSFXLocal(0);
         if (GameManager.Instance != null && GameManager.Instance.sceneManager != null)
         {
-            GameManager.Instance.sceneManager.CargarNivelesDeJuego("Nivel1");
+            GameManager.Instance.sceneManager.CargarNivelesDeJuego("FASE1");
         }
     }
 

@@ -349,13 +349,14 @@
 .imagen-fragmento-oculto {
     display: none;
 }
+
 .cartel-interaccion {
     position: absolute;
-    bottom: 15%; /* Posicionado abajo, ideal para no tapar el centro */
+    bottom: 15%;
     align-self: center;
-    background-color: rgba(18, 12, 8, 0.85); /* Fondo oscuro traslúcido */
+    background-color: rgba(18, 12, 8, 0.85);
     border-width: 1px;
-    border-color: rgba(204, 164, 59, 0.4); /* Borde dorado apagado */
+    border-color: rgba(204, 164, 59, 0.4);
     border-radius: 4px;
     padding: 8px 24px;
     transition-property: opacity;
@@ -366,7 +367,7 @@
 
 .cartel-oculto {
     opacity: 0;
-    display: flex; /* Mantiene el flujo pero invisible para la animación */
+    display: flex;
 }
 
 .texto-cartel {

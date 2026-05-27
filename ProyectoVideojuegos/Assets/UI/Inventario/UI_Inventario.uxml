@@ -1,18 +1,15 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Inventario/uSS_Inventario.uss?fileID=7433441132597879392&amp;guid=49006e1c328090b43937fccad9ebd5f7&amp;type=3#uSS_Inventario"/>
     <ui:VisualElement name="PantallaGlobal" picking-mode="Ignore" class="pantalla-global">
-        
         <ui:VisualElement name="HudInGame" picking-mode="Ignore" class="hud-ingame">
             <ui:VisualElement name="BarrasExploracion" picking-mode="Position" class="contenedor-barras-hud">
                 <ui:ProgressBar name="BarraVidaHUD" value="100" title="" picking-mode="Position" high-value="100" class="barra-progreso vida"/>
                 <ui:ProgressBar name="BarraStaminaHUD" value="100" title="" picking-mode="Position" class="barra-progreso stamina"/>
             </ui:VisualElement>
-            
-            <ui:VisualElement name="CartelInteraccion" class="cartel-interaccion cartel-oculto" picking-mode="Ignore">
+            <ui:VisualElement name="CartelInteraccion" picking-mode="Ignore" class="cartel-interaccion cartel-oculto">
                 <ui:Label name="TextoAccion" text="Presiona [Y] para Recolectar Ítem" class="texto-cartel"/>
             </ui:VisualElement>
         </ui:VisualElement>
-
         <ui:VisualElement name="HotbarHUD" picking-mode="Position" class="hotbar-hud">
             <ui:VisualElement name="HotbarSlotSuperior" picking-mode="Position" class="slot-rapido superior">
                 <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
@@ -31,91 +28,91 @@
                 <ui:Label name="numeroContador" text="0" picking-mode="Ignore" class="contador-cantidad"/>
             </ui:VisualElement>
         </ui:VisualElement>
-
         <ui:VisualElement name="MenuInventario" picking-mode="Position" class="menu-inventario oculto">
-            <ui:VisualElement name="FondoDesenfoque" picking-mode="Position" class="fondo-oscuro" style="top: -1px; left: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);"/>
-            <ui:VisualElement name="ContenedorPrincipal" picking-mode="Ignore" class="contenedor-principal-inventario">
-                <ui:VisualElement name="ColumnaIzquierda" picking-mode="Ignore" class="columna-izquierda">
-                    <ui:VisualElement name="SeccionEstadisticas" picking-mode="Ignore" class="seccion-bloque" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgb(255, 127, 0); border-right-color: rgb(255, 127, 0); border-top-color: rgb(255, 127, 0); border-bottom-color: rgb(255, 127, 0);">
-                        <ui:Label name="TituloEstadisticas" text="ESTADO" picking-mode="Ignore" class="titulo-seccion"/>
-                        <ui:VisualElement name="FilaVida" picking-mode="Ignore" class="fila-barra-menu">
-                            <ui:Label text="Vida" picking-mode="Ignore" class="etiqueta-atributo"/>
-                            <ui:ProgressBar name="BarraVidaMenu" value="100" high-value="100" title="" picking-mode="Position" class="barra-progreso-menu vida"/>
+            <ui:VisualElement name="FondoDesenfoque" picking-mode="Position" class="fondo-oscuro" style="top: -1px; left: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);">
+                <ui:VisualElement name="ContenedorPrincipal" picking-mode="Ignore" class="contenedor-principal-inventario">
+                    <ui:VisualElement name="ColumnaIzquierda" picking-mode="Ignore" class="columna-izquierda">
+                        <ui:VisualElement name="SeccionEstadisticas" picking-mode="Ignore" class="seccion-bloque" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgb(255, 127, 0); border-right-color: rgb(255, 127, 0); border-top-color: rgb(255, 127, 0); border-bottom-color: rgb(255, 127, 0);">
+                            <ui:Label name="TituloEstadisticas" text="ESTADO" picking-mode="Ignore" class="titulo-seccion"/>
+                            <ui:VisualElement name="FilaVida" picking-mode="Ignore" class="fila-barra-menu">
+                                <ui:Label text="Vida" picking-mode="Ignore" class="etiqueta-atributo"/>
+                                <ui:ProgressBar name="BarraVidaMenu" value="100" high-value="100" title="" picking-mode="Position" class="barra-progreso-menu vida"/>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="FilaStamina" picking-mode="Ignore" class="fila-barra-menu">
+                                <ui:Label text="Stamina" picking-mode="Ignore" class="etiqueta-atributo"/>
+                                <ui:ProgressBar name="BarraStaminaMenu" value="100" high-value="100" title="" picking-mode="Position" class="barra-progreso-menu stamina"/>
+                            </ui:VisualElement>
                         </ui:VisualElement>
-                        <ui:VisualElement name="FilaStamina" picking-mode="Ignore" class="fila-barra-menu">
-                            <ui:Label text="Stamina" picking-mode="Ignore" class="etiqueta-atributo"/>
-                            <ui:ProgressBar name="BarraStaminaMenu" value="100" high-value="100" title="" picking-mode="Position" class="barra-progreso-menu stamina"/>
+                        <ui:VisualElement name="SeccionAtributos" picking-mode="Ignore" class="seccion-bloque" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgb(172, 93, 15); border-right-color: rgb(172, 93, 15); border-top-color: rgb(172, 93, 15); border-bottom-color: rgb(172, 93, 15);">
+                            <ui:Label name="TituloAtributos" text="ATRIBUTOS" picking-mode="Ignore" class="titulo-seccion"/>
+                            <ui:VisualElement name="FilaFuerza" picking-mode="Ignore" class="fila-atributo">
+                                <ui:Label text="Fuerza" picking-mode="Ignore" class="nombre-atributo"/>
+                                <ui:Label name="ValorFuerza" text="10" picking-mode="Ignore" class="valor-atributo"/>
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                        <ui:VisualElement name="SeccionEquipamiento" picking-mode="Ignore" class="seccion-bloque" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgb(172, 93, 15); border-right-color: rgb(172, 93, 15); border-top-color: rgb(172, 93, 15); border-bottom-color: rgb(172, 93, 15); color: rgb(27, 27, 27);">
+                            <ui:Label name="TituloEquipamiento" text="EQUIPAMIENTO" picking-mode="Ignore" class="titulo-seccion"/>
+                            <ui:VisualElement name="EquipSlot1" picking-mode="Position" class="slot-equipamiento">
+                                <ui:VisualElement name="contenedorIconoEquipamento" class="contenedor-slot-iconoEquipamento"/>
+                                <ui:VisualElement name="img" picking-mode="Ignore" class="icono-equipamiento" style="background-image: url(&quot;project://database/Assets/Sprites/Lanza%20Icon.png?fileID=2800000&amp;guid=18dfb60b456736a48bd13b163f270a7d&amp;type=3#Lanza Icon&quot;); background-repeat: no-repeat no-repeat; -unity-background-scale-mode: stretch-to-fill;"/>
+                                <ui:Label name="TituloSlot" text="VACIO" picking-mode="Ignore" class="texto-equipamiento"/>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="EquipSlot2" picking-mode="Position" class="slot-equipamiento">
+                                <ui:VisualElement name="contenedorIconoEquipamento" class="contenedor-slot-iconoEquipamento"/>
+                                <ui:VisualElement name="img" picking-mode="Ignore" class="icono-equipamiento" style="background-image: url(&quot;project://database/Assets/as/Final/Gemini_Generated_Image_44cu3q44cu3q44cu-removebg-preview.png?fileID=2800000&amp;guid=b19507e84ae9f16479862d0c902e00a2&amp;type=3#Gemini_Generated_Image_44cu3q44cu3q44cu-removebg-preview&quot;);"/>
+                                <ui:Label name="TituloSlot" text="VACIO" picking-mode="Ignore" class="texto-equipamiento"/>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="EquipSlot3" picking-mode="Position" class="slot-equipamiento">
+                                <ui:VisualElement name="contenedorIconoEquipamento" class="contenedor-slot-iconoEquipamento"/>
+                                <ui:VisualElement name="img" picking-mode="Ignore" class="icono-equipamiento" style="background-image: url(&quot;project://database/Assets/as/Final/Gemini_Generated_Image_44cu3q44cu3q44cu-removebg-preview.png?fileID=2800000&amp;guid=b19507e84ae9f16479862d0c902e00a2&amp;type=3#Gemini_Generated_Image_44cu3q44cu3q44cu-removebg-preview&quot;);"/>
+                                <ui:Label name="TituloSlot" text="VACIO" picking-mode="Ignore" class="texto-equipamiento"/>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="EquipSlot4" picking-mode="Position" class="slot-equipamiento">
+                                <ui:VisualElement name="contenedorIconoEquipamento" class="contenedor-slot-iconoEquipamento"/>
+                                <ui:VisualElement name="img" picking-mode="Ignore" class="icono-equipamiento" style="background-image: url(&quot;project://database/Assets/Sprites/UI_Sprites/12333333.png?fileID=2800000&amp;guid=c3d27597995fb0f419c76f43991b869f&amp;type=3#12333333&quot;);"/>
+                                <ui:Label name="TituloSlot" text="VACIO" picking-mode="Ignore" class="texto-equipamiento"/>
+                            </ui:VisualElement>
                         </ui:VisualElement>
                     </ui:VisualElement>
-                    <ui:VisualElement name="SeccionAtributos" picking-mode="Ignore" class="seccion-bloque" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgb(172, 93, 15); border-right-color: rgb(172, 93, 15); border-top-color: rgb(172, 93, 15); border-bottom-color: rgb(172, 93, 15);">
-                        <ui:Label name="TituloAtributos" text="ATRIBUTOS" picking-mode="Ignore" class="titulo-seccion"/>
-                        <ui:VisualElement name="FilaFuerza" picking-mode="Ignore" class="fila-atributo">
-                            <ui:Label text="Fuerza" picking-mode="Ignore" class="nombre-atributo"/>
-                            <ui:Label name="ValorFuerza" text="0" picking-mode="Ignore" class="valor-atributo"/>
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-                    <ui:VisualElement name="SeccionEquipamiento" picking-mode="Ignore" class="seccion-bloque" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgb(172, 93, 15); border-right-color: rgb(172, 93, 15); border-top-color: rgb(172, 93, 15); border-bottom-color: rgb(172, 93, 15); color: rgb(27, 27, 27);">
-                        <ui:Label name="TituloEquipamiento" text="EQUIPAMIENTO" picking-mode="Ignore" class="titulo-seccion"/>
-                        <ui:VisualElement name="EquipSlot1" picking-mode="Position" class="slot-equipamiento">
-                            <ui:VisualElement name="contenedorIconoEquipamento" class="contenedor-slot-iconoEquipamento"/>
-                            <ui:VisualElement name="img" picking-mode="Ignore" class="icono-equipamiento" style="background-image: url(&quot;project://database/Assets/Sprites/Lanza%20Icon.png?fileID=2800000&amp;guid=18dfb60b456736a48bd13b163f270a7d&amp;type=3#Lanza Icon&quot;); background-repeat: no-repeat no-repeat; -unity-background-scale-mode: stretch-to-fill;"/>
-                            <ui:Label name="TituloSlot" text="VACIO" picking-mode="Ignore" class="texto-equipamiento"/>
-                        </ui:VisualElement>
-                        <ui:VisualElement name="EquipSlot2" picking-mode="Position" class="slot-equipamiento">
-                            <ui:VisualElement name="contenedorIconoEquipamento" class="contenedor-slot-iconoEquipamento"/>
-                            <ui:VisualElement name="img" picking-mode="Ignore" class="icono-equipamiento"/>
-                            <ui:Label name="TituloSlot" text="VACIO" picking-mode="Ignore" class="texto-equipamiento"/>
-                        </ui:VisualElement>
-                        <ui:VisualElement name="EquipSlot3" picking-mode="Position" class="slot-equipamiento">
-                            <ui:VisualElement name="contenedorIconoEquipamento" class="contenedor-slot-iconoEquipamento"/>
-                            <ui:VisualElement name="img" picking-mode="Ignore" class="icono-equipamiento"/>
-                            <ui:Label name="TituloSlot" text="VACIO" picking-mode="Ignore" class="texto-equipamiento"/>
-                        </ui:VisualElement>
-                        <ui:VisualElement name="EquipSlot4" picking-mode="Position" class="slot-equipamiento">
-                            <ui:VisualElement name="contenedorIconoEquipamento" class="contenedor-slot-iconoEquipamento"/>
-                            <ui:VisualElement name="img" picking-mode="Ignore" class="icono-equipamiento"/>
-                            <ui:Label name="TituloSlot" text="VACIO" picking-mode="Ignore" class="texto-equipamiento"/>
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-                </ui:VisualElement>
-                <ui:VisualElement name="ColumnaDerecha" picking-mode="Ignore" class="columna-derecha" style="width: 35%; border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; border-left-color: rgb(172, 93, 15); border-right-color: rgb(172, 93, 15); border-top-color: rgb(172, 93, 15); border-bottom-color: rgb(172, 93, 15);">
-                    <ui:Label name="TituloMochila" text="MOCHILA" picking-mode="Ignore" class="titulo-seccion"/>
-                    <ui:VisualElement name="CuadriculaMochila" picking-mode="Ignore" class="cuadricula-mochila">
-                        <ui:VisualElement name="sl1" picking-mode="Position" class="slot-mochila">
-                            <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
-                            <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
-                        </ui:VisualElement>
-                        <ui:VisualElement name="sl2" picking-mode="Position" class="slot-mochila">
-                            <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
-                            <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
-                        </ui:VisualElement>
-                        <ui:VisualElement name="sl3" picking-mode="Position" class="slot-mochila">
-                            <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
-                            <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
-                        </ui:VisualElement>
-                        <ui:VisualElement name="sl4" picking-mode="Position" class="slot-mochila">
-                            <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
-                            <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
-                        </ui:VisualElement>
-                        <ui:VisualElement name="sl5" picking-mode="Position" class="slot-mochila">
-                            <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
-                            <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
-                        </ui:VisualElement>
-                        <ui:VisualElement name="sl6" picking-mode="Position" class="slot-mochila">
-                            <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
-                            <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
-                        </ui:VisualElement>
-                        <ui:VisualElement name="sl7" picking-mode="Position" class="slot-mochila">
-                            <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
-                            <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
-                        </ui:VisualElement>
-                        <ui:VisualElement name="sl8" picking-mode="Position" class="slot-mochila">
-                            <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
-                            <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
-                        </ui:VisualElement>
-                        <ui:VisualElement name="sl9" picking-mode="Position" class="slot-mochila">
-                            <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
-                            <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
+                    <ui:VisualElement name="ColumnaDerecha" picking-mode="Ignore" class="columna-derecha" style="width: 35%; border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; border-left-color: rgb(172, 93, 15); border-right-color: rgb(172, 93, 15); border-top-color: rgb(172, 93, 15); border-bottom-color: rgb(172, 93, 15);">
+                        <ui:Label name="TituloMochila" text="MOCHILA" picking-mode="Ignore" class="titulo-seccion"/>
+                        <ui:VisualElement name="CuadriculaMochila" picking-mode="Ignore" class="cuadricula-mochila">
+                            <ui:VisualElement name="sl1" picking-mode="Position" class="slot-mochila">
+                                <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
+                                <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="sl2" picking-mode="Position" class="slot-mochila">
+                                <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
+                                <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="sl3" picking-mode="Position" class="slot-mochila">
+                                <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
+                                <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="sl4" picking-mode="Position" class="slot-mochila">
+                                <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
+                                <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="sl5" picking-mode="Position" class="slot-mochila">
+                                <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
+                                <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="sl6" picking-mode="Position" class="slot-mochila">
+                                <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
+                                <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="sl7" picking-mode="Position" class="slot-mochila">
+                                <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
+                                <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="sl8" picking-mode="Position" class="slot-mochila">
+                                <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
+                                <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="sl9" picking-mode="Position" class="slot-mochila">
+                                <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
+                                <ui:Label name="numeroContador" picking-mode="Ignore" class="contador-cantidad"/>
+                            </ui:VisualElement>
                         </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>
@@ -126,6 +123,5 @@
                 <ui:Label text="[ESC] Cerrar" picking-mode="Ignore" class="texto-atajo"/>
             </ui:VisualElement>
         </ui:VisualElement>
-
     </ui:VisualElement>
 </ui:UXML>

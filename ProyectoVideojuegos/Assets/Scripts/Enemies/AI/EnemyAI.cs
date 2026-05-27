@@ -124,7 +124,7 @@ public class EnemyAI : MonoBehaviour
     {
         patrulla.enabled = (estadoActual == Estado.Patrullando);
         persecusion.enabled = (estadoActual == Estado.Persiguiendo);
-       // enemySoundController.PlayVuelo();
+        enemySoundController.PlayVuelo();
 
         if (estadoActual == Estado.Atacando)
         {
@@ -159,9 +159,6 @@ public class EnemyAI : MonoBehaviour
             enemySoundController.PlayAtaque();
             yaSonóAtaque = true;
         }
-
-        
-        
     }
 
     // ANIMATION EVENT --- llamar al inicio del frame de daño
