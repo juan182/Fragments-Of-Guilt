@@ -504,6 +504,13 @@ public class BossController : MonoBehaviour
     public void EventoEmbestidaInicio() => OnEmbestidaInicio?.Invoke();
     public void EventoEmbestidaFin() => OnEmbestidaFin?.Invoke();
 
+    // ---- ANIMATION EVENTS ----
+    public void EventoPaso()
+    {
+        if (enemySoundController != null)
+            enemySoundController.PlayPaso();
+    }
+
     // ---- GIZMOS ----
 
     private void OnDrawGizmos()
