@@ -1401,6 +1401,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4672933067179177036, guid: 3de9c553bfa00d047b87b14bf276ac9e, type: 3}
+      propertyPath: boss
+      value: 
+      objectReference: {fileID: 1103147035}
+    - target: {fileID: 4672933067179177036, guid: 3de9c553bfa00d047b87b14bf276ac9e, type: 3}
+      propertyPath: tiempoEspera
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8923892942205435412, guid: 3de9c553bfa00d047b87b14bf276ac9e, type: 3}
       propertyPath: m_Name
       value: TriggerZone
@@ -1642,7 +1650,7 @@ GameObject:
   m_Component:
   - component: {fileID: 46143367}
   - component: {fileID: 46143368}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2800,7 +2808,7 @@ Transform:
   m_GameObject: {fileID: 115500540}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 35.47, y: -5.200001, z: 10}
+  m_LocalPosition: {x: 35.47, y: -5.200001, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4932,7 +4940,7 @@ GameObject:
   m_Component:
   - component: {fileID: 205518016}
   - component: {fileID: 205518017}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (17)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5893,7 +5901,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1088224553}
-  - {fileID: 1013351180}
   - {fileID: 1763286239}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6635,7 +6642,7 @@ GameObject:
   m_Component:
   - component: {fileID: 272612977}
   - component: {fileID: 272612978}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (18)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9405,11 +9412,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3843841522647660550, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.8
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 3843841522647660550, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.3
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 3843841522647660550, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9417,7 +9424,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3843841522647660550, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3843841522647660550, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_LocalRotation.x
@@ -9425,7 +9432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3843841522647660550, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3843841522647660550, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_LocalRotation.z
@@ -9437,7 +9444,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3843841522647660550, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3843841522647660550, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -9711,7 +9718,7 @@ Transform:
   m_GameObject: {fileID: 377870046}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 32.20056, y: -4.90475, z: 10}
+  m_LocalPosition: {x: 32.20056, y: -4.90475, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12888,7 +12895,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3294998912256884775, guid: 6320f00b0ce73bc42a1f5955ec07d598, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.53
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3294998912256884775, guid: 6320f00b0ce73bc42a1f5955ec07d598, type: 3}
       propertyPath: m_LocalPosition.z
@@ -14584,7 +14591,7 @@ GameObject:
   m_Component:
   - component: {fileID: 552624823}
   - component: {fileID: 552624824}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (20)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17223,7 +17230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 677645493}
   - component: {fileID: 677645494}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18950,7 +18957,7 @@ GameObject:
   m_Component:
   - component: {fileID: 718747142}
   - component: {fileID: 718747143}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20651,7 +20658,7 @@ GameObject:
   m_Component:
   - component: {fileID: 804901469}
   - component: {fileID: 804901470}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22244,7 +22251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 881432009}
   - component: {fileID: 881432010}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (19)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24142,7 +24149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 981978389}
   - component: {fileID: 981978390}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24484,98 +24491,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 711530802}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1013351179
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1013351180}
-  - component: {fileID: 1013351182}
-  - component: {fileID: 1013351183}
-  m_Layer: 0
-  m_Name: Teleporter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1013351180
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1013351179}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 23.8, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 250732425}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &1013351182
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1013351179}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0.49147224, y: -2.0727096}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1.9829445, y: 6.4898787}
-  m_EdgeRadius: 0
---- !u!114 &1013351183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1013351179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c88672b2a2922e043adc5d8d6dc61d7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SceneTrigger
-  nombreEscenaDestino: FASE2.1
 --- !u!1 &1015590662
 GameObject:
   m_ObjectHideFlags: 0
@@ -26628,12 +26543,23 @@ MonoBehaviour:
   ataque: {fileID: 0}
   detectaJugador: {fileID: 0}
   muerte: {fileID: 8300000, guid: 79562baa28730ea4385350dd37de25c5, type: 3}
-  entrada: {fileID: 8300000, guid: e04251acb82e5754a8ec4bdf49539cc6, type: 3}
+  entrada: {fileID: 0}
   fase2: {fileID: 8300000, guid: 27dc8c27e25cdfa43a2ccfa1534ef210, type: 3}
-  mordida: {fileID: 0}
-  cabezazo: {fileID: 0}
-  embestida: {fileID: 0}
-  ondaExpansiva: {fileID: 0}
+  mordida: {fileID: 8300000, guid: 76e153e0d8dc0794c86e59de91f93e20, type: 3}
+  cabezazo: {fileID: 8300000, guid: c43db484bbb5c1147b41d5f2a9e6b26c, type: 3}
+  embestida: {fileID: 8300000, guid: b6ad12b32c00b7d4799e5257fb16929c, type: 3}
+  ondaExpansiva: {fileID: 8300000, guid: 5271f4e29d9344846be76bee0db8f638, type: 3}
+--- !u!114 &1103147035 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 919325245278765951, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}
+  m_PrefabInstance: {fileID: 375295675}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103147030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05549e70bab2d1b48bd87f2dcd301610, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossController
 --- !u!1 &1104147421
 GameObject:
   m_ObjectHideFlags: 0
@@ -27372,7 +27298,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1134231279}
   - component: {fileID: 1134231280}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29966,7 +29892,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1231969528}
   - component: {fileID: 1231969529}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30694,7 +30620,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1247988844}
   - component: {fileID: 1247988845}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31591,7 +31517,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1304953454}
   - component: {fileID: 1304953455}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31672,6 +31598,90 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1313249466
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1313249468}
+  - component: {fileID: 1313249467}
+  m_Layer: 0
+  m_Name: Global Light 2D
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1313249467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313249466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.Light2D
+  m_ComponentVersion: 2
+  m_LightType: 4
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 0.5
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 0.64
+  m_LightVolumeIntensity: 1
+  m_LightVolumeEnabled: 0
+  m_ApplyToSortingLayers: 00000000
+  m_LightCookieSprite: {fileID: 0}
+  m_DeprecatedPointLightCookieSprite: {fileID: 0}
+  m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
+  m_OverlapOperation: 0
+  m_NormalMapDistance: 3
+  m_NormalMapQuality: 2
+  m_UseNormalMap: 0
+  m_ShadowsEnabled: 1
+  m_ShadowIntensity: 0.75
+  m_ShadowSoftness: 0.3
+  m_ShadowSoftnessFalloffIntensity: 0.5
+  m_ShadowVolumeIntensityEnabled: 0
+  m_ShadowVolumeIntensity: 0.75
+  m_LocalBounds:
+    m_Center: {x: 0, y: -0.00000011920929, z: 0}
+    m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
+  m_PointLightInnerAngle: 360
+  m_PointLightOuterAngle: 360
+  m_PointLightInnerRadius: 0
+  m_PointLightOuterRadius: 1
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.5
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: 0.5, z: 0}
+  - {x: -0.5, y: 0.5, z: 0}
+--- !u!4 &1313249468
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313249466}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.767917, y: 2.1528192, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1313320103
 GameObject:
   m_ObjectHideFlags: 0
@@ -31864,7 +31874,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1317619652}
   - component: {fileID: 1317619653}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32228,7 +32238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1337344118}
   - component: {fileID: 1337344119}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32683,7 +32693,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1349427079}
   - component: {fileID: 1349427080}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (22)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34867,7 +34877,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1462121919}
   - component: {fileID: 1462121920}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37324,7 +37334,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1563960461}
   - component: {fileID: 1563960462}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (21)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38037,7 +38047,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6040082330535809673, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6040082330535809673, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
       propertyPath: m_LocalRotation.x
@@ -38045,7 +38055,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6040082330535809673, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6040082330535809673, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
       propertyPath: m_LocalRotation.z
@@ -38057,7 +38067,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6040082330535809673, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6040082330535809673, guid: 51765a1b415b1dd4585c840a75578d69, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -38288,7 +38298,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1601638908}
   - component: {fileID: 1601638909}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41963,12 +41973,12 @@ CompositeCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
+  m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:
@@ -44695,7 +44705,7 @@ GameObject:
   - component: {fileID: 1909499957}
   - component: {fileID: 1909499959}
   - component: {fileID: 1909499958}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44926,7 +44936,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1923078123}
   - component: {fileID: 1923078124}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0 (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47518,7 +47528,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2044267287}
   - component: {fileID: 2044267288}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor_wood_2_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49967,3 +49977,4 @@ SceneRoots:
   - {fileID: 489534116}
   - {fileID: 35859746}
   - {fileID: 2037254509}
+  - {fileID: 1313249468}
