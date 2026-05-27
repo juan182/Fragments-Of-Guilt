@@ -1085,7 +1085,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySoundController
   audioSource: {fileID: 6635698103483026978}
-  vuelo: {fileID: 0}
+  vuelo: {fileID: 8300000, guid: 82c7d5f8448866b4b8e5b600445614e4, type: 3}
   ataque: {fileID: 8300000, guid: 2541de6eae2f37f4d834aae2e9828c82, type: 3}
   detectaJugador: {fileID: 8300000, guid: 1d2e15f9e392a9b47bb06af95a220600, type: 3}
   muerte: {fileID: 8300000, guid: 6ad3c3be63afc06458c51c72971a0550, type: 3}
@@ -1095,6 +1095,7 @@ MonoBehaviour:
   cabezazo: {fileID: 0}
   embestida: {fileID: 0}
   ondaExpansiva: {fileID: 0}
+  paso: {fileID: 0}
 --- !u!58 &3977994028169024356
 CircleCollider2D:
   m_ObjectHideFlags: 0

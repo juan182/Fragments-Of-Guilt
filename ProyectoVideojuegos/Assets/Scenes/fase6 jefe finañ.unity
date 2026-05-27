@@ -26549,6 +26549,7 @@ MonoBehaviour:
   cabezazo: {fileID: 8300000, guid: c43db484bbb5c1147b41d5f2a9e6b26c, type: 3}
   embestida: {fileID: 8300000, guid: b6ad12b32c00b7d4799e5257fb16929c, type: 3}
   ondaExpansiva: {fileID: 8300000, guid: 5271f4e29d9344846be76bee0db8f638, type: 3}
+  paso: {fileID: 8300000, guid: b0e526550063ac74e9e5e0cfab4d4aff, type: 3}
 --- !u!114 &1103147035 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 919325245278765951, guid: c1811e85f2c0f5046a5f68675dc08124, type: 3}

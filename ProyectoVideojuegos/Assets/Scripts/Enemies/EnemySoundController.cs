@@ -18,6 +18,7 @@ public class EnemySoundController : MonoBehaviour
     [SerializeField] AudioClip cabezazo;
     [SerializeField] AudioClip embestida;
     [SerializeField] AudioClip ondaExpansiva;
+    [SerializeField] AudioClip paso;
 
     public void PlayVuelo() => audioSource.PlayOneShot(vuelo);
     public void PlayAtaque() => audioSource.PlayOneShot(ataque);
@@ -31,4 +32,5 @@ public class EnemySoundController : MonoBehaviour
     public void PlayCabezazo() => audioSource.PlayOneShot(cabezazo);
     public void PlayEmbestida() => audioSource.PlayOneShot(embestida);
     public void PlayOndaExpansiva() => audioSource.PlayOneShot(ondaExpansiva);
+    public void PlayPaso() => audioSource.PlayOneShot(paso);
 }
