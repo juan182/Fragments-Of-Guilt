@@ -1392,7 +1392,7 @@ MonoBehaviour:
     m_Bits: 8
   capaFragmentos:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 114816
   interfazUI: {fileID: 0}
 --- !u!114 &1653615256412030561
 MonoBehaviour:
@@ -2928,6 +2928,10 @@ PrefabInstance:
     - target: {fileID: 4359790350761783637, guid: ee2cc2ae781970a4890e1b7aafe3ad23, type: 3}
       propertyPath: m_Name
       value: Lanza
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359790350761783637, guid: ee2cc2ae781970a4890e1b7aafe3ad23, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8105920794493818744, guid: ee2cc2ae781970a4890e1b7aafe3ad23, type: 3}
       propertyPath: m_LocalPosition.x
