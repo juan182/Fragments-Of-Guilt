@@ -1,12 +1,18 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Inventario/uSS_Inventario.uss?fileID=7433441132597879392&amp;guid=49006e1c328090b43937fccad9ebd5f7&amp;type=3#uSS_Inventario"/>
     <ui:VisualElement name="PantallaGlobal" picking-mode="Ignore" class="pantalla-global">
+        
         <ui:VisualElement name="HudInGame" picking-mode="Ignore" class="hud-ingame">
             <ui:VisualElement name="BarrasExploracion" picking-mode="Position" class="contenedor-barras-hud">
                 <ui:ProgressBar name="BarraVidaHUD" value="100" title="" picking-mode="Position" high-value="100" class="barra-progreso vida"/>
                 <ui:ProgressBar name="BarraStaminaHUD" value="100" title="" picking-mode="Position" class="barra-progreso stamina"/>
             </ui:VisualElement>
+            
+            <ui:VisualElement name="CartelInteraccion" class="cartel-interaccion cartel-oculto" picking-mode="Ignore">
+                <ui:Label name="TextoAccion" text="Presiona [Y] para Recolectar Ítem" class="texto-cartel"/>
+            </ui:VisualElement>
         </ui:VisualElement>
+
         <ui:VisualElement name="HotbarHUD" picking-mode="Position" class="hotbar-hud">
             <ui:VisualElement name="HotbarSlotSuperior" picking-mode="Position" class="slot-rapido superior">
                 <ui:VisualElement name="img" picking-mode="Ignore" class="icono-item"/>
@@ -25,11 +31,12 @@
                 <ui:Label name="numeroContador" text="0" picking-mode="Ignore" class="contador-cantidad"/>
             </ui:VisualElement>
         </ui:VisualElement>
+
         <ui:VisualElement name="MenuInventario" picking-mode="Position" class="menu-inventario oculto">
             <ui:VisualElement name="FondoDesenfoque" picking-mode="Position" class="fondo-oscuro" style="top: -1px; left: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);"/>
             <ui:VisualElement name="ContenedorPrincipal" picking-mode="Ignore" class="contenedor-principal-inventario">
                 <ui:VisualElement name="ColumnaIzquierda" picking-mode="Ignore" class="columna-izquierda">
-                    <ui:VisualElement name="SeccionEstadisticas" picking-mode="Ignore" class="seccion-bloque" style="background-color: rgba(0, 0, 255, 0); border-left-color: rgb(255, 127, 0); border-right-color: rgb(255, 127, 0); border-top-color: rgb(255, 127, 0); border-bottom-color: rgb(255, 127, 0);">
+                    <ui:VisualElement name="SeccionEstadisticas" picking-mode="Ignore" class="seccion-bloque" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgb(255, 127, 0); border-right-color: rgb(255, 127, 0); border-top-color: rgb(255, 127, 0); border-bottom-color: rgb(255, 127, 0);">
                         <ui:Label name="TituloEstadisticas" text="ESTADO" picking-mode="Ignore" class="titulo-seccion"/>
                         <ui:VisualElement name="FilaVida" picking-mode="Ignore" class="fila-barra-menu">
                             <ui:Label text="Vida" picking-mode="Ignore" class="etiqueta-atributo"/>
@@ -119,5 +126,6 @@
                 <ui:Label text="[ESC] Cerrar" picking-mode="Ignore" class="texto-atajo"/>
             </ui:VisualElement>
         </ui:VisualElement>
+
     </ui:VisualElement>
 </ui:UXML>

@@ -3,6 +3,12 @@ using UnityEngine.UIElements;
 
 public class GameOverScript : MonoBehaviour
 {
+    [Header("Sistema de Audio Local (SFX)")]
+    public AudioSource reproductorSFX;
+
+    // Arreglo indexado: [0] = Impacto/Sonido de Muerte, [1] = Hover de Botón
+    public AudioClip[] sonidosMuerte;
+
     private UIDocument uiDocument;
     private VisualElement root;
     private VisualElement contenedorPrincipal;
@@ -15,36 +21,78 @@ public class GameOverScript : MonoBehaviour
         uiDocument = GetComponent<UIDocument>();
         root = uiDocument.rootVisualElement;
 
-        contenedorPrincipal = root.Q<VisualElement>("PantallaMuerteRoot");
+        if (reproductorSFX == null)
+        {
+            reproductorSFX = gameObject.AddComponent<AudioSource>();
+        }
 
+        reproductorSFX.ignoreListenerPause = true;
+
+        contenedorPrincipal = root.Q<VisualElement>("PantallaMuerteRoot");
         btnReintentar = root.Q<Button>("BtnReintentar");
         btnMenuPrincipal = root.Q<Button>("BtnMenuPrincipal");
 
-        // CAMBIO CRÍTICO: Registramos 'ClickEvent' en lugar de 'PointerDownEvent'
-        // Este evento ignora por completo si el Time.timeScale está en 0
+        ConfigurarCallbacks();
+        DesactivarPantallaImedatadamente();
+    }
+
+    private void ConfigurarCallbacks()
+    {
         if (btnReintentar != null)
             btnReintentar.RegisterCallback<ClickEvent>(OnReintentarPressed);
 
         if (btnMenuPrincipal != null)
             btnMenuPrincipal.RegisterCallback<ClickEvent>(OnMenuPrincipalPressed);
 
-        DesactivarPantallaImedatadamente();
-    }
-
-    // Cambiamos el parámetro aquí también a ClickEvent
-    private void OnReintentarPressed(ClickEvent evt)
-    {
-        Debug.Log("Click detectado en Reintentar con TimeScale 0.");
-        if (GameManager.Instance != null && GameManager.Instance.sceneManager != null)
+        Button[] botonesGameOver = { btnReintentar, btnMenuPrincipal };
+        foreach (Button btn in botonesGameOver)
         {
-            GameManager.Instance.sceneManager.ReiniciarNivel();
+            if (btn != null)
+            {
+                btn.RegisterCallback<MouseEnterEvent>(OnBotonHoverIn);
+            }
         }
     }
 
-    // Cambiamos el parámetro aquí también a ClickEvent
+    private void ReproducirSFXLocal(int indice)
+    {
+        if (reproductorSFX != null && sonidosMuerte != null && indice >= 0 && indice < sonidosMuerte.Length)
+        {
+            if (sonidosMuerte[indice] != null)
+            {
+                reproductorSFX.PlayOneShot(sonidosMuerte[indice]);
+            }
+        }
+    }
+
+    private void OnBotonHoverIn(MouseEnterEvent evt)
+    {
+        ReproducirSFXLocal(1); // Sonido de Hover [1]
+    }
+
+    private void OnReintentarPressed(ClickEvent evt)
+    {
+        Debug.Log("Click detectado en Reintentar con TimeScale 0.");
+
+        // ------Uso Aqui---- REANUDAR MÚSICA GLOBAL
+        // Le avisamos al GameManager que despause la pista de una hora antes de cargar la escena
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ReanudarMusicaGlobal();
+
+            if (GameManager.Instance.sceneManager != null)
+            {
+                GameManager.Instance.sceneManager.ReiniciarNivel();
+            }
+        }
+    }
+
     private void OnMenuPrincipalPressed(ClickEvent evt)
     {
         Debug.Log("Click detectado en Menú Principal.");
+
+        // NOTA: Si va al menú principal, el GameManager en su estado "GameState.Menu" 
+        // ya tiene la lógica para manejar el flujo general o podrías dejar que continúe.
         if (GameManager.Instance != null && GameManager.Instance.sceneManager != null)
         {
             GameManager.Instance.sceneManager.IrAMenu("MenuPrincipal");
@@ -55,6 +103,16 @@ public class GameOverScript : MonoBehaviour
     {
         if (contenedorPrincipal == null) return;
         contenedorPrincipal.style.display = DisplayStyle.Flex;
+
+        // ------Uso Aqui---- PAUSAR MÚSICA GLOBAL Y TOCAR IMPACTO
+        // 1. Pausamos la música de fondo para dar paso al silencio dramático
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.PausarMusicaGlobal();
+        }
+
+        // 2. Tocamos el SFX de muerte local [0] en completa prioridad
+        ReproducirSFXLocal(0);
 
         contenedorPrincipal.schedule.Execute(() => {
             contenedorPrincipal.AddToClassList("visible");

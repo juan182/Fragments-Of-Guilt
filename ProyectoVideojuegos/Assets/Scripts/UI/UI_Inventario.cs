@@ -6,8 +6,8 @@ using UnityEngine.UIElements;
 public class UI_Inventario : MonoBehaviour
 {
     [Header("Referencias del Jugador")]
-    public PlayerController playerController;            // Controlador lógico del personaje.
-    public GameSessionSO sesion;                         // Contenedor de persistencia de datos del jugador.
+    public PlayerController playerController;
+    public GameSessionSO sesion;
 
     [Header("Nombres de Equipamiento (Editables)")]
     [SerializeField] private string textoLanza = "LANZA CELESTIAL";
@@ -16,31 +16,32 @@ public class UI_Inventario : MonoBehaviour
     [SerializeField] private string textoLibro = "LIBRO DE EGVA";
     [SerializeField] private string textoVacio = "VACIO";
 
-    // Elementos del Toolkit UI (Estructura Base)
-    private UIDocument uiDocument;                      // Componente puente de la interfaz.
-    private VisualElement root;                         // Nodo contenedor raíz del UXML.
-    private bool inventarioActivo = false;              // Control de estado de la ventana.
+    private UIDocument uiDocument;
+    private VisualElement root;
+    private bool inventarioActivo = false;
 
-    // Elementos del Contenedor HUD e Inventario
-    private VisualElement hudInGame;                    // Panel principal en estado de exploración.
-    private VisualElement menuInventario;               // Panel principal en estado de pausa/mochila.
-    private ProgressBar barraVidaHud;                   // Medidor de salud en la interfaz de acción.
-    private ProgressBar barraStaminaHUD;                // Medidor de energía en la interfaz de acción.
-    private ProgressBar barraVidaMenu;                  // Medidor de salud dentro del menú de estado.
-    private ProgressBar barraStaminaMenu;               // Medidor de energía dentro del menú de estado.
+    private VisualElement hudInGame;
+    private VisualElement menuInventario;
+    private ProgressBar barraVidaHud;
+    private ProgressBar barraStaminaHUD;
+    private ProgressBar barraVidaMenu;
+    private ProgressBar barraStaminaMenu;
 
-    // Slots de Equipamiento / Habilidades
-    private VisualElement slotEquip1;                   // Espacio para la Lanza.
-    private VisualElement slotEquip2;                   // Espacio para el Fragmento de Magia.
-    private VisualElement slotEquip3;                   // Espacio para el Fragmento de Parry.
-    private VisualElement slotEquip4;                   // Espacio para el Libro EGVA.
+    private VisualElement slotEquip1;
+    private VisualElement slotEquip2;
+    private VisualElement slotEquip3;
+    private VisualElement slotEquip4;
 
-    // Colecciones y Gestión de Arrastre (Drag and Drop)
-    private List<VisualElement> slotsHotbar = new List<VisualElement>();    // Lista de accesos rápidos del HUD.
-    private List<VisualElement> slotsMochila = new List<VisualElement>();   // Lista de cuadrículas de la mochila.
-    private VisualElement slotSeleccionado;             // Elemento de interfaz que retiene el puntero.
-    private VisualElement iconoFantasma;                // Sprite flotante durante el arrastre.
-    private int indexOrigen = -1;                       // Posición inicial del ítem arrastrado.
+    private List<VisualElement> slotsHotbar = new List<VisualElement>();
+    private List<VisualElement> slotsMochila = new List<VisualElement>();
+    private VisualElement slotSeleccionado;
+    private VisualElement iconoFantasma;
+    private int indexOrigen = -1;
+
+    private VisualElement cartelInteraccion;
+    private Label textoAccion;
+
+    private Item itemArrastrandose;
 
     private void Awake()
     {
@@ -49,32 +50,69 @@ public class UI_Inventario : MonoBehaviour
 
         if (playerController == null) Debug.LogError("PlayerController sin asignar");
 
-        // Enlace de paneles contenedores principales
         hudInGame = root.Q<VisualElement>("HudInGame");
         menuInventario = root.Q<VisualElement>("MenuInventario");
 
-        // Enlace de ranuras fijas de equipamiento
+        cartelInteraccion = root.Q<VisualElement>("CartelInteraccion");
+        textoAccion = root.Q<Label>("TextoAccion");
+
         slotEquip1 = root.Q<VisualElement>("EquipSlot1");
         slotEquip2 = root.Q<VisualElement>("EquipSlot2");
         slotEquip3 = root.Q<VisualElement>("EquipSlot3");
         slotEquip4 = root.Q<VisualElement>("EquipSlot4");
 
-        // Enlace de medidores visuales
         barraVidaHud = root.Q<ProgressBar>("BarraVidaHUD");
         barraStaminaHUD = root.Q<ProgressBar>("BarraStaminaHUD");
         barraVidaMenu = root.Q<ProgressBar>("BarraVidaMenu");
         barraStaminaMenu = root.Q<ProgressBar>("BarraStaminaMenu");
 
-        // Inicialización de componentes internos
         ConfigurarHotbar();
         CrearIconoFantasma();
         ConfigurarMochila();
-        RefrescarVisibilidadPantallas(); // Configura visibilidad inicial (HUD activo por defecto).
+        RefrescarVisibilidadPantallas();
+    }
+
+    public void AlternarCartelInteraccion(bool mostrar, string mensaje = "")
+    {
+        if (cartelInteraccion == null || textoAccion == null) return;
+        if (inventarioActivo)
+        {
+            cartelInteraccion.AddToClassList("cartel-oculto");
+            return;
+        }
+
+        if (mostrar)
+        {
+            textoAccion.text = mensaje;
+            cartelInteraccion.RemoveFromClassList("cartel-oculto");
+        }
+        else
+        {
+            cartelInteraccion.AddToClassList("cartel-oculto");
+        }
+    }
+
+    private void RefrescarVisibilidadPantallas()
+    {
+        if (inventarioActivo)
+        {
+            hudInGame?.AddToClassList("oculto");
+            if (hudInGame != null) hudInGame.pickingMode = PickingMode.Ignore;
+            menuInventario?.RemoveFromClassList("oculto");
+            if (menuInventario != null) menuInventario.pickingMode = PickingMode.Position;
+            cartelInteraccion?.AddToClassList("cartel-oculto");
+        }
+        else
+        {
+            hudInGame?.RemoveFromClassList("oculto");
+            if (hudInGame != null) hudInGame.pickingMode = PickingMode.Position;
+            menuInventario?.AddToClassList("oculto");
+            if (menuInventario != null) menuInventario.pickingMode = PickingMode.Ignore;
+        }
     }
 
     private void OnEnable()
     {
-        // Registro a eventos del inventario y del personaje
         if (sesion?.playerDATOS?.Inventario != null)
             sesion.playerDATOS.Inventario.OnInventarioChanged += ActualizarVisualizacion;
 
@@ -89,7 +127,6 @@ public class UI_Inventario : MonoBehaviour
 
     private void OnDisable()
     {
-        // Remoción de suscripciones para evitar fugas en memoria
         if (sesion?.playerDATOS?.Inventario != null)
             sesion.playerDATOS.Inventario.OnInventarioChanged -= ActualizarVisualizacion;
 
@@ -103,26 +140,33 @@ public class UI_Inventario : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I)) ActivarUI();   // Alterna la visibilidad del menú.
+        if (Input.GetKeyDown(KeyCode.I)) ActivarUI();
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) UsarItemHotbarPorTeclado(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) UsarItemHotbarPorTeclado(1);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) UsarItemHotbarPorTeclado(2);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) UsarItemHotbarPorTeclado(3);
     }
 
-    // CONFIGURACIÓN E INICIALIZACIÓN DE ELEMENTOS
     private void ConfigurarHotbar()
     {
         slotsHotbar.Clear();
         string[] posiciones = { "Superior", "Izquierdo", "Derecho", "Inferior" };
-
-        foreach (string pos in posiciones)
+        for (int i = 0; i < posiciones.Length; i++)
         {
-            VisualElement slot = root.Q<VisualElement>($"HotbarSlot{pos}");
-            if (slot != null) slotsHotbar.Add(slot);
+            VisualElement slot = root.Q<VisualElement>($"HotbarSlot{posiciones[i]}");
+            if (slot != null)
+            {
+                slot.userData = i;
+                slotsHotbar.Add(slot);
+            }
         }
     }
 
     private void ConfigurarMochila()
     {
         slotsMochila.Clear();
-        for (int i = 1; i <= 9; i++) // Recorre las 9 ranuras del inventario físico.
+        for (int i = 1; i <= 9; i++)
         {
             VisualElement slot = root.Q<VisualElement>($"sl{i}");
             if (slot != null)
@@ -139,20 +183,18 @@ public class UI_Inventario : MonoBehaviour
     private void CrearIconoFantasma()
     {
         iconoFantasma = new VisualElement();
-        iconoFantasma.style.width = 20;
-        iconoFantasma.style.height = 20;
+        iconoFantasma.style.width = 45;
+        iconoFantasma.style.height = 45;
         iconoFantasma.style.position = Position.Absolute;
         iconoFantasma.style.visibility = Visibility.Hidden;
-        iconoFantasma.pickingMode = PickingMode.Ignore; // Evita que interfiera con la detección de slots debajo.
-        iconoFantasma.style.opacity = 1f;
+        iconoFantasma.pickingMode = PickingMode.Ignore;
+        iconoFantasma.style.opacity = 0.8f;
         root.Add(iconoFantasma);
     }
 
-    // GESTIÓN DEL SISTEMA DRAG AND DROP (PUNTERO)
     private void OnPointerDownCustom(PointerDownEvent evt)
     {
-        if (evt.button != 0) return;// Restringe la acción solo al clic izquierdo.
-
+        if (evt.button != 0) return;
         VisualElement target = evt.currentTarget as VisualElement;
         int index = slotsMochila.IndexOf(target);
         var inv = sesion.playerDATOS.Inventario.ListaItemsIn_ReadOnly;
@@ -161,10 +203,12 @@ public class UI_Inventario : MonoBehaviour
         {
             slotSeleccionado = target;
             indexOrigen = index;
-            slotSeleccionado.CapturePointer(evt.pointerId); // Bloquea la interacción en este elemento.
+            itemArrastrandose = inv[index].itemData;
 
-            iconoFantasma.style.backgroundImage = new StyleBackground(inv[index].itemData.sprite);
+            slotSeleccionado.CapturePointer(evt.pointerId);
+            iconoFantasma.style.backgroundImage = new StyleBackground(itemArrastrandose.sprite);
             iconoFantasma.style.visibility = Visibility.Visible;
+            ActualizarPosicionFantasma(evt.position);
         }
     }
 
@@ -176,29 +220,41 @@ public class UI_Inventario : MonoBehaviour
     private void OnPointerUpCustom(PointerUpEvent evt)
     {
         if (slotSeleccionado == null || evt.button != 0) return;
-
-        slotSeleccionado.ReleasePointer(evt.pointerId); // Libera el bloqueo de puntero.
+        slotSeleccionado.ReleasePointer(evt.pointerId);
         iconoFantasma.style.visibility = Visibility.Hidden;
 
+        if (menuInventario != null) menuInventario.pickingMode = PickingMode.Ignore;
         VisualElement debajo = root.panel.Pick(evt.position);
-        VisualElement slotDestino = BuscarSlotEnPadres(debajo);
+        if (menuInventario != null) menuInventario.pickingMode = PickingMode.Position;
 
-        if (slotDestino != null)
+        VisualElement slotHotbarDestino = BuscarSlotHotbarEnPadres(debajo);
+        if (slotHotbarDestino != null && itemArrastrandose != null)
         {
-            int indexDestino = slotsMochila.IndexOf(slotDestino);
-            if (indexDestino != -1 && indexDestino != indexOrigen)
+            if (itemArrastrandose.Tipo == Item.TipoItem.PocionRoja || itemArrastrandose.Tipo == Item.TipoItem.PocionAzul)
             {
-                IntercambiarEnDatos(indexOrigen, indexDestino);
+                int hotbarIndex = (int)slotHotbarDestino.userData;
+                sesion.playerDATOS.Inventario.AsignarAHotbar(hotbarIndex, itemArrastrandose, indexOrigen);
             }
         }
+        else
+        {
+            VisualElement slotMochilaDestino = BuscarSlotEnPadres(debajo);
+            if (slotMochilaDestino != null)
+            {
+                int indexDestino = slotsMochila.IndexOf(slotMochilaDestino);
+                if (indexDestino != -1 && indexDestino != indexOrigen) IntercambiarEnDatos(indexOrigen, indexDestino);
+            }
+        }
+
         slotSeleccionado = null;
         indexOrigen = -1;
+        itemArrastrandose = null;
     }
 
     private void ActualizarPosicionFantasma(Vector2 mousePos)
     {
-        iconoFantasma.style.left = mousePos.x - (iconoFantasma.layout.width / 2);
-        iconoFantasma.style.top = mousePos.y - (iconoFantasma.layout.height / 2);
+        iconoFantasma.style.left = mousePos.x - 22;
+        iconoFantasma.style.top = mousePos.y - 22;
     }
 
     private VisualElement BuscarSlotEnPadres(VisualElement elemento)
@@ -211,51 +267,45 @@ public class UI_Inventario : MonoBehaviour
         return null;
     }
 
+    private VisualElement BuscarSlotHotbarEnPadres(VisualElement elemento)
+    {
+        while (elemento != null)
+        {
+            if (slotsHotbar.Contains(elemento)) return elemento;
+            elemento = elemento.parent;
+        }
+        return null;
+    }
+
     private void IntercambiarEnDatos(int a, int b)
     {
         sesion.playerDATOS.Inventario.IntercambiarPosiciones(a, b);
         ActualizarVisualizacion();
     }
 
-    // ACTUALIZACIÓN DE INTERFAZ Y ESTADÍSTICAS
     public void ActivarUI()
     {
         inventarioActivo = !inventarioActivo;
         RefrescarVisibilidadPantallas();
-
         if (inventarioActivo) ActualizarVisualizacion();
     }
 
-    private void RefrescarVisibilidadPantallas()
+    private void UsarItemHotbarPorTeclado(int index)
     {
-        if (inventarioActivo)
-        {
-            hudInGame?.AddToClassList("oculto");
-            if (hudInGame != null) hudInGame.pickingMode = PickingMode.Ignore;
-
-            menuInventario?.RemoveFromClassList("oculto");
-            if (menuInventario != null) menuInventario.pickingMode = PickingMode.Position;
-        }
-        else
-        {
-            hudInGame?.RemoveFromClassList("oculto");
-            if (hudInGame != null) hudInGame.pickingMode = PickingMode.Position;
-
-            menuInventario?.AddToClassList("oculto");
-            if (menuInventario != null) menuInventario.pickingMode = PickingMode.Ignore;
-        }
+        sesion.playerDATOS.Inventario.UsarItemHotbar(index, playerController);
     }
 
     public void ActualizarVisualizacion()
     {
         if (sesion?.playerDATOS?.Inventario == null) return;
-        var listaItems = sesion.playerDATOS.Inventario.ListaItemsIn_ReadOnly;
+        var inventarioComponente = sesion.playerDATOS.Inventario;
+        var listaItems = inventarioComponente.ListaItemsIn_ReadOnly;
 
+        // UI de la Mochila
         for (int i = 0; i < slotsMochila.Count; i++)
         {
             VisualElement iconoUI = slotsMochila[i].Q<VisualElement>("img");
             Label cantidadUI = slotsMochila[i].Q<Label>("numeroContador");
-
             if (i < listaItems.Count && listaItems[i]?.itemData != null)
             {
                 iconoUI.style.backgroundImage = new StyleBackground(listaItems[i].itemData.sprite);
@@ -267,6 +317,31 @@ public class UI_Inventario : MonoBehaviour
             {
                 iconoUI.style.display = DisplayStyle.None;
                 cantidadUI.style.display = DisplayStyle.None;
+            }
+        }
+
+        // UI de la Hotbar (CORREGIDO)
+        for (int i = 0; i < slotsHotbar.Count; i++)
+        {
+            VisualElement iconoHotbar = slotsHotbar[i].Q<VisualElement>("img");
+            Label cantidadHotbar = slotsHotbar[i].Q<Label>("numeroContador");
+
+            // Accedemos al Slot completo para extraer el item y la cantidad real asignada
+            SlotInventario slotRapido = inventarioComponente.HotbarSlots[i];
+
+            if (slotRapido != null && slotRapido.itemData != null)
+            {
+                iconoHotbar.style.backgroundImage = new StyleBackground(slotRapido.itemData.sprite);
+                iconoHotbar.style.display = DisplayStyle.Flex;
+
+                // Pintamos de forma dinámica el número real (ej: si eran 20, dirá 20)
+                cantidadHotbar.text = slotRapido.cantidad.ToString();
+                cantidadHotbar.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                iconoHotbar.style.display = DisplayStyle.None;
+                cantidadHotbar.style.display = DisplayStyle.None;
             }
         }
     }
@@ -303,7 +378,6 @@ public class UI_Inventario : MonoBehaviour
         }
     }
 
-    // SISTEMA DE EQUIPAMIENTO / HABILIDADES
     private void ActualizarSlotsEquipamiento(bool tieneLanza, bool tieneMagia, bool tieneParry, bool tieneLibro)
     {
         AjustarEstadoSlot(slotEquip1, tieneLanza, textoLanza);
@@ -315,20 +389,18 @@ public class UI_Inventario : MonoBehaviour
     private void AjustarEstadoSlot(VisualElement slotElement, bool estaDesbloqueado, string textoHabilidad)
     {
         if (slotElement == null) return;
-
         VisualElement imagenIcono = slotElement.Q<VisualElement>("img");
         Label tituloLabel = slotElement.Q<Label>("TituloSlot");
-
         if (imagenIcono != null && tituloLabel != null)
         {
             if (estaDesbloqueado)
             {
-                imagenIcono.RemoveFromClassList("imagen-fragmento-oculto"); // Muestra la imagen.
+                imagenIcono.RemoveFromClassList("imagen-fragmento-oculto");
                 tituloLabel.text = textoHabilidad;
             }
             else
             {
-                imagenIcono.AddToClassList("imagen-fragmento-oculto");    // Oculta la imagen vía USS.
+                imagenIcono.AddToClassList("imagen-fragmento-oculto");
                 tituloLabel.text = textoVacio;
             }
         }

@@ -21,10 +21,10 @@ TagManager:
   - Decoracion
   - Pared
   - Enemy
-  - 
-  - 
-  - 
-  - 
+  - Item
+  - FragmentoMagia
+  - FragmentoParry_AtaqueFuerte
+  - libroEGVA
   - 
   - 
   - 

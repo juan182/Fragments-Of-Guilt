@@ -17,82 +17,129 @@ public class MovementController : MonoBehaviour
     [Header("Salto")]
     public float jumpForce;
     public LayerMask capaSuelo;
-    private bool estaEnElSuelo = false; //Esta en el suelo?
-    private bool puedeSaltar = false; //Puede saltar?
-    
+    private bool estaEnElSuelo = false;
+    private bool puedeSaltar = false;
+
     [Header("Estado de Combate")]
     public bool isBlocking = false;
 
+    [Header("Costo de Habilidades")]
+    [SerializeField] private int costoStaminaMagia = 20; // Cuánta stamina consume cada disparo de magia
+
+    [Header("Sistema de Audio Local (SFX)")]
+    [SerializeField] private AudioSource reproductorSFX;
+    [SerializeField] private AudioClip sonidoSalto;
+    [SerializeField] private AudioClip sonidoMagia;
+    [SerializeField] private AudioClip[] sonidosAtaqueVariados;
+
+    [Header("Configuración de Pasos Orgánicos")]
+    [SerializeField] private AudioClip[] sonidosPasosVariados;
+
+    // Tiempo en segundos entre cada paso
+    [SerializeField] private float tiempoEntrePasos = 0.35f;
+    private float cronometroPasos;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         rb.freezeRotation = true;
+
+        if (reproductorSFX == null)
+        {
+            reproductorSFX = gameObject.AddComponent<AudioSource>();
+        }
     }
 
-
-    //En Update iran todas las validaciones como Deteccion de teclas, Ejecucion de animaciones.
     private void Update()
     {
-       //Validaciones
         ValidarMovimiento();
         ValidarSalto();
         ValidateAtack();
         ValidateMagicAtack();
         DetectarCaidayAscenso();
-
+        GestionarPasosRealistas();
     }
 
-    //FixedUpdate ejecuta la logica de fisicas, no meter nada que no sea de las fisicas aqui...
     private void FixedUpdate()
     {
         Movement();
         Saltar();
-        
     }
 
     #region Movimiento
-    //_______
     void ValidarMovimiento()
     {
-
-        //Horizontal registrar valores entre -1 0 1
-        //Si el valor de horizontal cambia de 0 a valores entre -1 o 1 pues se ejecuta animacion de moverse.
         horizontalInput = Input.GetAxisRaw("Horizontal");
         if (horizontalInput > 0) transform.localScale = new Vector3(0.18f, 0.18f, 0.18f);
         else if (horizontalInput < 0) transform.localScale = new Vector3(-0.18f, 0.18f, 0.18f);
         animator.SetBool("IsRunning", horizontalInput != 0);
     }
-    
+
     void Movement()
     {
-        rb.linearVelocity = new Vector2 (horizontalInput*movementSpeed, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(horizontalInput * movementSpeed, rb.linearVelocity.y);
+    }
+
+    void GestionarPasosRealistas()
+    {
+        bool estaCaminando = horizontalInput != 0 && estaEnElSuelo;
+
+        if (estaCaminando)
+        {
+            cronometroPasos += Time.deltaTime;
+
+            if (cronometroPasos >= tiempoEntrePasos)
+            {
+                ReproducirPasoAleatorio();
+                cronometroPasos = 0f;
+            }
+        }
+        else
+        {
+            cronometroPasos = tiempoEntrePasos;
+        }
+    }
+
+    private void ReproducirPasoAleatorio()
+    {
+        if (sonidosPasosVariados != null && sonidosPasosVariados.Length > 0)
+        {
+            int indiceAleatorio = UnityEngine.Random.Range(0, sonidosPasosVariados.Length);
+            AudioClip clipSeleccionado = sonidosPasosVariados[indiceAleatorio];
+
+            if (clipSeleccionado != null)
+            {
+                reproductorSFX.pitch = UnityEngine.Random.Range(0.88f, 1.12f);
+                float volumenAleatorio = UnityEngine.Random.Range(0.85f, 1.0f);
+                reproductorSFX.PlayOneShot(clipSeleccionado, volumenAleatorio);
+            }
+        }
     }
     #endregion
 
-
     #region Salto
-    //Este registra la tecla
     void ValidarSalto()
     {
         if (Input.GetKeyDown(KeyCode.Space) && estaEnElSuelo)
         {
             puedeSaltar = true;
+
+            if (sonidoSalto != null)
+            {
+                reproductorSFX.pitch = 1.0f;
+                reproductorSFX.PlayOneShot(sonidoSalto);
+            }
         }
-        
     }
 
     void Saltar()
     {
-        //Ajuste de posicion de donde sale el raycast de Debug
-        Vector2 posicionn = (Vector2) transform.position + new Vector2(0.1f, 0.5f); 
-        //Logica del salto
+        Vector2 posicionn = (Vector2)transform.position + new Vector2(0.1f, 0.5f);
         RaycastHit2D hit = Physics2D.Raycast(posicionn, Vector2.down, 0.5f, capaSuelo);
         if (hit.collider != null)
         {
             estaEnElSuelo = true;
-            
             Debug.DrawRay(posicionn, Vector2.down * 0.3f, Color.green);
         }
         else
@@ -105,7 +152,7 @@ public class MovementController : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             puedeSaltar = false;
-        } //Fin logica del salto 
+        }
     }
     #endregion
 
@@ -122,51 +169,73 @@ public class MovementController : MonoBehaviour
             animator.SetBool("IsJumping", false);
             animator.SetBool("IsFalling", false);
         }
-
     }
     #endregion
 
     #region Ataques
     void ValidateAtack()
-    {   //Esta logica puede ser redundante, pero la implemento para evitar algun error o eventual cambio
-        
-
-        // Si esta presionando Q, pero no esta corriendo esta ejecutando ataque quieto
-        bool canAtack = Input.GetKey(KeyCode.Q) && !animator.GetBool("IsRunning");
-        // Si esta presionando Q y esta corriendo esta ejecutando ataque en movimiento
-        bool canAtackWhileRun = Input.GetKey(KeyCode.Q) && animator.GetBool("IsRunning");
-
-        if (playerController.tieneLanza)//Esta opcion pregunta si ya se ha desbloqueado la habilidad de la lanza.
+    {
+        if (playerController.tieneLanza)
         {
-            if (canAtack || canAtackWhileRun)
-            {//Si se cumple que una de las dos esta en ejecucion
-             // QUE BASTARIA SOLO CON DEJAR EL PRIMERO : canAtack.
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
                 animator.SetBool("IsAttacking", true);
+                ReproducirAtaqueAleatorio();
             }
-            else
+
+            if (Input.GetKeyUp(KeyCode.Q))
             {
                 animator.SetBool("IsAttacking", false);
             }
         }
-        
+    }
+
+    private void ReproducirAtaqueAleatorio()
+    {
+        if (sonidosAtaqueVariados != null && sonidosAtaqueVariados.Length > 0)
+        {
+            int indiceAleatorio = UnityEngine.Random.Range(0, sonidosAtaqueVariados.Length);
+            if (sonidosAtaqueVariados[indiceAleatorio] != null)
+            {
+                reproductorSFX.pitch = UnityEngine.Random.Range(0.95f, 1.05f);
+                reproductorSFX.PlayOneShot(sonidosAtaqueVariados[indiceAleatorio]);
+            }
+        }
     }
 
     void ValidateMagicAtack()
     {
-        //Para arrojar el orbe magico
+        // MODIFICADO: Comprobamos si se presiona la tecla de magia
         if (Input.GetKeyDown(KeyCode.E))
         {
-            
-            DisparoLanzaMagica scriptLanza = GetComponentInChildren<DisparoLanzaMagica>(true);
-            if (scriptLanza != null)
+            // Verificamos si el jugador cuenta con la stamina suficiente para castear
+            if (playerController.Stamina >= costoStaminaMagia)
             {
-                scriptLanza.DispararProyectil();
+                // Restamos la stamina a través de la propiedad del PlayerController
+                playerController.Stamina -= costoStaminaMagia;
+
+                if (sonidoMagia != null)
+                {
+                    reproductorSFX.pitch = 1.0f;
+                    reproductorSFX.PlayOneShot(sonidoMagia);
+                }
+
+                DisparoLanzaMagica scriptLanza = GetComponentInChildren<DisparoLanzaMagica>(true);
+                if (scriptLanza != null)
+                {
+                    scriptLanza.DispararProyectil();
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No tienes suficiente Stamina para usar magia.");
             }
         }
 
-        //ES PRACTICAMENTE LO MISMO QUE EL DE ARRIBA
-        bool canUseMagic = Input.GetKey(KeyCode.E) && !animator.GetBool("IsRunning");
-        bool canUseMagicWhileRun = Input.GetKey(KeyCode.E) && animator.GetBool("IsRunning");
+        // El estado visual de la animación solo se mantiene activo si el jugador tiene suficiente energía para el casteo
+        bool tieneSuficienteStamina = playerController.Stamina >= costoStaminaMagia;
+        bool canUseMagic = Input.GetKey(KeyCode.E) && !animator.GetBool("IsRunning") && tieneSuficienteStamina;
+        bool canUseMagicWhileRun = Input.GetKey(KeyCode.E) && animator.GetBool("IsRunning") && tieneSuficienteStamina;
 
         if (canUseMagic || canUseMagicWhileRun)
         {
@@ -177,7 +246,5 @@ public class MovementController : MonoBehaviour
             animator.SetBool("IsMagic", false);
         }
     }
-    #endregion
-
-    
+    #endregion   
 }
