@@ -113,6 +113,12 @@ public class PlayerController : MonoBehaviour
         if (fragmentoCercano != null)
         {
             string nombreCapa = LayerMask.LayerToName(fragmentoCercano.gameObject.layer);
+
+            // =========================================================================
+            // METER AQUÍ: Esta línea te imprimirá en la consola el error real del objeto
+            Debug.Log($"[DETECCIÓN] Objeto: {fragmentoCercano.gameObject.name} | Layer real en Unity: {nombreCapa}");
+            // =========================================================================
+
             string mensajeFragmento = "Presiona [R] para Absorber";
 
             switch (nombreCapa)
@@ -226,7 +232,7 @@ public class PlayerController : MonoBehaviour
         Collider2D collider = Physics2D.OverlapCircle(posicionAjuste, radioDeteccion, capaFragmentos);
         if (collider != null && Input.GetKeyDown(KeyCode.R))
         {
-            string nombreCapaItem = LayerMask.LayerToName(collider.gameObject.layer);
+            string nombreCapaItem = LayerMask.LayerToName(collider.gameObject.layer);   
             switch (nombreCapaItem)
             {
                 case "LanzaEstatica":
