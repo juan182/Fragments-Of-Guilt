@@ -808,8 +808,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.21156965, y: 4.0781436}
-  m_Size: {x: 11.842465, y: 4.502606}
+  m_Offset: {x: 0.18340376, y: 7.1102223}
+  m_Size: {x: 11.650673, y: 10.566759}
   m_Direction: 1
 --- !u!95 &73665336328824152
 Animator:
@@ -987,7 +987,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.7
   m_Pitch: 1
   Loop: 0
@@ -1085,7 +1085,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySoundController
   audioSource: {fileID: 6635698103483026978}
-  vuelo: {fileID: 8300000, guid: 82c7d5f8448866b4b8e5b600445614e4, type: 3}
+  vuelo: {fileID: 0}
   ataque: {fileID: 8300000, guid: 2541de6eae2f37f4d834aae2e9828c82, type: 3}
   detectaJugador: {fileID: 8300000, guid: 1d2e15f9e392a9b47bb06af95a220600, type: 3}
   muerte: {fileID: 8300000, guid: 6ad3c3be63afc06458c51c72971a0550, type: 3}

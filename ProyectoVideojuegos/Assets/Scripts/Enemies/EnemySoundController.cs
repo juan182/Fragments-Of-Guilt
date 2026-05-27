@@ -20,7 +20,20 @@ public class EnemySoundController : MonoBehaviour
     [SerializeField] AudioClip ondaExpansiva;
     [SerializeField] AudioClip paso;
 
-    public void PlayVuelo() => audioSource.PlayOneShot(vuelo);
+    public void PlayVuelo()
+    {
+        if (audioSource.isPlaying) return; // si ya suena no lo reinicia
+        audioSource.clip = vuelo;
+        audioSource.loop = true;
+        audioSource.pitch = 0.8f;
+        audioSource.volume = 0.3f;
+        audioSource.Play();
+    }
+
+    public void StopVuelo()
+    {
+        audioSource.Stop();
+    }
     public void PlayAtaque() => audioSource.PlayOneShot(ataque);
     public void PlayDetectaJugador() => audioSource.PlayOneShot(detectaJugador);
     public void PlayMuerte() => audioSource.PlayOneShot(muerte);

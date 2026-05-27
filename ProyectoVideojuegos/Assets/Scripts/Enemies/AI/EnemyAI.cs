@@ -53,6 +53,7 @@ public class EnemyAI : MonoBehaviour
                 persecusion.enabled = false;
                 if (ataque != null) ataque.enabled = false;
                 if (animator != null) animator.SetBool("seMueve", false);
+                enemySoundController.StopVuelo();
             }
             return;
         }
@@ -88,6 +89,7 @@ public class EnemyAI : MonoBehaviour
             {
                 estadoActual = Estado.Atacando;
                 persecusion.enabled = false;
+                enemySoundController.StopVuelo();
             }
             else
             {
@@ -96,6 +98,7 @@ public class EnemyAI : MonoBehaviour
 
                 estadoActual = Estado.Persiguiendo;
                 persecusion.SetObjetivo(jugador);
+                enemySoundController.PlayVuelo();
             }
         }
         else
@@ -104,6 +107,7 @@ public class EnemyAI : MonoBehaviour
                 animator.ResetTrigger("Attacking");
 
             estadoActual = Estado.Patrullando;
+            enemySoundController.PlayVuelo();
         }
     }
 
@@ -124,7 +128,6 @@ public class EnemyAI : MonoBehaviour
     {
         patrulla.enabled = (estadoActual == Estado.Patrullando);
         persecusion.enabled = (estadoActual == Estado.Persiguiendo);
-        enemySoundController.PlayVuelo();
 
         if (estadoActual == Estado.Atacando)
         {
